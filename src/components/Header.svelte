@@ -1,17 +1,12 @@
 <script lang="ts">
   import { i18n, setLang, t, type Lang } from '../lib/i18n/index.svelte';
   import { route } from '../lib/router.svelte';
-  import { app, setTheme, type Theme } from '../lib/state.svelte';
   import SharePanel from './SharePanel.svelte';
+  import ThemeButton from './ui/ThemeButton.svelte';
   import Segmented from './ui/Segmented.svelte';
 
   let sharing = $state(false);
 
-  const themes = $derived<{ value: Theme; label: string }[]>([
-    { value: 'system', label: t('themeSystem') },
-    { value: 'light', label: t('themeLight') },
-    { value: 'dark', label: t('themeDark') },
-  ]);
 </script>
 
 <header class="nav">
@@ -26,7 +21,7 @@
       <a href="#learn" aria-current={route.view === 'learn' ? 'page' : undefined}>{t('navLearn')}</a>
     </nav>
     <div class="tools">
-      <div class="theme"><Segmented size="sm" label={t('theme')} options={themes} value={app.theme} onchange={(v) => setTheme(v)} /></div>
+      <ThemeButton />
       <Segmented
         size="sm"
         label={t('lang')}
@@ -67,6 +62,5 @@
     background: var(--accent); color: var(--on-accent); padding: 6px 14px; font-size: 14px; font-weight: 500;
   }
   .share:hover { background: var(--accent-hover); }
-  @media (max-width: 720px) { .theme { display: none; } }
   @media (max-width: 420px) { .share span { display: none; } .share { padding: 7px 9px; } }
 </style>
