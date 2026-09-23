@@ -42,7 +42,7 @@ The full list, with priorities, is in [docs/FEATURES.md](docs/FEATURES.md). What
 
 ## Getting started
 
-Requires Node.js 20 or later (see `.nvmrc`). Copy `.env.example` to `.env.local` and add the Firebase web API key to enable analytics and short links (optional).
+Requires Node.js 20 or later (see `.nvmrc`). Copy `.env.example` to `.env.local` and add the Firebase web API key to enable short links (optional).
 
 ```bash
 npm install
@@ -71,7 +71,8 @@ src/
   lib/share.ts       Share payloads: compressed, validated, up to 4 scenarios (+ tests)
   lib/shortlinks.ts  App glue for short links (/s/<id>)
   lib/export.ts      CSV export and saved simulations (+ tests)
-  lib/firebase/      Firebase config and consent-gated Analytics
+  lib/firebase/      Firebase config (Firestore, for short links)
+  lib/analytics.ts   PostHog analytics (cookieless) + URL scrubbing (+ tests)
   lib/learn/         "How it works" articles (en.ts, fr.ts) + content tests
   lib/router.svelte.ts  Hash routes: simulator, #tools/<tool>, #learn/<topic>
   lib/state.svelte.ts  App state: credit type, mode, scenarios, theme
@@ -115,7 +116,7 @@ Live at **https://creditsimulator.web.app** (Firebase project `credisimulator`, 
 - Deploys need the `FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR` repository secret, created once with `firebase init hosting:github`.
 - Manual deploy: `firebase deploy --only hosting`.
 
-Google Analytics (Firebase) runs only after the visitor accepts it in the consent banner, and never receives simulation figures.
+Analytics: PostHog (EU cloud), cookieless like Suncast and Mont Valier, so there is no consent banner; it never receives simulation figures. See [docs/ANALYTICS.md](docs/ANALYTICS.md).
 
 Step-by-step setup, caching and analytics details: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 

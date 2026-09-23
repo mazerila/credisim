@@ -3,6 +3,7 @@
   import { fmt, t } from '../lib/i18n/index.svelte';
   import { addScenario, app, current, removeScenario } from '../lib/state.svelte';
   import { MAX_SCENARIOS, SCENARIO_NAMES } from '../lib/share';
+  import { track } from '../lib/analytics';
   import NumberField from './ui/NumberField.svelte';
   import Segmented from './ui/Segmented.svelte';
   import SelectField from './ui/SelectField.svelte';
@@ -38,6 +39,7 @@
       label="Mode"
       options={[{ value: 'quick', label: t('quick') }, { value: 'expert', label: t('expert') }]}
       bind:value={app.mode}
+      onchange={(v) => track('mode_changed', { mode: v })}
     />
   </div>
 

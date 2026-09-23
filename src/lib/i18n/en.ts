@@ -79,7 +79,7 @@ export const en = {
   developedBy: 'Developed by', developedByAria: 'Developed by Antoine Mokhtari, Bald Studio',
   footSources: 'Legal maximum rates: Banque de France, {q}. Lending rules: HCSF, confirmed March 2026. Notary fees use the 2026 regulated scale; the guarantee cost is an estimate.',
   footDisclaimer: 'Simulation for information only. It is not a loan offer and does not replace the offer from your bank.',
-  footPrivacy: 'Everything is calculated in your browser. Your figures are only stored if you create a share link; visit statistics only with your consent.',
+  footPrivacy: 'Everything is calculated in your browser. Your figures are only stored if you create a share link. Visit statistics are anonymous and use no cookies.',
 
   // ⓘ explanations
   tip_taeg: 'TAEG (taux annuel effectif global): the yearly rate that includes interest, insurance, fees and the guarantee. It is the number to compare between offers.',
@@ -181,9 +181,6 @@ export const en = {
   printTitle: 'Credisim simulation', printDate: 'Printed on {d}', printInputs: 'Your inputs',
   colMonthCsv: 'Month',
 
-  // Consent
-  consentTitle: 'Visit statistics', consentText: 'With your consent, Credisim uses Google Analytics (Firebase) to count visits and see which features are used. Your simulation figures are never sent.',
-  consentAccept: 'Accept', consentDeny: 'Decline', consentSettings: 'Cookie settings',
 
   // Variable rates
   rateType: 'Rate type', rt_fixed: 'Fixed', rt_variable: 'Variable', rt_capped: 'Capped',

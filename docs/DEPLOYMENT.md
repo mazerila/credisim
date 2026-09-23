@@ -46,7 +46,7 @@ To check: GitHub → repository → Settings → Secrets and variables → Actio
 | `FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR` | deploying (created by `firebase init hosting:github`) |
 | `FIREBASE_WEB_API_KEY` | the Firebase **web** API key, passed to the build as `VITE_FIREBASE_API_KEY` |
 
-Locally, put the web API key in `.env.local` (git-ignored; see `.env.example`). Without it the app still builds and runs, with analytics and short links turned off.
+Locally, put the web API key in `.env.local` (git-ignored; see `.env.example`). Without it the app still builds and runs, with short links turned off (long links are used).
 
 ### About the web API key
 
@@ -77,13 +77,9 @@ firebase deploy --only firestore        # security rules and indexes
 - `index.html`: `no-cache`, so a new deploy is picked up at once.
 - `assets/*`: hashed file names, cached for a year (`immutable`).
 
-## Analytics and consent
+## Analytics
 
-Google Analytics (Firebase, measurement ID `G-HPYXNLX87L`) is loaded **only on the production build and only after the visitor clicks "Accept"** in the consent banner (CNIL rules). The choice is stored in the browser (`credisim.consent`) and can be changed with "Cookie settings" in the footer.
-
-What is sent: page views (route only, e.g. `/tools/check-offer`, never the `#s=` simulation) and feature events: `select_credit_type`, `add_scenario`, `share`, `save_simulation`, `print`, `export_csv`. No amounts, rates or other figures.
-
-The Firebase web config in `src/lib/firebase/config.ts` is public by design (it identifies the app; it is not a secret).
+PostHog (EU, cookieless, no consent banner), shared "armo products" project with Suncast and Mont Valier. Nothing to deploy: it is part of the app bundle. Details: [ANALYTICS.md](ANALYTICS.md).
 
 ## Custom domain (later)
 

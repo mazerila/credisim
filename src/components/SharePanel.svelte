@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { track } from '../lib/firebase/analytics.svelte';
+  import { track } from '../lib/analytics';
   import { t } from '../lib/i18n/index.svelte';
   import { createShortUrl } from '../lib/shortlinks';
   import { toFullPayload, toHash } from '../lib/state.svelte';
@@ -16,11 +16,12 @@
     const shortUrl = await createShortUrl(await toFullPayload());
     short = !!shortUrl;
     url = shortUrl ?? `${location.origin}${location.pathname}${await toHash()}`;
-    track('share', { short });
+    track('share_link_created', { short });
     queueMicrotask(() => input?.select());
   })();
 
   async function copy() {
+    track('share_link_copied', { short });
     try {
       await navigator.clipboard.writeText(url);
     } catch {
@@ -31,6 +32,7 @@
     setTimeout(() => (copied = false), 2000);
   }
   async function nativeShare() {
+    track('share_sheet_opened', { short });
     try { await navigator.share({ title: 'Credisim', text: t('shareText'), url }); } catch { /* cancelled */ }
   }
   const canShare = typeof navigator !== 'undefined' && !!navigator.share;

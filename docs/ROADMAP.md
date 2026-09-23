@@ -59,7 +59,7 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 | Hosting | Firebase Hosting, site `creditsimulator` (https://creditsimulator.web.app) | Deployed by GitHub Actions on every push to `main`; PR previews |
 | Data | `data/<country>/*.json` with `validFrom`, `validTo`, `source` | Quarterly usury refresh without code change |
 | PDF | Client-side (jsPDF / print stylesheet) | Keeps data in the browser |
-| Analytics | Google Analytics via Firebase, opt-in consent banner | Firebase project already in place; CNIL-compliant consent |
+| Analytics | PostHog EU, cookieless (shared "armo products" project) | Same as Suncast and Mont Valier; no consent banner needed |
 
 ## Repo layout
 A single Vite app for now; the engine is kept dependency-free in `src/lib/engine/` so it can move to its own package (`packages/engine`) when a second consumer appears (API, widget).

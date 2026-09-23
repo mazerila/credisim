@@ -6,8 +6,7 @@
   import { SCENARIO_NAMES } from './lib/share';
   import LearnPage from './components/learn/LearnPage.svelte';
   import ToolsPage from './components/tools/ToolsPage.svelte';
-  import ConsentBanner from './components/ConsentBanner.svelte';
-  import { startAnalytics, track } from './lib/firebase/analytics.svelte';
+  import { initAnalytics, setAnalyticsLocale, track, trackPageview } from './lib/analytics';
   import BalanceChart from './components/BalanceChart.svelte';
   import Capacity from './components/Capacity.svelte';
   import CompareTable from './components/CompareTable.svelte';
@@ -30,7 +29,16 @@
 
   parseRoute();
   setTheme(app.theme);
-  startAnalytics();
+  initAnalytics(i18n.lang);
+  track('app_started', {
+    credit_type: app.scenarios[0].type,
+    scenarios: app.scenarios.length,
+    mode: app.mode,
+    view: route.view,
+    // how the visitor arrived: a shared/saved simulation in the link, or a fresh start
+    start: /[#&][cs]=/.test(location.hash) ? 'shared_link' : 'fresh',
+    theme: app.theme,
+  });
 
   // Hash navigation: Learn pages, or a shared simulation opened in a tab where Credisim is already running.
   let lastHash = location.hash;
@@ -65,7 +73,10 @@
   // Page views: only the route (never the simulation, which lives in #s=…).
   $effect(() => {
     const path = route.view === 'sim' ? '/' : `/${route.view}${route.topic ? '/' + route.topic : route.tool ? '/' + route.tool : ''}`;
-    track('page_view', { page_path: path, page_title: path, language: i18n.lang });
+    trackPageview(path);
+  });
+  $effect(() => {
+    setAnalyticsLocale(i18n.lang);
   });
   $effect(() => {
     document.documentElement.lang = i18n.lang;
@@ -125,7 +136,6 @@
 
 <Footer />
 {#if route.view === 'sim'}<MobileSummary {r} />{/if}
-<ConsentBanner />
 
 <style>
   .hero { text-align: center; padding-block: 56px 36px; }

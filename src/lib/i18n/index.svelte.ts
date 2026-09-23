@@ -1,3 +1,4 @@
+import { track } from '../analytics';
 import { en, type Dict } from './en';
 import { fr } from './fr';
 
@@ -32,6 +33,7 @@ function detect(): Lang {
 export const i18n = $state({ lang: detect() });
 
 export function setLang(l: Lang) {
+  if (l !== i18n.lang) track('language_changed', { from: i18n.lang, to: l });
   i18n.lang = l;
   try { localStorage.setItem(STORAGE_KEY, l); } catch { /* storage blocked */ }
 }

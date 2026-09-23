@@ -1,7 +1,7 @@
 import { DEFAULTS, type CreditType, type Inputs } from './engine';
 import { i18n, LANGS, type Lang } from './i18n/index.svelte';
 import { decodeShare, encodeFullPayload, encodeShare, MAX_SCENARIOS, type Mode, type ShareState } from './share';
-import { track } from './firebase/analytics.svelte';
+import { track } from './analytics';
 
 export type { Mode };
 export type Theme = 'system' | 'light' | 'dark';
@@ -33,7 +33,7 @@ export function setType(type: CreditType) {
   const c = current();
   const keep = { income: c.income, otherLoans: c.otherLoans, useOtherLoans: c.useOtherLoans, persons: c.persons };
   app.scenarios = [{ ...clone(DEFAULTS[type]), ...keep }];
-  track('select_credit_type', { credit_type: type });
+  track('credit_type_selected', { credit_type: type });
   app.active = 0;
 }
 
@@ -44,7 +44,7 @@ export function addScenario() {
   const step = next.type === 'mortgage' ? 60 : 12;
   next.months = next.months - step >= step ? next.months - step : next.months + step;
   app.scenarios = [...app.scenarios, next];
-  track('add_scenario', { count: app.scenarios.length });
+  track('scenario_added', { count: app.scenarios.length });
   app.active = app.scenarios.length - 1;
 }
 
@@ -61,7 +61,8 @@ try {
   if (saved === 'light' || saved === 'dark') app.theme = saved;
 } catch { /* storage blocked */ }
 
-export function setTheme(theme: Theme) {
+export function setTheme(theme: Theme, user = false) {
+  if (user && theme !== app.theme) track('theme_changed', { from: app.theme, to: theme });
   app.theme = theme;
   const root = document.documentElement;
   if (theme === 'system') delete root.dataset.theme;

@@ -5,7 +5,7 @@
  * locally, the FIREBASE_WEB_API_KEY secret in GitHub Actions) so it is not stored in the
  * repository. It still ends up in the built JavaScript, as for every Firebase web app:
  * access is protected by the Firestore rules and the key's HTTP-referrer restrictions.
- * Without a key, analytics and short links are off and the app uses long share links.
+ * Without a key, short links are off and the app uses long share links. Analytics is PostHog, not Firebase.
  */
 const apiKey = import.meta.env.VITE_FIREBASE_API_KEY as string | undefined;
 
@@ -17,6 +17,5 @@ export const firebaseConfig = apiKey
       storageBucket: 'credisimulator.firebasestorage.app',
       messagingSenderId: '359821051195',
       appId: '1:359821051195:web:5722267d1dca1eafe9e31e',
-      measurementId: 'G-HPYXNLX87L',
     }
   : null;

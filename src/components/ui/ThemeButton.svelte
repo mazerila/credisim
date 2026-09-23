@@ -8,7 +8,7 @@
   const label = $derived(`${t('theme')}: ${t(LABEL[app.theme])} → ${t(LABEL[NEXT[app.theme]])}`);
 </script>
 
-<button type="button" class="theme-btn" onclick={() => setTheme(NEXT[app.theme])} title={label} aria-label={label}>
+<button type="button" class="theme-btn" onclick={() => setTheme(NEXT[app.theme], true)} title={label} aria-label={label}>
   {#if app.theme === 'system'}
     <!-- half-filled circle: follows the device -->
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" /></svg>

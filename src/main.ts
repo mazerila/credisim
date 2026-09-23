@@ -4,12 +4,14 @@ import App from './App.svelte';
 import { parseRoute } from './lib/router.svelte';
 import { isShortPath, stateFromShortPath } from './lib/shortlinks';
 import { applyShared, loadHash } from './lib/state.svelte';
+import { track } from './lib/analytics';
 
 // Load a shared simulation before the first render: a short link (/s/<id>) or a fragment (#c=… / #s=…).
 async function start() {
   if (isShortPath()) {
     const s = await stateFromShortPath();
     if (s) applyShared(s);
+    track('simulation_opened', { from: 'short_link', found: !!s });
     // Continue at the root: from now on the address bar holds the live simulation.
     history.replaceState(null, '', '/' + location.hash);
   } else if (!parseRoute()) {

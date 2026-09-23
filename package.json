@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@credisim/shortlink": "0.1.0",
-    "firebase": "^12.19.0"
+    "firebase": "^12.19.0",
+    "posthog-js": "^1.434.10"
   }
 }

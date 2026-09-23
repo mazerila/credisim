@@ -81,7 +81,7 @@ export const fr: Dict = {
   developedBy: 'Développé par', developedByAria: 'Développé par Antoine Mokhtari, Bald Studio',
   footSources: 'Taux d’usure : Banque de France, {q}. Règles d’octroi : HCSF, confirmées en mars 2026. Frais de notaire selon le barème réglementé 2026 ; coût de la garantie estimé.',
   footDisclaimer: 'Simulation indicative. Elle ne constitue pas une offre de prêt et ne remplace pas l’offre de votre banque.',
-  footPrivacy: 'Tous les calculs sont faits dans votre navigateur. Vos chiffres ne sont enregistrés que si vous créez un lien de partage ; statistiques de visite uniquement avec votre accord.',
+  footPrivacy: 'Tous les calculs sont faits dans votre navigateur. Vos chiffres ne sont enregistrés que si vous créez un lien de partage. Les statistiques de visite sont anonymes et sans cookies.',
 
   tip_taeg: 'TAEG (taux annuel effectif global) : le taux annuel qui inclut intérêts, assurance, frais et garantie. C’est lui qu’il faut comparer entre les offres.',
   tip_rate: 'Taux nominal (taux débiteur) : sert uniquement à calculer les intérêts.',
@@ -182,9 +182,6 @@ export const fr: Dict = {
   printTitle: 'Simulation Credisim', printDate: 'Imprimé le {d}', printInputs: 'Vos données',
   colMonthCsv: 'Mois',
 
-  // Consent
-  consentTitle: 'Statistiques de visite', consentText: 'Avec votre accord, Credisim utilise Google Analytics (Firebase) pour compter les visites et voir quelles fonctions sont utilisées. Les chiffres de vos simulations ne sont jamais envoyés.',
-  consentAccept: 'Accepter', consentDeny: 'Refuser', consentSettings: 'Gestion des cookies',
 
   // Variable rates
   rateType: 'Type de taux', rt_fixed: 'Fixe', rt_variable: 'Variable', rt_capped: 'Capé',
