@@ -140,5 +140,5 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | J2 | Engine unit-tested against reference cases (ANIL schedule, real offers, BdF TAEG examples) | P0 ✅ |
 | J3 | Versioned regulatory data with "valid from/to" + source link shown in the UI | P0 ✅ |
 | J4 | Disclaimer: estimate, not an offer | P0 ✅ |
-| J5 | Cookie-light analytics (PostHog, like Suncast) | P0 |
+| J5 | Analytics with consent: Google Analytics via Firebase, opt-in banner, no simulation figures sent | P0 ✅ |
 | J6 | Quarterly data-refresh checklist / reminder | P1 |

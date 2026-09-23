@@ -1,0 +1,37 @@
+# Every pull request: check, test, build, and deploy a temporary preview
+# (Firebase preview channel, 7 days). The preview URL is posted on the PR.
+name: Preview on Firebase Hosting
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  build_and_preview:
+    runs-on: ubuntu-latest
+    env:
+      HAS_FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      # Secrets are not available to PRs from forks: they only get the checks above.
+      - name: Deploy a preview channel
+        if: env.HAS_FIREBASE_SA == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR }}
+          projectId: credisimulator
+          target: creditsimulator
+          expires: 7d

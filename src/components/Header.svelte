@@ -1,6 +1,7 @@
 <script lang="ts">
   import { i18n, setLang, t, type Lang } from '../lib/i18n/index.svelte';
   import { route } from '../lib/router.svelte';
+  import { track } from '../lib/firebase/analytics.svelte';
   import { app, setTheme, toHash, type Theme } from '../lib/state.svelte';
   import Segmented from './ui/Segmented.svelte';
 
@@ -9,6 +10,7 @@
 
   async function share() {
     history.replaceState(null, '', toHash());
+    track('share');
     const url = location.href;
     // Phones and tablets: native share sheet. Desktop: copy to the clipboard.
     if (navigator.share && matchMedia('(pointer: coarse)').matches) {

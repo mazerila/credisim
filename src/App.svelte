@@ -6,6 +6,8 @@
   import { SCENARIO_NAMES } from './lib/share';
   import LearnPage from './components/learn/LearnPage.svelte';
   import ToolsPage from './components/tools/ToolsPage.svelte';
+  import ConsentBanner from './components/ConsentBanner.svelte';
+  import { startAnalytics, track } from './lib/firebase/analytics.svelte';
   import BalanceChart from './components/BalanceChart.svelte';
   import Capacity from './components/Capacity.svelte';
   import CompareTable from './components/CompareTable.svelte';
@@ -27,6 +29,7 @@
 
   if (!parseRoute()) loadHash();
   setTheme(app.theme);
+  startAnalytics();
 
   // Hash navigation: Learn pages, or a shared simulation opened in a tab where Credisim is already running.
   let lastHash = location.hash;
@@ -55,6 +58,11 @@
       lastHash = hash;
       history.replaceState(null, '', hash);
     }, 300);
+  });
+  // Page views: only the route (never the simulation, which lives in #s=…).
+  $effect(() => {
+    const path = route.view === 'sim' ? '/' : `/${route.view}${route.topic ? '/' + route.topic : route.tool ? '/' + route.tool : ''}`;
+    track('page_view', { page_path: path, page_title: path, language: i18n.lang });
   });
   $effect(() => {
     document.documentElement.lang = i18n.lang;
@@ -113,6 +121,7 @@
 
 <Footer />
 {#if route.view === 'sim'}<MobileSummary {r} />{/if}
+<ConsentBanner />
 
 <style>
   .hero { text-align: center; padding-block: 56px 36px; }

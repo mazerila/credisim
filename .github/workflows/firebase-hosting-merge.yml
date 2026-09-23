@@ -1,0 +1,45 @@
+# Every push to main (merged PR or direct push): check, test, build, deploy to
+# https://creditsimulator.web.app (Firebase project "credisimulator").
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+concurrency:
+  group: firebase-deploy-live
+  cancel-in-progress: false
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Lets the deploy step skip cleanly until the service-account secret exists.
+      HAS_FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - name: Deploy to the live channel
+        if: env.HAS_FIREBASE_SA == 'true'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR }}
+          projectId: credisimulator
+          target: creditsimulator
+          channelId: live
+      - name: Deploy skipped
+        if: env.HAS_FIREBASE_SA != 'true'
+        run: echo "::warning::FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR secret is missing, so nothing was deployed. Run 'firebase init hosting:github' once (see README)."

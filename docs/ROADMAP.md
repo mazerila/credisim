@@ -55,10 +55,10 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 | UI | Svelte 5 + Vite (static SPA); SEO pages added in Phase 5 | Fast, small bundle, simple Firebase deploy |
 | Charts | Custom SVG Svelte components | No dependency, theme-aware, full control; table fallback for accessibility |
 | i18n | JSON dictionaries `en.json` / `fr.json`, `t(key, vars)` like Suncast | Proven in Suncast |
-| Hosting | Firebase Hosting (Suncast) or Cloudflare Pages | Static; Cloudflare adds free IP-country header |
+| Hosting | Firebase Hosting, site `creditsimulator` (https://creditsimulator.web.app) | Deployed by GitHub Actions on every push to `main`; PR previews |
 | Data | `data/<country>/*.json` with `validFrom`, `validTo`, `source` | Quarterly usury refresh without code change |
 | PDF | Client-side (jsPDF / print stylesheet) | Keeps data in the browser |
-| Analytics | PostHog (cookie-less mode) | Same as Suncast |
+| Analytics | Google Analytics via Firebase, opt-in consent banner | Firebase project already in place; CNIL-compliant consent |
 
 ## Repo layout
 A single Vite app for now; the engine is kept dependency-free in `src/lib/engine/` so it can move to its own package (`packages/engine`) when a second consumer appears (API, widget).

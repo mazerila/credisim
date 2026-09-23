@@ -3,6 +3,7 @@
   import { deleteSaved, download, listSaved, saveSimulation, scheduleCsv, type Saved } from '../lib/export';
   import { i18n, t } from '../lib/i18n/index.svelte';
   import { loadHash, toHash } from '../lib/state.svelte';
+  import { track } from '../lib/firebase/analytics.svelte';
 
   let { r }: { r: Result } = $props();
   let naming = $state(false);
@@ -19,6 +20,7 @@
   }
   function save() {
     saved = saveSimulation(name, toHash());
+    track('save_simulation');
     naming = false;
     name = '';
     say(t('savedToast'));
@@ -31,6 +33,7 @@
   }
   function csv() {
     const head = [t('colMonthCsv'), t('colPayment'), t('colInterest'), t('colCapital'), t('colInsurance'), t('colPtz'), t('colBalance')];
+    track('export_csv');
     const ok = download(`credisim-${new Date().toISOString().slice(0, 10)}.csv`, scheduleCsv(r, i18n.lang, head));
     say(ok ? t('csvDone') : t('csvBlocked'));
   }
@@ -46,7 +49,7 @@
     {t('actSaved')}{#if saved.length} <span class="count">{saved.length}</span>{/if}
   </button>
   <span class="spacer"></span>
-  <button type="button" onclick={() => window.print()}>
+  <button type="button" onclick={() => { track('print'); window.print(); }}>
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 9V3h10v6M7 18H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
     {t('actPrint')}
   </button>

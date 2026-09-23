@@ -1,6 +1,7 @@
 import { DEFAULTS, type CreditType, type Inputs } from './engine';
 import { i18n, LANGS, type Lang } from './i18n/index.svelte';
 import { decodeShare, encodeShare, MAX_SCENARIOS, type Mode } from './share';
+import { track } from './firebase/analytics.svelte';
 
 export type { Mode };
 export type Theme = 'system' | 'light' | 'dark';
@@ -32,6 +33,7 @@ export function setType(type: CreditType) {
   const c = current();
   const keep = { income: c.income, otherLoans: c.otherLoans, useOtherLoans: c.useOtherLoans, persons: c.persons };
   app.scenarios = [{ ...clone(DEFAULTS[type]), ...keep }];
+  track('select_credit_type', { credit_type: type });
   app.active = 0;
 }
 
@@ -42,6 +44,7 @@ export function addScenario() {
   const step = next.type === 'mortgage' ? 60 : 12;
   next.months = next.months - step >= step ? next.months - step : next.months + step;
   app.scenarios = [...app.scenarios, next];
+  track('add_scenario', { count: app.scenarios.length });
   app.active = app.scenarios.length - 1;
 }
 

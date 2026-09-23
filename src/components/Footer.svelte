@@ -2,6 +2,7 @@
   import { usuryTable, USURY_SOURCE } from '../lib/engine';
   import { t } from '../lib/i18n/index.svelte';
   import logo from '../assets/dev-logo-am.png';
+  import { consent } from '../lib/firebase/analytics.svelte';
 
   const { table } = usuryTable();
 </script>
@@ -11,7 +12,7 @@
   <p>{t('footSources', { q: table.quarter })} <a href={USURY_SOURCE} target="_blank" rel="noopener">Banque de France</a></p>
   <p>{t('footDisclaimer')}</p>
   <div class="bottom">
-    <p>© 2026 Credisim</p>
+    <p>© 2026 Credisim · <button type="button" class="cookie" onclick={() => (consent.open = true)}>{t('consentSettings')}</button></p>
     <!-- Developer credit (same treatment as Suncast): the "am" monogram painted as a mask
          in the link's colour; "Developed by" types itself in on hover. -->
     <a class="author" href="https://bald.studio/team/#antoine-mokhtari" target="_blank" rel="me noopener noreferrer" aria-label={t('developedByAria')}>
@@ -26,6 +27,8 @@
   p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-3); letter-spacing: 0; max-width: 90ch; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
+  .cookie { background: none; border: 0; padding: 0; color: var(--accent); font-size: 12px; cursor: pointer; }
+  .cookie:hover { text-decoration: underline; }
   .bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 8px; }
   .author { display: inline-flex; align-items: center; padding: 8px 0; color: var(--text-3); opacity: 0.7; transition: color 0.5s, opacity 0.5s; text-decoration: none; }
   .author:hover, .author:focus-visible { color: #d8261c; opacity: 1; text-decoration: none; }

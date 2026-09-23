@@ -53,6 +53,7 @@ npm run dev        # dev server at http://localhost:5173
 | `npm run check` | Type-check TypeScript and Svelte (svelte-check) |
 | `npm run build` | Build the static site into `dist/` |
 | `npm run preview` | Serve the production build locally |
+| `firebase deploy --only hosting` | Deploy by hand (tests and build run first) |
 
 ## Project structure
 
@@ -65,12 +66,13 @@ src/
   lib/i18n/          en.ts / fr.ts dictionaries, t(), number formatting, language detection
   lib/share.ts       Share-link encoding and validation, up to 4 scenarios (+ tests)
   lib/export.ts      CSV export and saved simulations (+ tests)
+  lib/firebase/      Firebase config and consent-gated Analytics
   lib/learn/         "How it works" articles (en.ts, fr.ts) + content tests
   lib/router.svelte.ts  Hash routes: simulator, #tools/<tool>, #learn/<topic>
   lib/state.svelte.ts  App state: credit type, mode, scenarios, theme
   components/        Svelte 5 UI; ui/ = controls, tools/ = Tools pages, learn/ = explainers and live examples
   app.css            Design tokens (light and dark)
-docs/                Research, features, formulas, roadmap, naming
+docs/                Research, features, formulas, roadmap, naming, deployment
   planning/          Planning report and the Phase 0 prototype
 ```
 
@@ -100,14 +102,16 @@ The language is chosen in this order: `?lang=en|fr` → the visitor's saved choi
 
 ## Deployment
 
-The build is a static site (`dist/`). `firebase.json` is ready for Firebase Hosting: site `creditsimulator` (https://creditsimulator.web.app), SPA rewrite, long cache for hashed assets, and tests plus build run before each deploy.
+Live at **https://creditsimulator.web.app** (Firebase project `credisimulator`, Hosting site `creditsimulator`).
 
-```bash
-firebase use --add                 # select the Firebase project
-firebase deploy --only hosting
-```
+- **Every push to `main`** runs the type check, tests and build, then deploys to the live site (`.github/workflows/firebase-hosting-merge.yml`).
+- **Every pull request** gets the same checks and a temporary preview URL posted on the PR (`.github/workflows/firebase-hosting-pull-request.yml`).
+- Deploys need the `FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR` repository secret, created once with `firebase init hosting:github`.
+- Manual deploy: `firebase deploy --only hosting`.
 
-GitHub Actions already runs type check, tests and build on every push and pull request (`.github/workflows/ci.yml`). Automatic deployment to Firebase will be added to it.
+Google Analytics (Firebase) runs only after the visitor accepts it in the consent banner, and never receives simulation figures.
+
+Step-by-step setup, caching and analytics details: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Disclaimer
 

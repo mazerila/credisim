@@ -78,7 +78,7 @@ export const en = {
   developedBy: 'Developed by', developedByAria: 'Developed by Antoine Mokhtari, Bald Studio',
   footSources: 'Legal maximum rates: Banque de France, {q}. Lending rules: HCSF, confirmed March 2026. Notary fees use the 2026 regulated scale; the guarantee cost is an estimate.',
   footDisclaimer: 'Simulation for information only. It is not a loan offer and does not replace the offer from your bank.',
-  footPrivacy: 'Everything is calculated in your browser. Nothing you type is sent anywhere.',
+  footPrivacy: 'Everything is calculated in your browser. The figures you type are never sent anywhere; visit statistics only with your consent.',
 
   // ⓘ explanations
   tip_taeg: 'TAEG (taux annuel effectif global): the yearly rate that includes interest, insurance, fees and the guarantee. It is the number to compare between offers.',
@@ -179,5 +179,9 @@ export const en = {
   savedOpen: 'Open', savedDelete: 'Delete', csvDone: 'CSV downloaded', csvBlocked: 'Downloads are blocked here. Run Credisim in its own tab to export.',
   printTitle: 'Credisim simulation', printDate: 'Printed on {d}', printInputs: 'Your inputs',
   colMonthCsv: 'Month',
+
+  // Consent
+  consentTitle: 'Visit statistics', consentText: 'With your consent, Credisim uses Google Analytics (Firebase) to count visits and see which features are used. Your simulation figures are never sent.',
+  consentAccept: 'Accept', consentDeny: 'Decline', consentSettings: 'Cookie settings',
 };
 export type Dict = typeof en;
