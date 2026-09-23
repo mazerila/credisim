@@ -5,6 +5,7 @@ Product analytics run on **PostHog (EU cloud)**, **cookieless**, exactly like Su
 | | |
 |---|---|
 | Project | "armo products", id `280761` (shared with Suncast and Mont Valier; every Credisim event carries `product = credisim`, dashboards filter on it) |
+| Dashboard | <https://eu.posthog.com/project/280761/dashboard/970853> (Credisim) · <https://eu.posthog.com/project/280761/dashboard/970855> (All products — Overview; Credisim's "engaged session" = `share_link_created`) |
 | Host | `https://eu.i.posthog.com` (EU data residency) |
 | Token | `phc_rDzj…` in `analytics.ts`: a **public, write-only** project key. It can only send events, not read them, so it is fine in the repo and on the site. |
 | Library | `posthog-js` (npm), loaded on demand after the first paint |
@@ -45,7 +46,7 @@ Sent by the app on real navigations only (`capture_pageview: false`), because th
 | Event | Properties | Fired when |
 |---|---|---|
 | `app_started` | `credit_type`; `scenarios` (count); `mode` (`quick` · `expert`); `view` (`sim` · `tools` · `learn`); `start` (`shared_link` · `fresh`); `theme` | Once per load |
-| `simulation_opened` | `from` (`short_link` · `saved`); `found` (short link only) | A shared short link or a saved simulation was opened |
+| `simulation_opened` | `source` (`short_link` · `saved`); `found` (short link only) | A shared short link or a saved simulation was opened |
 | `credit_type_selected` | `credit_type` (`mortgage` · `personal` · `car` · `works`) | A credit-type card was picked |
 | `mode_changed` | `mode` | Quick / Detailed switched |
 | `scenario_added` | `count` | "Compare with another scenario" |
@@ -69,6 +70,7 @@ track('thing_happened', { how: 'button' });
 
 - Names: `snake_case`, noun first, past tense (`share_link_created`).
 - Properties: short enum strings, booleans and counts. Never a figure the user typed.
+- `from` / `to` are reserved for language codes across the project (`language_changed`); use `source` for where something came from.
 - `track` is always safe to call (no-op when off). Add the event to the table above.
 
 ## Cookieless mode

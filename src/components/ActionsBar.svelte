@@ -26,7 +26,7 @@
     say(t('savedToast'));
   }
   async function open(s: Saved) {
-    track('simulation_opened', { from: 'saved' });
+    track('simulation_opened', { source: 'saved' });
     await loadHash('#' + s.hash);
     showList = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });

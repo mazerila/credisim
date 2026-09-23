@@ -11,7 +11,7 @@ async function start() {
   if (isShortPath()) {
     const s = await stateFromShortPath();
     if (s) applyShared(s);
-    track('simulation_opened', { from: 'short_link', found: !!s });
+    track('simulation_opened', { source: 'short_link', found: !!s });
     // Continue at the root: from now on the address bar holds the live simulation.
     history.replaceState(null, '', '/' + location.hash);
   } else if (!parseRoute()) {
