@@ -18,6 +18,9 @@ export const en = {
   scenario: 'Scenario {n}', addScenario: 'Compare with another scenario', removeScenario: 'Remove scenario B',
 
   secProject: 'Project', secLoan: 'Loan', secOptions: 'Included in the simulation', secHousehold: 'Household',
+  modeProject: 'Full project', modeAmount: 'Loan amount only',
+  modeAmountHint: 'Quick estimate from the amount you want to borrow. Price, down payment, notary fees and works are left out.',
+  planGuaranteeUpfront: 'Guarantee paid upfront',
   price_mortgage: 'Property price', price_car: 'Car price', amount: 'Amount to borrow',
   downPayment: 'Down payment', propertyKind: 'Property', old: 'Existing', new: 'New build',
   firstTimeBuyer: 'First-time buyer', transferTaxZone: 'Département transfer tax',
@@ -92,5 +95,24 @@ export const en = {
   tip_usury: 'The taux d’usure is the legal maximum TAEG, set every quarter by the Banque de France. A loan above it cannot be granted.',
   tip_cost: 'Everything you pay on top of the amount borrowed: interest, insurance, fees and guarantee. Notary fees are part of the project, not of the credit.',
   tip_otherLoans: 'Monthly payments of loans you already have. They count in the debt ratio.',
+
+  // Learn
+  navSim: 'Simulator', navLearn: 'How it works',
+  learnTitle: 'How loans work', learnLead: 'Short, simple explanations of credit in France, and of how this simulator calculates.',
+  group_basics: 'The basics', group_costs: 'The costs', group_rules: 'Rules and rights', group_about: 'About Credisim',
+  minRead: '{n} min read', allTopics: 'All topics', prev: 'Previous', next: 'Next',
+  trySim: 'Try it in the simulator', learnMore: 'Learn more', howCalculated: 'How is this calculated?',
+  exAmount: 'Amount', exRate: 'Rate', exYears: 'Duration', exPayment: 'Monthly payment', exInterest: 'Total interest', exTotal: 'Total repaid',
+  exMonth1: 'First month', exMonthLast: 'Last month', exYear: 'Year {n}', exOfPayment: 'of the payment',
+  exNominal: 'Nominal rate only', exWithIns: '+ insurance 0.30 %', exWithFees: '+ €1,000 fees and guarantee',
+  exInsInitial: 'On the initial capital', exInsRemaining: 'On the remaining balance', exInsSetup: '€200,000 over 20 years at 3.2 %, insurance 0.30 % a year',
+  exPerMonthStart: '{v} / month at the start', exTotalIns: 'total',
+  exPrice: 'Price', exOld: 'Existing', exNew: 'New build', exFirst: 'First-time buyer',
+  exTaxes: 'Transfer taxes', exEmol: 'Notary fee incl. VAT', exOther: 'Disbursements & contribution', exNotaryTotal: 'Total',
+  exIncome: 'Net monthly income', exMaxPayment: 'Maximum for all loan payments', exMaxLoan: 'Largest loan at 3.2 % over 25 years',
+  exCategory: 'Loan', exUsury: 'Maximum TAEG', exValid: 'Valid {from} – {to} · Banque de France',
+  exTranche: 'Income band', exDeferral: 'Deferral', exTotalDur: 'Total duration', exNone: 'none',
+  u_fixedUnder10y: 'Home loan, fixed, under 10 years', u_fixed10to20y: 'Home loan, fixed, 10 to 20 years', u_fixed20yPlus: 'Home loan, fixed, 20 years or more',
+  u_variable: 'Home loan, variable rate', u_bridge: 'Bridge loan', u_upTo3000: 'Consumer loan up to €3,000', u_upTo6000: 'Consumer loan €3,000 to €6,000', u_above6000: 'Consumer loan above €6,000',
 };
 export type Dict = typeof en;

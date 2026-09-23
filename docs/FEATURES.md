@@ -120,15 +120,17 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later.
 | K1 | Credit type selector: mortgage, personal, car, works (later: revolving, LOA/LLD, bridge, BNPL); each type sets defaults, visible fields, usury band | P0 | ✓ |
 | K2 | Toggle each component on/off: insurance, guarantee, application fee, broker fee, notary fees, works, other loans (PTZ in Phase 3) | P0 | ✓ |
 | K3 | "Included in TAEG" hint next to each component | P1 | ✓ |
+| K4 | Home loan "amount only" mode: quick estimate from the loan amount, without price, down payment or notary fees | P0 | |
+| K5 | Manual override for estimated costs (notary %, guarantee amount) | P0 | ✓ |
 
 ## L. Learn — how it works
 
 | # | Feature | Pri |
 |---|---|---|
-| L1 | Short, simple explainers (EN/FR): loan, monthly payment, amortization, TAEG, insurance, guarantee, notary, usury, 35 % rule, PTZ | P1 |
-| L2 | "How this calculator works": formulas in plain words, assumptions, limits, data dates | P1 |
-| L3 | Live mini-examples inside explainers | P1 |
-| L4 | ⓘ tooltips link to explainers; glossary page | P1 |
+| L1 | Short, simple explainers (EN/FR): loan, monthly payment, amortization, TAEG, insurance, guarantee, notary, usury, 35 % rule, consumer rights, PTZ | P1 ✅ |
+| L2 | "How this calculator works": formulas in plain words, assumptions, limits, data dates | P1 ✅ |
+| L3 | Live mini-examples inside explainers | P1 ✅ |
+| L4 | ⓘ tooltips link to explainers; glossary page | P1 ✅ |
 
 ## J. Trust & platform
 

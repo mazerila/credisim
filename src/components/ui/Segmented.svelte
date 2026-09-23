@@ -37,8 +37,8 @@
   }
   .seg.sm button { padding: 3px 10px; font-size: 13px; }
   .seg button[aria-checked='true'] { background: var(--surface); box-shadow: var(--shadow-chip); font-weight: 600; }
-  :global(:root[data-theme='dark']) .seg button[aria-checked='true'] { background: #636366; }
+  :global(:root[data-theme='dark']) .seg button[aria-checked='true'] { background: #5a5d68; }
   @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme='light'])) .seg button[aria-checked='true'] { background: #636366; }
+    :global(:root:not([data-theme='light'])) .seg button[aria-checked='true'] { background: #5a5d68; }
   }
 </style>

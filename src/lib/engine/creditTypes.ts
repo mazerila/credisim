@@ -14,6 +14,11 @@ export interface CreditTypeSpec {
   hcsf: boolean;
 }
 
+/** True when the loan amount comes from a price and a down payment (not typed directly). */
+export function usesProject(i: Pick<Inputs, 'type' | 'amountOnly'>): boolean {
+  return CREDIT_TYPES[i.type].fromPrice && !(i.type === 'mortgage' && i.amountOnly);
+}
+
 export const CREDIT_TYPES: Record<CreditType, CreditTypeSpec> = {
   mortgage: {
     fromPrice: true,
@@ -63,7 +68,8 @@ const base: Inputs = {
   notaryAuto: true,
   notaryPct: 7.5,
   works: 15000,
-  amount: 15000,
+  amount: 250000,
+  amountOnly: false,
   rate: 3.2,
   months: 300,
   useInsurance: true,

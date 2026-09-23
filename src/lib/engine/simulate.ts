@@ -1,5 +1,5 @@
 import { byYear, principalFromPayment, schedule } from './annuity';
-import { CREDIT_TYPES } from './creditTypes';
+import { CREDIT_TYPES, usesProject } from './creditTypes';
 import { guaranteeParams, notaryFees, RULES, usuryCategory, usuryLimit, usuryTable } from './rules';
 import { actuarialRate, nominalToActuarial } from './taeg';
 import type { Inputs, Result } from './types';
@@ -8,7 +8,7 @@ const on = (flag: boolean, v: number) => (flag ? Math.max(0, v) : 0);
 
 export function notaryOf(i: Inputs): number {
   const spec = CREDIT_TYPES[i.type];
-  if (i.type !== 'mortgage' || !i.useNotary || !spec.components.includes('notary')) return 0;
+  if (i.type !== 'mortgage' || i.amountOnly || !i.useNotary || !spec.components.includes('notary')) return 0;
   return i.notaryAuto
     ? notaryFees(i.price, i.propertyKind, i.transferTaxZone, i.firstTimeBuyer)
     : (i.price * i.notaryPct) / 100;
@@ -23,12 +23,19 @@ export function principalOf(i: Inputs): { principal: number; notary: number; gua
   const spec = CREDIT_TYPES[i.type];
   const has = (c: (typeof spec.components)[number]) => spec.components.includes(c);
   const fees = on(i.useFileFee && has('fileFee'), i.fileFee) + on(i.useBrokerFee && has('brokerFee'), i.brokerFee);
-  const works = on(i.useWorks && has('works'), i.works);
   const notary = notaryOf(i);
 
-  if (!spec.fromPrice) {
-    return { principal: Math.max(0, Math.round(i.amount)), notary: 0, guarantee: 0, fees, works: 0 };
+  if (!usesProject(i)) {
+    // Amount typed directly: fees and guarantee are paid on top, not financed.
+    const principal = Math.max(0, Math.round(i.amount));
+    let guarantee = 0;
+    if (i.useGuarantee && has('guarantee') && principal > 0) {
+      const g = guaranteeParams(i.guarantee);
+      guarantee = i.guaranteeAuto ? principal * g.rate + g.fixed : Math.max(0, i.guaranteeAmount);
+    }
+    return { principal, notary: 0, guarantee, fees, works: 0 };
   }
+  const works = on(i.useWorks && has('works'), i.works);
   const base = i.price + notary + works + (spec.feesFinanced ? fees : 0) - i.downPayment;
   if (base <= 0) return { principal: 0, notary, guarantee: 0, fees, works };
 
@@ -80,7 +87,7 @@ export function simulate(i: Inputs, today = new Date()): Result {
 
   return {
     principal, notary, guarantee, fees, works,
-    projectTotal: spec.fromPrice ? i.price + notary + works + fees + guarantee : principal + fees,
+    projectTotal: usesProject(i) ? i.price + notary + works + fees + guarantee : principal + fees + guarantee,
     rows,
     years: byYear(rows),
     payment, insuranceMonthly, monthlyTotal,

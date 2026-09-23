@@ -18,8 +18,10 @@ export interface Inputs {
   notaryPct: number;
   works: number;
 
-  // Direct amount (personal, works loans)
+  // Direct amount (personal, works loans; home loan in amount-only mode)
   amount: number;
+  /** Home loan only: simulate a loan amount directly, without price or down payment. */
+  amountOnly: boolean;
 
   // Loan
   rate: number;

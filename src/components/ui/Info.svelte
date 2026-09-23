@@ -1,5 +1,8 @@
 <script lang="ts">
-  let { text, label = 'More information' }: { text: string; label?: string } = $props();
+  import { t } from '../../lib/i18n/index.svelte';
+  import type { TopicId } from '../../lib/learn';
+
+  let { text, learn, label = 'More information' }: { text: string; learn?: TopicId; label?: string } = $props();
   let open = $state(false);
   let root: HTMLSpanElement;
 
@@ -13,7 +16,7 @@
 <span class="info" bind:this={root}>
   <button type="button" class="dot" aria-label={label} aria-expanded={open} onclick={() => (open = !open)}>i</button>
   {#if open}
-    <span class="bubble" role="tooltip">{text}</span>
+    <span class="bubble" role="tooltip">{text}{#if learn}<a href="#learn/{learn}" onclick={() => (open = false)}>{t('learnMore')} ›</a>{/if}</span>
   {/if}
 </span>
 
@@ -33,5 +36,7 @@
     border: 1px solid var(--sep);
     font-size: 14px; font-weight: 400; line-height: 1.45; letter-spacing: -0.01em; text-transform: none;
   }
+  .bubble a { display: block; margin-top: 8px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .bubble a:hover { text-decoration: underline; }
   @media (max-width: 600px) { .bubble { left: auto; right: -40px; transform: none; } }
 </style>

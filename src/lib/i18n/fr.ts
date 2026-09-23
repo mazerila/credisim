@@ -20,6 +20,9 @@ export const fr: Dict = {
   scenario: 'Scénario {n}', addScenario: 'Comparer avec un autre scénario', removeScenario: 'Supprimer le scénario B',
 
   secProject: 'Projet', secLoan: 'Prêt', secOptions: 'Inclus dans la simulation', secHousehold: 'Foyer',
+  modeProject: 'Projet complet', modeAmount: 'Montant seul',
+  modeAmountHint: 'Estimation rapide à partir du montant à emprunter. Prix, apport, frais de notaire et travaux ne sont pas pris en compte.',
+  planGuaranteeUpfront: 'Garantie payée à part',
   price_mortgage: 'Prix du bien', price_car: 'Prix du véhicule', amount: 'Montant à emprunter',
   downPayment: 'Apport', propertyKind: 'Type de bien', old: 'Ancien', new: 'Neuf',
   firstTimeBuyer: 'Primo-accédant', transferTaxZone: 'Droits de mutation du département',
@@ -93,4 +96,23 @@ export const fr: Dict = {
   tip_usury: 'Le taux d’usure est le TAEG maximum légal, fixé chaque trimestre par la Banque de France. Au-delà, le prêt ne peut pas être accordé.',
   tip_cost: 'Tout ce que vous payez en plus du capital : intérêts, assurance, frais et garantie. Les frais de notaire font partie du projet, pas du crédit.',
   tip_otherLoans: 'Mensualités des crédits en cours. Elles comptent dans le taux d’endettement.',
+
+  // Learn
+  navSim: 'Simulateur', navLearn: 'Comprendre',
+  learnTitle: 'Comprendre le crédit', learnLead: 'Des explications courtes et simples sur le crédit en France, et sur la façon dont ce simulateur calcule.',
+  group_basics: 'Les bases', group_costs: 'Les coûts', group_rules: 'Règles et droits', group_about: 'À propos de Credisim',
+  minRead: '{n} min de lecture', allTopics: 'Tous les sujets', prev: 'Précédent', next: 'Suivant',
+  trySim: 'Essayer dans le simulateur', learnMore: 'En savoir plus', howCalculated: 'Comment est-ce calculé ?',
+  exAmount: 'Montant', exRate: 'Taux', exYears: 'Durée', exPayment: 'Mensualité', exInterest: 'Total des intérêts', exTotal: 'Total remboursé',
+  exMonth1: 'Premier mois', exMonthLast: 'Dernier mois', exYear: 'Année {n}', exOfPayment: 'de la mensualité',
+  exNominal: 'Taux nominal seul', exWithIns: '+ assurance 0,30 %', exWithFees: '+ 1 000 € de frais et la garantie',
+  exInsInitial: 'Sur le capital initial', exInsRemaining: 'Sur le capital restant dû', exInsSetup: '200 000 € sur 20 ans à 3,2 %, assurance 0,30 % par an',
+  exPerMonthStart: '{v} / mois au début', exTotalIns: 'au total',
+  exPrice: 'Prix', exOld: 'Ancien', exNew: 'Neuf', exFirst: 'Primo-accédant',
+  exTaxes: 'Droits de mutation', exEmol: 'Émoluments TTC', exOther: 'Débours et contribution', exNotaryTotal: 'Total',
+  exIncome: 'Revenus nets mensuels', exMaxPayment: 'Maximum pour toutes les mensualités', exMaxLoan: 'Prêt maximum à 3,2 % sur 25 ans',
+  exCategory: 'Prêt', exUsury: 'TAEG maximum', exValid: 'Valables du {from} au {to} · Banque de France',
+  exTranche: 'Tranche de revenus', exDeferral: 'Différé', exTotalDur: 'Durée totale', exNone: 'aucun',
+  u_fixedUnder10y: 'Immobilier, taux fixe, moins de 10 ans', u_fixed10to20y: 'Immobilier, taux fixe, 10 à 20 ans', u_fixed20yPlus: 'Immobilier, taux fixe, 20 ans et plus',
+  u_variable: 'Immobilier, taux variable', u_bridge: 'Prêt relais', u_upTo3000: 'Consommation jusqu’à 3 000 €', u_upTo6000: 'Consommation de 3 000 à 6 000 €', u_above6000: 'Consommation au-delà de 6 000 €',
 };

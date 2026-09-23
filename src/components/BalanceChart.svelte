@@ -45,7 +45,7 @@
     {/each}
     {#if half && series.length === 1}
       <circle cx={x(half.k)} cy={y(half.v)} r="4.5" fill="var(--surface)" stroke={series[0].color} stroke-width="2.5" />
-      <text x={x(half.k) > W * 0.55 ? x(half.k) - 10 : x(half.k) + 10} y={y(half.v) - 12} text-anchor={x(half.k) > W * 0.55 ? 'end' : 'start'} class="note">{t('balanceHalf', { t: fmt.years(half.k) })}</text>
+      <text x={x(half.k) > W * 0.55 ? x(half.k) - 10 : x(half.k) + 10} y={x(half.k) > W * 0.55 ? y(half.v) + 20 : y(half.v) - 12} text-anchor={x(half.k) > W * 0.55 ? 'end' : 'start'} class="note">{t('balanceHalf', { t: fmt.years(half.k) })}</text>
     {/if}
   </svg>
   {#if series.length > 1}

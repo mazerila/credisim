@@ -1,7 +1,9 @@
 <script lang="ts">
   import { simulate } from './lib/engine';
   import { i18n, t } from './lib/i18n/index.svelte';
+  import { parseRoute, route } from './lib/router.svelte';
   import { app, current, loadHash, setTheme, toHash } from './lib/state.svelte';
+  import LearnPage from './components/learn/LearnPage.svelte';
   import BalanceChart from './components/BalanceChart.svelte';
   import Capacity from './components/Capacity.svelte';
   import CompareTable from './components/CompareTable.svelte';
@@ -18,13 +20,19 @@
   import TypePicker from './components/TypePicker.svelte';
   import YearBars from './components/YearBars.svelte';
 
-  loadHash();
+  if (!parseRoute()) loadHash();
   setTheme(app.theme);
 
-  // A shared link opened in a tab where Credisim is already running only changes the fragment.
+  // Hash navigation: Learn pages, or a shared simulation opened in a tab where Credisim is already running.
   let lastHash = location.hash;
   function onHashChange() {
-    if (location.hash !== lastHash) loadHash();
+    const wasView = route.view, wasTopic = route.topic;
+    if (parseRoute()) {
+      if (wasView !== 'learn' || wasTopic !== route.topic) window.scrollTo({ top: 0 });
+    } else {
+      if (location.hash !== lastHash && /[#&]s=/.test(location.hash)) loadHash();
+      if (wasView !== 'sim') window.scrollTo({ top: 0 });
+    }
   }
 
   const inp = $derived(current());
@@ -35,6 +43,7 @@
   // Keep the URL in sync so the address bar is always a shareable link.
   let timer: ReturnType<typeof setTimeout>;
   $effect(() => {
+    if (route.view !== 'sim') return;
     const hash = toHash();
     clearTimeout(timer);
     timer = setTimeout(() => {
@@ -53,6 +62,9 @@
 <Header />
 
 <main class="container">
+  {#if route.view === 'learn'}
+    <LearnPage />
+  {:else}
   <section class="hero">
     <h1>{t('heroTitle')}</h1>
     <p>{t('tagline')}</p>
@@ -86,12 +98,14 @@
       <Capacity {inp} />
       <DurationTable {inp} />
       <Schedule {r} />
+      <a class="how" href="#learn/calculator">{t('howCalculated')} ›</a>
     </div>
   </div>
+  {/if}
 </main>
 
 <Footer />
-<MobileSummary {r} />
+{#if route.view === 'sim'}<MobileSummary {r} />{/if}
 
 <style>
   .hero { text-align: center; padding-block: 56px 36px; }
@@ -103,6 +117,8 @@
   .layout { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 20px; }
   aside { position: sticky; top: 72px; max-height: calc(100vh - 88px); overflow-y: auto; border-radius: var(--radius); scrollbar-width: thin; }
   .results { display: grid; gap: 20px; min-width: 0; }
+  .how { justify-self: start; color: var(--accent); text-decoration: none; font-size: 15px; }
+  .how:hover { text-decoration: underline; }
   .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
   @media (max-width: 1080px) { .two { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 900px) {

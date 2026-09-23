@@ -1,5 +1,6 @@
 <script lang="ts">
   import { i18n } from '../../lib/i18n/index.svelte';
+  import type { TopicId } from '../../lib/learn';
   import Info from './Info.svelte';
 
   let {
@@ -14,6 +15,7 @@
     decimals = 2,
     integer = false,
     tip,
+    learn,
   }: {
     id: string;
     label: string;
@@ -29,6 +31,7 @@
     /** Round the stored value to a whole number (e.g. months). */
     integer?: boolean;
     tip?: string;
+    learn?: TopicId;
   } = $props();
 
   const pct = $derived(((value - min) / (max - min)) * 100);
@@ -55,7 +58,7 @@
 
 <div class="field">
   <div class="top">
-    <label for={id}>{label}</label>{#if tip}<Info text={tip} />{/if}
+    <label for={id}>{label}</label>{#if tip}<Info text={tip} {learn} />{/if}
     <div class="typed">
       <input
         id="{id}-typed"

@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { TopicId } from '../../lib/learn';
   import Info from './Info.svelte';
 
   let {
@@ -7,14 +8,15 @@
     checked = $bindable(),
     label,
     tip,
+    learn,
     children,
-  }: { id: string; checked: boolean; label: string; tip?: string; children?: Snippet } = $props();
+  }: { id: string; checked: boolean; label: string; tip?: string; learn?: TopicId; children?: Snippet } = $props();
 </script>
 
 <div class="row" class:on={checked}>
   <div class="head">
     <label for={id}>{label}</label>
-    {#if tip}<Info text={tip} />{/if}
+    {#if tip}<Info text={tip} {learn} />{/if}
     <input {id} type="checkbox" role="switch" bind:checked />
   </div>
   {#if checked && children}

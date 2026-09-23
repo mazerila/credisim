@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { TopicId } from '../../lib/learn';
   import Info from './Info.svelte';
 
   let {
@@ -10,7 +11,8 @@
     min = 0,
     max,
     tip,
-  }: { id: string; label: string; value: number; unit?: string; step?: number; min?: number; max?: number; tip?: string } = $props();
+    learn,
+  }: { id: string; label: string; value: number; unit?: string; step?: number; min?: number; max?: number; tip?: string; learn?: TopicId } = $props();
 
   function onInput(e: Event) {
     const v = parseFloat((e.target as HTMLInputElement).value.replace(',', '.'));
@@ -19,7 +21,7 @@
 </script>
 
 <div class="field">
-  <div class="lab"><label for={id}>{label}</label>{#if tip}<Info text={tip} />{/if}</div>
+  <div class="lab"><label for={id}>{label}</label>{#if tip}<Info text={tip} {learn} />{/if}</div>
   <div class="box">
     <input {id} type="number" inputmode="decimal" {step} {min} {max} {value} oninput={onInput} />
     {#if unit}<span class="unit">{unit}</span>{/if}

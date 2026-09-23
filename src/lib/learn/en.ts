@@ -1,0 +1,304 @@
+import type { Content } from './types';
+
+export const en: Content = {
+  loan: {
+    title: 'What is a loan?',
+    lead: 'A bank lends you a sum today. You pay it back in monthly instalments, plus a price for the service: the interest.',
+    read: 2,
+    blocks: [
+      { p: 'Every loan comes down to four numbers. Change one and the others move.' },
+      {
+        terms: [
+          { term: 'Capital', def: 'The amount you borrow, for example €200,000.' },
+          { term: 'Rate', def: 'The yearly price of the money, for example 3.2 %. It is used to calculate the interest.', link: 'monthly-payment' },
+          { term: 'Duration', def: 'How long you take to repay, for example 20 years (240 monthly payments).' },
+          { term: 'Monthly payment', def: 'What you pay every month. It repays part of the capital and pays the interest.', link: 'amortization' },
+        ],
+      },
+      { h: 'Longer is cheaper each month, dearer overall' },
+      { p: 'Spreading the same loan over more years lowers the monthly payment, but you pay interest for longer. The table below uses a €200,000 loan at 3.2 %.' },
+      { example: 'durations' },
+      { h: 'What comes on top' },
+      { p: 'Interest is not the only cost. Most loans also carry **borrower insurance**, **fees** and, for a home, a **guarantee** and **notary fees**. The [TAEG](#learn/taeg) adds them up into one rate so offers can be compared.' },
+      { note: 'Fixed-rate loans are the norm in France: the rate and the monthly payment stay the same until the end.' },
+    ],
+  },
+
+  'monthly-payment': {
+    title: 'How the monthly payment is calculated',
+    lead: 'With a fixed rate, every monthly payment is the same. The bank picks the one amount that repays the loan exactly on the last month.',
+    read: 3,
+    blocks: [
+      { p: 'Each month, the bank first charges interest on what you still owe: **remaining capital × yearly rate ÷ 12**. The rest of your payment reduces the capital.' },
+      { p: 'The constant payment that makes the balance reach zero after the last month is given by the standard formula:' },
+      { note: 'payment = capital × r ÷ (1 − (1 + r)^−n), where r is the yearly rate divided by 12 and n the number of months.' },
+      { p: 'For example, €100,000 at 3 % over 20 years gives **€554.60 a month**. Over 240 months you pay €133,104: the €100,000 you borrowed plus about €33,100 of interest.' },
+      { h: 'Try it' },
+      { example: 'payment' },
+      { h: 'What moves the payment most' },
+      {
+        list: [
+          '**Capital:** double it and the payment doubles.',
+          '**Duration:** going from 20 to 25 years lowers the payment by about 14 %, but adds about 28 % more interest.',
+          '**Rate:** each extra 0.1 point costs roughly €5 a month per €100,000 over 20 years (about €1,200 over the loan).',
+        ],
+      },
+      { p: 'Insurance is usually added on top of this payment. See [borrower insurance](#learn/insurance).' },
+    ],
+  },
+
+  amortization: {
+    title: 'Interest vs capital: the repayment schedule',
+    lead: 'Your payment never changes, but what it pays for does. At the start it is mostly interest; at the end, mostly capital.',
+    read: 2,
+    blocks: [
+      { p: 'Interest is calculated on what you still owe. At the beginning you owe a lot, so a big part of the payment is interest. Each month the balance falls a little, so the interest falls and more of the same payment goes to the capital.' },
+      { example: 'amortization' },
+      { p: 'The **repayment schedule** (tableau d’amortissement) lists every month: the payment, its interest part, its capital part, the insurance and the remaining balance. The bank must give it to you with the offer.' },
+      { h: 'Why it matters' },
+      {
+        list: [
+          'After 10 years of a 20-year loan, you have repaid **less than half** of the capital.',
+          'Repaying early saves the most interest in the first years.',
+          'If you sell, the bank is repaid from the **remaining balance**, not from what you have paid so far.',
+        ],
+      },
+    ],
+  },
+
+  taeg: {
+    title: 'What the TAEG includes',
+    lead: 'The TAEG (taux annuel effectif global) is the all-in yearly rate. It is the one number to compare between offers.',
+    read: 3,
+    blocks: [
+      { p: 'The **nominal rate** (taux débiteur) only calculates interest. The **TAEG** also counts every cost you must pay to get the loan:' },
+      {
+        list: [
+          'interest',
+          'borrower insurance, when the lender requires it',
+          'application fee and broker fee',
+          'the guarantee (guarantee company, mortgage or lien)',
+          'any compulsory account or package fees',
+        ],
+      },
+      { p: 'Notary fees on the purchase are **not** in the TAEG: they are part of the price of the home, not of the credit.' },
+      { h: 'How it is calculated' },
+      { p: 'The TAEG is the rate at which everything you pay back, month by month, equals the money you actually receive (the loan minus the upfront costs). Since 2016 France uses the EU **actuarial** method, which is why a 3.20 % nominal rate already shows as 3.25 % before any costs.' },
+      { example: 'taeg' },
+      { note: 'By law, the TAEG must stay below the [usury rate](#learn/usury) for that kind of loan. An offer above it cannot be made.' },
+      { p: 'The **TAEA** is the part of the TAEG that comes from insurance alone. It helps compare insurance offers.' },
+    ],
+  },
+
+  insurance: {
+    title: 'Borrower insurance',
+    lead: 'It repays the loan if a borrower dies or can no longer work. Banks require it for home loans, and it can cost almost as much as the interest.',
+    read: 3,
+    blocks: [
+      { h: 'Two ways to charge it' },
+      {
+        list: [
+          '**On the initial capital:** the premium is the same every month, from the first to the last. Typical of bank group contracts.',
+          '**On the remaining balance:** the premium follows the balance and falls every month. Typical of individual contracts from other insurers.',
+        ],
+      },
+      { p: 'At the same yearly rate, charging on the remaining balance costs a lot less over the life of the loan:' },
+      { example: 'insurance' },
+      { h: 'Coverage (quotité)' },
+      { p: 'Coverage is the share of the loan insured for each borrower. Alone, it must be 100 %. A couple can split 50 % + 50 %, or cover 100 % each (200 % in total), which protects the survivor fully but costs twice as much.' },
+      { h: 'You can change insurer at any time' },
+      {
+        list: [
+          'Since the **Lemoine law** (2022) you can switch at any time, with no fees, as long as the new contract offers equivalent cover.',
+          'No health questionnaire if your share of the loans is **€200,000 or less** and they end **before your 60th birthday**.',
+          'Switching from a bank contract to another insurer often saves thousands of euros.',
+        ],
+      },
+    ],
+  },
+
+  guarantee: {
+    title: 'The loan guarantee',
+    lead: 'It protects the bank if you stop paying. You pay for it once, at the start, and it counts in the TAEG.',
+    read: 2,
+    blocks: [
+      {
+        table: {
+          head: ['Type', 'How it works', 'Typical cost'],
+          rows: [
+            ['Guarantee company (caution, e.g. Crédit Logement)', 'A company guarantees the loan. Part of what you pay goes into a mutual fund and is partly refunded at the end.', 'about 0.75 % of the loan + €300, part refunded later'],
+            ['Mortgage (hypothèque)', 'Registered by the notary on the property. The bank can have it sold if you default.', 'about 1–2 % of the loan, plus a fee to lift it if you sell early'],
+            ['Lender’s lien (PPD)', 'Like a mortgage but only for buying an existing home, and cheaper because it avoids a land-registry tax.', 'about 1 % of the loan'],
+          ],
+        },
+      },
+      { p: 'Most home loans in France use a guarantee company. A mortgage is common for large loans or when the guarantee company refuses the file.' },
+      { note: 'In Credisim the guarantee is estimated from its type. If your offer gives the exact amount, untick “Estimate automatically” and type it in.' },
+    ],
+  },
+
+  notary: {
+    title: 'Notary fees',
+    lead: 'Called “frais de notaire”, they are mostly taxes. The notary collects them for the state and the département when you buy.',
+    read: 3,
+    blocks: [
+      { p: 'They have three parts:' },
+      {
+        list: [
+          '**Transfer taxes** (droits de mutation): the largest part. For an existing home, about 6.3 % of the price in most départements; 0.7 % for a new build.',
+          '**The notary’s own fee** (émoluments): set by a regulated sliding scale, about 1 % of the price, plus VAT.',
+          '**Disbursements and contribution:** costs the notary pays on your behalf, plus a 0.1 % property-security contribution.',
+        ],
+      },
+      { example: 'notary' },
+      { h: 'Existing vs new' },
+      { p: 'Expect about **7–8 %** of the price for an existing home and **2–3 %** for a new build.' },
+      { h: 'First-time buyers' },
+      { p: 'Most départements raised their tax from 4.5 % to 5 % between April 2025 and March 2028. **First-time buyers of their main home are exempt** from that increase, which saves about 0.5 % of the price.' },
+      { note: 'Notary fees are part of the project cost, not of the credit cost: they are not in the TAEG. Banks usually expect your down payment to cover them.' },
+    ],
+  },
+
+  usury: {
+    title: 'The usury rate: the legal maximum',
+    lead: 'The taux d’usure is the highest TAEG a lender may charge. It protects borrowers from abusive rates.',
+    read: 2,
+    blocks: [
+      { p: 'The Banque de France sets it every quarter for each kind of loan. It is based on the average rates of the previous quarter, plus one third.' },
+      { example: 'usury' },
+      { p: 'The test uses the **TAEG**, not the nominal rate. A low nominal rate can still break the limit if insurance and fees are expensive, which mostly affects older borrowers or small loans.' },
+      { note: 'Credisim checks your TAEG against the right band automatically and shows the quarter the rates come from.' },
+    ],
+  },
+
+  'debt-ratio': {
+    title: 'The 35 % rule and the 25-year limit',
+    lead: 'French banks must follow two rules from the HCSF, the financial stability authority, for home loans.',
+    read: 2,
+    blocks: [
+      {
+        list: [
+          '**Debt ratio ≤ 35 %:** all your monthly loan payments, insurance included, must stay at or below 35 % of your net monthly income.',
+          '**Duration ≤ 25 years:** 27 years for a new build when payments start after the works (deferral).',
+        ],
+      },
+      { example: 'debt' },
+      { p: 'Banks can go beyond these limits for up to 20 % of their new loans each quarter, mostly for main homes and first-time buyers. So a file above 35 % is not impossible, but it needs to be strong: high income left after payments, savings, a stable job.' },
+      { h: 'How to lower your ratio' },
+      { list: ['Borrow over a longer period (up to 25 years).', 'Put in a bigger down payment.', 'Pay off small loans before applying.', 'Choose cheaper insurance.'] },
+    ],
+  },
+
+  'consumer-credit': {
+    title: 'Consumer credit and your rights',
+    lead: 'Personal, car and works loans follow consumer-credit law, with its own protections.',
+    read: 2,
+    blocks: [
+      {
+        list: [
+          '**14 days to change your mind** after signing a consumer loan, without giving a reason.',
+          '**Usury bands by amount:** up to €3,000, €3,000–6,000 and above €6,000. Smaller loans may legally cost more.',
+          '**Works loans above €75,000** follow home-loan rules instead.',
+          'The lender must give you a standard information sheet (SECCI) and check that you can repay.',
+        ],
+      },
+      { h: 'Home loans' },
+      { list: ['The offer stays valid for at least **30 days**.', 'You must wait **10 days** after receiving it before accepting (you can sign from day 11).', 'The purchase contract usually includes a condition: if you don’t get the loan, you can walk away.'] },
+      { note: 'From 20 November 2026 (EU directive CCD2), mini-loans under €200 and buy-now-pay-later offers are covered too, with a TAEG shown.' },
+    ],
+  },
+
+  ptz: {
+    title: 'The PTZ: interest-free loan',
+    lead: 'The prêt à taux zéro helps first-time buyers finance their main home. You pay no interest and no fees on it.',
+    read: 3,
+    blocks: [
+      {
+        list: [
+          'For people who have **not owned their main home in the last 2 years**.',
+          'Income-tested: ceilings depend on the zone (A bis, A, B1, B2, C) and household size.',
+          'Available until **31 December 2027**.',
+          'It finances only part of the purchase (10–50 % depending on income and the type of home); you need a main loan too.',
+        ],
+      },
+      { h: 'Repayment depends on your income band' },
+      { example: 'ptz' },
+      { p: 'During the deferral you repay nothing on the PTZ, which keeps your total monthly payment low at the start. Banks then often “smooth” the main loan so the total stays constant.' },
+      { note: 'Credisim will add the PTZ to the simulator in a later phase. For now, you can estimate it with the official ANIL simulator.' },
+    ],
+  },
+
+  calculator: {
+    title: 'How this calculator works',
+    lead: 'What Credisim calculates, the assumptions it makes, and where its data comes from.',
+    read: 3,
+    blocks: [
+      { h: 'What it calculates' },
+      {
+        list: [
+          'The monthly payment of a **fixed-rate** loan with constant payments, and the full schedule, rounded to the cent like a bank statement.',
+          'Insurance on the initial capital or on the remaining balance.',
+          'The **TAEG** with the EU actuarial method, and how much of it comes from interest, insurance and fees.',
+          'The amount to borrow: price + notary fees + works + fees + guarantee − down payment.',
+          'The legal checks: usury rate, 35 % debt ratio, 25-year duration.',
+          'Your borrowing capacity at 35 % of your income.',
+        ],
+      },
+      { h: 'Assumptions and limits' },
+      {
+        list: [
+          'Notary fees follow the 2026 regulated scale and transfer-tax rates, with flat disbursements of about €1,200. Your notary’s figure may differ slightly.',
+          'The guarantee is an estimate (guarantee company about 0.75 % + €300; mortgage about 1.5 %; lien about 1 %). The partial refund at the end of a guarantee-company loan is not deducted.',
+          'Fees are financed inside a home loan and paid upfront for consumer loans.',
+          'Borrowing capacity counts insurance at its first-month level, which errs on the safe side.',
+          'Not yet included: PTZ and other assisted loans, deferral, variable rates, early repayment. They come in later phases.',
+        ],
+      },
+      { h: 'Data and sources' },
+      {
+        list: [
+          'Usury rates: Banque de France, updated every quarter. The quarter in use is shown under the TAEG.',
+          'Lending rules: HCSF, confirmed in March 2026.',
+          'Notary scale and transfer taxes: regulated rates for 2026.',
+        ],
+      },
+      { h: 'Privacy' },
+      { p: 'Everything runs in your browser. Nothing you type is sent to a server. A share link carries the simulation inside the link itself.' },
+      { note: 'Credisim gives estimates for information only. Only the lender’s offer is binding.' },
+    ],
+  },
+
+  glossary: {
+    title: 'Glossary',
+    lead: 'The words you will meet in a loan offer, in plain English, with the French term.',
+    read: 4,
+    blocks: [
+      {
+        terms: [
+          { term: 'Amortization (amortissement)', def: 'Repaying the capital little by little with each payment.', link: 'amortization' },
+          { term: 'Borrowing capacity (capacité d’emprunt)', def: 'The largest loan you can get while keeping payments at 35 % of your income.', link: 'debt-ratio' },
+          { term: 'Broker (courtier)', def: 'An intermediary who compares banks for you, usually for a fee.' },
+          { term: 'Coverage (quotité)', def: 'Share of the loan insured for each borrower.', link: 'insurance' },
+          { term: 'Credit cost (coût du crédit)', def: 'Everything you pay on top of the capital: interest, insurance, fees, guarantee.', link: 'taeg' },
+          { term: 'Debt ratio (taux d’endettement)', def: 'Monthly loan payments divided by net monthly income.', link: 'debt-ratio' },
+          { term: 'Deferral (différé)', def: 'A period at the start when you repay no capital (partial) or nothing at all (total).' },
+          { term: 'Down payment (apport)', def: 'Your own money put into the purchase. It usually covers at least the notary fees.' },
+          { term: 'Early repayment penalty (IRA)', def: 'Fee for repaying a home loan early, capped at 6 months of interest or 3 % of the remaining capital, whichever is lower.' },
+          { term: 'First-time buyer (primo-accédant)', def: 'Someone who has not owned their main home recently. Matters for the PTZ and notary fees.', link: 'ptz' },
+          { term: 'Guarantee (garantie, caution)', def: 'Protection for the lender if you stop paying.', link: 'guarantee' },
+          { term: 'Insurance delegation (délégation d’assurance)', def: 'Choosing an insurer other than the bank’s group contract.', link: 'insurance' },
+          { term: 'Monthly payment (mensualité)', def: 'The amount paid each month.', link: 'monthly-payment' },
+          { term: 'Nominal rate (taux nominal, taux débiteur)', def: 'The rate used to calculate the interest only.', link: 'monthly-payment' },
+          { term: 'Notary fees (frais de notaire)', def: 'Mostly taxes paid when buying a property.', link: 'notary' },
+          { term: 'PTZ (prêt à taux zéro)', def: 'Interest-free state-backed loan for first-time buyers.', link: 'ptz' },
+          { term: 'Reflection period (délai de réflexion)', def: '10 days you must wait before accepting a home-loan offer.', link: 'consumer-credit' },
+          { term: 'Remaining balance (capital restant dû)', def: 'The capital you still owe at a given date.', link: 'amortization' },
+          { term: 'Repayment schedule (tableau d’amortissement)', def: 'Month-by-month table of payments, interest, capital and balance.', link: 'amortization' },
+          { term: 'TAEA', def: 'The part of the TAEG that comes from insurance.', link: 'taeg' },
+          { term: 'TAEG', def: 'All-in yearly rate: interest, insurance, fees and guarantee.', link: 'taeg' },
+          { term: 'Usury rate (taux d’usure)', def: 'The legal maximum TAEG, set every quarter.', link: 'usury' },
+        ],
+      },
+    ],
+  },
+};

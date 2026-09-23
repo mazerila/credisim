@@ -14,7 +14,7 @@
   </div>
 
   <div class="kpi">
-    <span class="label">{t('kTaeg')} <Info text={t('tip_taeg')} /></span>
+    <span class="label">{t('kTaeg')} <Info text={t('tip_taeg')} learn="taeg" /></span>
     <span class="value num">{fmt.pct(r.taeg)}</span>
     <span class="sub">{t('kTaegSub', { rate: fmt.pct(inp.rate / 100) })}</span>
     <span class="pill {r.usury.ok ? 'ok' : 'bad'}">{t(r.usury.ok ? 'usuryOk' : 'usuryBad', { u: fmt.pct(r.usury.limit) })}</span>
@@ -22,13 +22,13 @@
   </div>
 
   <div class="kpi">
-    <span class="label">{t('kCost')} <Info text={t('tip_cost')} /></span>
+    <span class="label">{t('kCost')} <Info text={t('tip_cost')} learn="taeg" /></span>
     <span class="value num">{fmt.eur(r.creditCost)}</span>
     <span class="sub">{t('kCostSub', { amount: fmt.eur(r.principal) })}</span>
   </div>
 
   <div class="kpi">
-    <span class="label">{t('kDebt')} <Info text={t('tip_debt')} /></span>
+    <span class="label">{t('kDebt')} <Info text={t('tip_debt')} learn="debt-ratio" /></span>
     {#if r.debtRatio}
       <span class="value num">{fmt.pct(r.debtRatio.value, 1)}</span>
       <span class="sub">{t('kDebtSub')}</span>
@@ -49,10 +49,10 @@
   .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   @media (max-width: 460px) { .kpis { grid-template-columns: minmax(0, 1fr); } }
   .kpi {
-    background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+    background: var(--surface); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--shadow);
     padding: 20px 22px; display: grid; gap: 4px; align-content: start; min-width: 0;
   }
-  .kpi.lead { background: var(--accent); color: var(--on-accent); }
+  .kpi.lead { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .kpi.lead .label, .kpi.lead .sub { color: inherit; opacity: 0.85; }
   .label { font-size: 14px; font-weight: 500; color: var(--text-2); display: flex; align-items: center; gap: 6px; }
   .value { font-family: var(--font-display); font-size: clamp(30px, 3.6vw, 40px); white-space: nowrap; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }

@@ -31,7 +31,7 @@
   @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   button {
     display: grid; justify-items: start; gap: 4px; text-align: left;
-    background: var(--surface); border: 2px solid transparent; border-radius: var(--radius);
+    background: var(--surface); border: 2px solid var(--card-border); border-radius: var(--radius);
     padding: 16px 18px; box-shadow: var(--shadow); color: var(--text);
     transition: border-color 0.2s, transform 0.2s;
   }

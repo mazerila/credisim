@@ -132,6 +132,19 @@ describe('simulate', () => {
     expect(r.principal).toBe(Math.round(auto.principal - auto.guarantee + 4000));
     expect(r.taegParts.fees).toBeGreaterThan(auto.taegParts.fees);
   });
+  it('simulates a home loan from the amount only', () => {
+    const i = { ...DEFAULTS.mortgage, amountOnly: true, amount: 180000 };
+    const r = simulate(i, TODAY);
+    expect(r.principal).toBe(180000);
+    expect(r.notary).toBe(0);
+    expect(r.works).toBe(0);
+    expect(r.guarantee).toBeCloseTo(180000 * 0.0075 + 300, 6);
+    expect(r.usury.category).toBe('fixed20yPlus');
+    expect(r.taeg).toBeGreaterThan(r.taegParts.interest);
+    const manual = simulate({ ...i, guaranteeAuto: false, guaranteeAmount: 2000 }, TODAY);
+    expect(manual.guarantee).toBe(2000);
+    expect(manual.principal).toBe(180000);
+  });
   it('flags a mortgage over 25 years and a TAEG over the usury rate', () => {
     const r = simulate({ ...DEFAULTS.mortgage, months: 360, rate: 5.5 }, TODAY);
     expect(r.duration?.ok).toBe(false);

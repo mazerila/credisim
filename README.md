@@ -10,9 +10,11 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
 |---|---|
 | ![Credisim in light mode](docs/images/screenshot-light.png) | ![Credisim in dark mode, French](docs/images/screenshot-dark.png) |
 
+![How it works: the TAEG explainer](docs/images/screenshot-learn.png)
+
 ## Features
 
-- **Credit types:** home loan (mortgage), personal loan, car loan, home works loan. Each type has its own defaults, fields and legal-maximum band.
+- **Credit types:** home loan (mortgage), personal loan, car loan, home works loan. Each type has its own defaults, fields and legal-maximum band. A home loan can be simulated from the full project (price, down payment, notary fees) or from the **loan amount only** for a quick estimate.
 - **Optional costs you can switch on or off:** borrower insurance (on the initial amount or the remaining balance, with coverage), guarantee (Crédit Logement-type guarantee, mortgage or lender's lien, estimated or entered by hand), notary fees (2026 regulated scale, département rate, first-time-buyer exemption, or a manual %), works, application fee, broker fee, other loans.
 - **Results:**
   - monthly payment and cost of credit
@@ -25,6 +27,7 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
 - **Scenario A vs B** comparison, with differences highlighted and both balance curves on one chart.
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
 - **Share links:** the whole simulation (both scenarios, every field, mode, language) is stored in the URL fragment.
+- **How it works:** 13 short explainers in English and French (loans, monthly payment, schedule, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
 - **English and French**, detected automatically. Light, dark or system theme. Responsive from phone to desktop.
 
 The full list, with priorities, is in [docs/FEATURES.md](docs/FEATURES.md). What comes next is in [docs/ROADMAP.md](docs/ROADMAP.md).
@@ -56,8 +59,10 @@ src/
   lib/data/fr/       Versioned French regulatory data, each value with its source
   lib/i18n/          en.ts / fr.ts dictionaries, t(), number formatting, language detection
   lib/share.ts       Share-link encoding and validation (+ tests)
+  lib/learn/         "How it works" articles (en.ts, fr.ts) + content tests
+  lib/router.svelte.ts  Hash routes: simulator, #learn, #learn/<topic>
   lib/state.svelte.ts  App state: credit type, mode, scenarios, theme
-  components/        Svelte 5 UI; components/ui/ holds the controls
+  components/        Svelte 5 UI; ui/ = controls, learn/ = explainer pages and live examples
   app.css            Design tokens (light and dark)
 docs/                Research, features, formulas, roadmap, naming
   planning/          Planning report and the Phase 0 prototype

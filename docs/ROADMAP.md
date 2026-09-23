@@ -11,7 +11,7 @@ Each phase ends with a **review gate**: the phase is demoed, the owner confirms,
 ### Phase 0 — Prototype ✅ (`docs/planning/prototype/index.html`)
 Single HTML file: project budget, loan, insurance (initial vs remaining capital), fees, guarantee, TAEG, usury + HCSF checks, 3 charts, schedule, duration comparison, EN/FR, share link.
 
-### Phase 1 — Foundation & MVP ✅ built, awaiting review
+### Phase 1 — Foundation & MVP ✅ confirmed 2026-09-23
 - Project scaffold (Vite + Svelte + TypeScript), Firebase Hosting config
 - Engine as tested pure TypeScript (A1–A3, B1, B3–B9, C1–C2)
 - **Credit type selector** (K1): mortgage, personal loan, car loan, works loan; each type sets its own defaults, visible fields and usury band
@@ -21,12 +21,13 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - EN/FR with detection (H1–H3), share link (I1)
 - Versioned regulatory data (J3), disclaimer
 
-### Phase 2 — "How it works" (Learn)
+### Phase 2 — "How it works" (Learn) ✅ built, awaiting review
 - **Short, simple explainers** (L1–L4), EN/FR: what a loan is, how the monthly payment is calculated, interest vs capital (amortization), what the TAEG includes, insurance, guarantee, notary fees, usury rate, 35 % rule, PTZ basics
 - "How this calculator works": what it computes, the assumptions, the limits, data sources and dates
 - Small live examples inside the explainers (e.g. "€100k at 3 % for 20 years")
 - ⓘ tooltips link to the matching explainer; glossary page
 - Later phases add an explainer for each new feature
+- Also delivered in this phase: lighter dark theme with visible card edges; home-loan "amount only" mode
 
 ### Phase 3 — France advanced
 - **PTZ as an optional component** + multi-loan package with lissage (A10, B10)

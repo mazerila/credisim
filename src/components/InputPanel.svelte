@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CREDIT_TYPES, notaryBreakdown, principalOf } from '../lib/engine';
+  import { CREDIT_TYPES, notaryBreakdown, principalOf, usesProject } from '../lib/engine';
   import { fmt, t } from '../lib/i18n/index.svelte';
   import { addScenarioB, app, current, removeScenarioB, type ScenarioId } from '../lib/state.svelte';
   import NumberField from './ui/NumberField.svelte';
@@ -12,6 +12,7 @@
   const spec = $derived(CREDIT_TYPES[inp.type]);
   const has = (c: (typeof spec.components)[number]) => spec.components.includes(c);
   const expert = $derived(app.mode === 'expert');
+  const project = $derived(usesProject(inp));
   const id = (name: string) => `${app.active}-${name}`;
   const notary = $derived(notaryBreakdown(inp.price, inp.propertyKind, inp.transferTaxZone, inp.firstTimeBuyer));
   const notaryPctAuto = $derived(inp.price > 0 ? notary.total / inp.price : 0);
@@ -48,13 +49,22 @@
 
   <fieldset>
     <legend>{t('secProject')}</legend>
-    {#if spec.fromPrice}
+    {#if inp.type === 'mortgage'}
+      <Segmented
+        label={t('secProject')}
+        options={[{ value: 'project', label: t('modeProject') }, { value: 'amount', label: t('modeAmount') }]}
+        value={inp.amountOnly ? 'amount' : 'project'}
+        onchange={(v) => (inp.amountOnly = v === 'amount')}
+      />
+      {#if inp.amountOnly}<p class="muted small note">{t('modeAmountHint')}</p>{/if}
+    {/if}
+    {#if project}
       <NumberField id={id('price')} label={t(inp.type === 'car' ? 'price_car' : 'price_mortgage')} bind:value={inp.price} step={1000} />
       <NumberField id={id('down')} label={t('downPayment')} bind:value={inp.downPayment} step={1000} />
     {:else}
       <NumberField id={id('amount')} label={t('amount')} bind:value={inp.amount} step={500} />
     {/if}
-    {#if expert && inp.type === 'mortgage'}
+    {#if expert && inp.type === 'mortgage' && project}
       <div class="two">
         <SelectField id={id('kind')} label={t('propertyKind')} bind:value={inp.propertyKind}
           options={[{ value: 'old', label: t('old') }, { value: 'new', label: t('new') }]} />
@@ -66,7 +76,7 @@
 
   <fieldset>
     <legend>{t('secLoan')}</legend>
-    <SliderField id={id('rate')} label={t('rate')} tip={t('tip_rate')} bind:value={inp.rate}
+    <SliderField id={id('rate')} label={t('rate')} tip={t('tip_rate')} learn="monthly-payment" bind:value={inp.rate}
       min={spec.rate.min} max={spec.rate.max} step={spec.rate.step} unit="%" decimals={2} />
     <SliderField id={id('months')} label={t('duration')} bind:value={inp.months}
       min={spec.months.min} max={spec.months.max} step={spec.months.step} integer
@@ -76,7 +86,7 @@
 
   <fieldset>
     <legend>{t('secHousehold')}</legend>
-    <NumberField id={id('income')} label={t('income')} tip={t('tip_debt')} bind:value={inp.income} step={100} />
+    <NumberField id={id('income')} label={t('income')} tip={t('tip_debt')} learn="debt-ratio" bind:value={inp.income} step={100} />
   </fieldset>
 
   {#if expert}
@@ -84,17 +94,17 @@
       <legend>{t('secOptions')}</legend>
       <div class="switches">
         {#if has('insurance')}
-          <Switch id={id('use-ins')} label={t('opt_insurance')} tip={t('tip_insurance')} bind:checked={inp.useInsurance}>
+          <Switch id={id('use-ins')} label={t('opt_insurance')} tip={t('tip_insurance')} learn="insurance" bind:checked={inp.useInsurance}>
             <div class="two">
               <NumberField id={id('ins-rate')} label={t('insuranceRate')} unit="%" step={0.01} max={3} bind:value={inp.insuranceRate} />
-              <NumberField id={id('ins-cover')} label={t('insuranceCover')} tip={t('tip_insuranceCover')} unit="%" step={10} max={200} bind:value={inp.insuranceCover} />
+              <NumberField id={id('ins-cover')} label={t('insuranceCover')} tip={t('tip_insuranceCover')} learn="insurance" unit="%" step={10} max={200} bind:value={inp.insuranceCover} />
             </div>
-            <SelectField id={id('ins-base')} label={t('insuranceBase')} tip={t('tip_insuranceBase')} bind:value={inp.insuranceBase}
+            <SelectField id={id('ins-base')} label={t('insuranceBase')} tip={t('tip_insuranceBase')} learn="insurance" bind:value={inp.insuranceBase}
               options={[{ value: 'initial', label: t('base_initial') }, { value: 'remaining', label: t('base_remaining') }]} />
           </Switch>
         {/if}
         {#if has('guarantee')}
-          <Switch id={id('use-guar')} label={t('opt_guarantee')} tip={t('tip_guarantee')} bind:checked={inp.useGuarantee}>
+          <Switch id={id('use-guar')} label={t('opt_guarantee')} tip={t('tip_guarantee')} learn="guarantee" bind:checked={inp.useGuarantee}>
             <SelectField id={id('guar')} label={t('guarantee')} bind:value={inp.guarantee}
               options={[{ value: 'caution', label: t('g_caution') }, { value: 'hypo', label: t('g_hypo') }, { value: 'ppd', label: t('g_ppd') }]} />
             <label class="check"><input type="checkbox" bind:checked={inp.guaranteeAuto} onchange={toggleGuaranteeAuto} />
@@ -105,8 +115,8 @@
             {/if}
           </Switch>
         {/if}
-        {#if has('notary')}
-          <Switch id={id('use-notary')} label={t('opt_notary')} tip={t('tip_notary')} bind:checked={inp.useNotary}>
+        {#if has('notary') && project}
+          <Switch id={id('use-notary')} label={t('opt_notary')} tip={t('tip_notary')} learn="notary" bind:checked={inp.useNotary}>
             <label class="check"><input type="checkbox" bind:checked={inp.firstTimeBuyer} /> {t('firstTimeBuyer')}</label>
             <label class="check"><input type="checkbox" bind:checked={inp.notaryAuto} onchange={toggleNotaryAuto} />
               <span>{t('notaryAuto')}{#if inp.notaryAuto}&nbsp;· <span class="num">{fmt.eur(notary.total)}</span>
@@ -119,23 +129,23 @@
             {/if}
           </Switch>
         {/if}
-        {#if has('works')}
+        {#if has('works') && project}
           <Switch id={id('use-works')} label={t('opt_works')} bind:checked={inp.useWorks}>
             <NumberField id={id('works')} label={t('works')} step={1000} bind:value={inp.works} />
           </Switch>
         {/if}
         {#if has('fileFee')}
-          <Switch id={id('use-file')} label={t('opt_fileFee')} tip={t('tip_fileFee')} bind:checked={inp.useFileFee}>
+          <Switch id={id('use-file')} label={t('opt_fileFee')} tip={t('tip_fileFee')} learn="taeg" bind:checked={inp.useFileFee}>
             <NumberField id={id('file')} label={t('fileFee')} step={50} bind:value={inp.fileFee} />
           </Switch>
         {/if}
         {#if has('brokerFee')}
-          <Switch id={id('use-broker')} label={t('opt_brokerFee')} tip={t('tip_brokerFee')} bind:checked={inp.useBrokerFee}>
+          <Switch id={id('use-broker')} label={t('opt_brokerFee')} tip={t('tip_brokerFee')} learn="taeg" bind:checked={inp.useBrokerFee}>
             <NumberField id={id('broker')} label={t('brokerFee')} step={100} bind:value={inp.brokerFee} />
           </Switch>
         {/if}
         {#if has('otherLoans')}
-          <Switch id={id('use-other')} label={t('opt_otherLoans')} tip={t('tip_otherLoans')} bind:checked={inp.useOtherLoans}>
+          <Switch id={id('use-other')} label={t('opt_otherLoans')} tip={t('tip_otherLoans')} learn="debt-ratio" bind:checked={inp.useOtherLoans}>
             <NumberField id={id('other')} label={t('otherLoans')} step={50} bind:value={inp.otherLoans} />
           </Switch>
         {/if}
@@ -166,6 +176,7 @@
   @media (max-width: 380px) { .two { grid-template-columns: minmax(0, 1fr); } }
   .switches { display: grid; }
   .hint { margin: -8px 0 0; }
+  .note { margin: -4px 0 0; }
   .check { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
   .check input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; flex: none; }
   .detail { margin: -4px 0 0 26px; line-height: 1.4; }

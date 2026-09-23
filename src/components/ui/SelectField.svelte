@@ -1,4 +1,5 @@
 <script lang="ts" generics="T extends string">
+  import type { TopicId } from '../../lib/learn';
   import Info from './Info.svelte';
 
   let {
@@ -7,11 +8,12 @@
     value = $bindable(),
     options,
     tip,
-  }: { id: string; label: string; value: T; options: { value: T; label: string }[]; tip?: string } = $props();
+    learn,
+  }: { id: string; label: string; value: T; options: { value: T; label: string }[]; tip?: string; learn?: TopicId } = $props();
 </script>
 
 <div class="field">
-  <div class="lab"><label for={id}>{label}</label>{#if tip}<Info text={tip} />{/if}</div>
+  <div class="lab"><label for={id}>{label}</label>{#if tip}<Info text={tip} {learn} />{/if}</div>
   <div class="box">
     <select {id} bind:value>
       {#each options as o (o.value)}<option value={o.value}>{o.label}</option>{/each}

@@ -13,7 +13,7 @@
 </script>
 
 <section class="card">
-  <h2 class="card-title">{t('taegTitle')} <Info text={t('tip_usury')} /></h2>
+  <h2 class="card-title">{t('taegTitle')} <Info text={t('tip_usury')} learn="usury" /></h2>
   <div class="track-wrap">
     <div class="limit" style="left:{(r.usury.limit / scale) * 100}%"><span>{t('taegMax', { u: fmt.pct(r.usury.limit) })}</span></div>
     <div class="track">

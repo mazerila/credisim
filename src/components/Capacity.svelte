@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { borrowingCapacity, CREDIT_TYPES, notaryFees, type Inputs } from '../lib/engine';
+  import { borrowingCapacity, CREDIT_TYPES, notaryFees, usesProject, type Inputs } from '../lib/engine';
   import { fmt, t } from '../lib/i18n/index.svelte';
 
   let { inp }: { inp: Inputs } = $props();
@@ -8,7 +8,7 @@
 
   /** Highest price such that price + notary + financed fees − down payment ≈ capacity (guarantee ignored: rough bound). */
   const maxPrice = $derived.by(() => {
-    if (!spec.fromPrice) return 0;
+    if (!usesProject(inp)) return 0;
     const budget = cap + inp.downPayment;
     let lo = 0, hi = budget;
     for (let it = 0; it < 50; it++) {
@@ -26,7 +26,7 @@
     <p class="muted small">{t('capacityText', { rate: fmt.pct(inp.rate / 100), dur: fmt.duration(inp.months, spec.durationUnit) })}</p>
     <div class="figs">
       <div><span class="muted small">{t('capacityLoan')}</span><b class="num">{fmt.eur(cap)}</b></div>
-      {#if spec.fromPrice}
+      {#if usesProject(inp)}
         <div><span class="muted small">{t('capacityPrice')}</span><b class="num">{fmt.eur(maxPrice)}</b></div>
       {/if}
     </div>
