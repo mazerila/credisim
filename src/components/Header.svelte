@@ -44,6 +44,7 @@
     </a>
     <nav class="links">
       <a href="#sim" aria-current={route.view === 'sim' ? 'page' : undefined}>{t('navSim')}</a>
+      <a href="#tools" aria-current={route.view === 'tools' ? 'page' : undefined}>{t('navTools')}</a>
       <a href="#learn" aria-current={route.view === 'learn' ? 'page' : undefined}>{t('navLearn')}</a>
     </nav>
     <div class="tools">

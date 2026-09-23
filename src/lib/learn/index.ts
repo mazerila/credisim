@@ -5,10 +5,11 @@ import type { Content, TopicId } from './types';
 
 export type { Article, Block, ExampleId, TopicId } from './types';
 
-export const GROUPS: { key: 'basics' | 'costs' | 'rules' | 'about'; topics: TopicId[] }[] = [
-  { key: 'basics', topics: ['loan', 'monthly-payment', 'amortization', 'taeg'] },
+export const GROUPS: { key: 'basics' | 'costs' | 'rules' | 'manage' | 'about'; topics: TopicId[] }[] = [
+  { key: 'basics', topics: ['loan', 'monthly-payment', 'amortization', 'loan-types', 'taeg'] },
   { key: 'costs', topics: ['insurance', 'guarantee', 'notary'] },
   { key: 'rules', topics: ['usury', 'debt-ratio', 'consumer-credit', 'ptz'] },
+  { key: 'manage', topics: ['check-offer', 'early-repayment', 'renegotiation'] },
   { key: 'about', topics: ['calculator', 'glossary'] },
 ];
 
@@ -29,5 +30,5 @@ export function inline(s: string): string {
   const esc = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return esc
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\[(.+?)\]\((#learn(?:\/[\w-]+)?)\)/g, '<a href="$2">$1</a>');
+    .replace(/\[(.+?)\]\((#(?:learn|tools)(?:\/[\w-]+)?)\)/g, '<a href="$2">$1</a>');
 }

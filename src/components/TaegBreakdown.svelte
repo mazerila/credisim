@@ -28,6 +28,7 @@
     {/each}
     <li class="eq">TAEG<b class="num">{fmt.pct(r.taeg)}</b></li>
   </ul>
+  {#if r.ptz}<p class="muted small global">{t('taegGlobalLine', { v: fmt.pct(r.taegGlobal) })}</p>{/if}
   <p class="muted small">{t('taegHint')}</p>
 </section>
 
@@ -44,4 +45,5 @@
   .legend .eq { border-top: 1px solid var(--sep); padding-top: 8px; font-weight: 600; }
   .legend .eq b { font-weight: 600; }
   p { margin: 0; }
+  .global { margin-bottom: 10px; }
 </style>

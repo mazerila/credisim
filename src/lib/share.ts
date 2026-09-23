@@ -7,17 +7,20 @@ import { DEFAULTS, type CreditType, type Inputs } from './engine';
  */
 
 export type Mode = 'quick' | 'expert';
-export type ScenarioId = 'a' | 'b';
+
+export const MAX_SCENARIOS = 4;
+export const SCENARIO_NAMES = ['A', 'B', 'C', 'D'];
 
 export interface ShareState {
-  a: Inputs;
-  b: Inputs | null;
+  /** 1 to 4 scenarios of the same credit type */
+  scenarios: Inputs[];
   mode: Mode;
-  active: ScenarioId;
+  /** index of the scenario being edited */
+  active: number;
   lang?: string;
 }
 
-const VERSION = 1;
+const VERSION = 2;
 
 /** Allowed values for every text field; anything else in a link is ignored. */
 const ENUMS: Partial<Record<keyof Inputs, readonly string[]>> = {
@@ -26,6 +29,10 @@ const ENUMS: Partial<Record<keyof Inputs, readonly string[]>> = {
   transferTaxZone: ['raised', 'standard', 'indre'],
   insuranceBase: ['initial', 'remaining'],
   guarantee: ['caution', 'hypo', 'ppd'],
+  amortization: ['annuity', 'linear', 'inFine'],
+  deferralType: ['none', 'partial', 'total'],
+  ptzZone: ['A', 'B1', 'B2', 'C'],
+  ptzKind: ['newFlat', 'newHouse', 'oldWithWorks'],
 };
 
 const b64 = {
@@ -52,28 +59,27 @@ export function sanitizeInputs(raw: unknown): Inputs | null {
 }
 
 export function encodeShare(s: ShareState): string {
-  const payload: Record<string, unknown> = { v: VERSION, a: s.a, m: s.mode === 'expert' ? 'e' : 'q', t: s.active };
-  if (s.b) payload.b = s.b;
+  const payload: Record<string, unknown> = { v: VERSION, s: s.scenarios, m: s.mode === 'expert' ? 'e' : 'q', t: s.active };
   if (s.lang) payload.l = s.lang;
   return 's=' + b64.enc(JSON.stringify(payload));
 }
 
-/** Read a fragment like "#s=…"; null if there is none or it is malformed. */
+/** Read a fragment like "#s=…"; null if there is none or it is malformed. Accepts v1 links (a/b). */
 export function decodeShare(hash: string): ShareState | null {
   const m = hash.match(/[#&]?s=([\w-]+)/);
   if (!m) return null;
   try {
     const p = JSON.parse(b64.dec(m[1]));
-    const a = sanitizeInputs(p.a);
-    if (!a) return null;
-    let b = sanitizeInputs(p.b);
-    // Scenario B compares the same kind of credit.
-    if (b && b.type !== a.type) b = null;
+    const raw: unknown[] = Array.isArray(p.s) ? p.s : [p.a, p.b];
+    const list = raw.map(sanitizeInputs).filter((x): x is Inputs => !!x);
+    if (!list.length) return null;
+    // Scenarios compare the same kind of credit.
+    const scenarios = list.filter((x) => x.type === list[0].type).slice(0, MAX_SCENARIOS);
+    const t = p.t === 'b' ? 1 : typeof p.t === 'number' ? p.t : 0;
     return {
-      a,
-      b,
+      scenarios,
       mode: p.m === 'e' ? 'expert' : 'quick',
-      active: p.t === 'b' && b ? 'b' : 'a',
+      active: t >= 0 && t < scenarios.length ? t : 0,
       lang: typeof p.l === 'string' ? p.l : undefined,
     };
   } catch {

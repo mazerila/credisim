@@ -61,6 +61,42 @@ C_max = max_payment_without_insurance · (1 − (1 + r)^−n) / r
 ```
 With insurance on initial capital: `payment_total = C · (r/(1−(1+r)^−n) + ins_rate/12)` → solve for C directly.
 
-## PTZ
-Amount = min(price, operation-cost ceiling(zone, household)) × quotité(tranche, property type).
-Repayment by tranche: T1 10 y deferral / 25 y total, T2 8 / 20, T3 2 / 15, T4 0 / 10; 0 % rate, linear capital after deferral.
+## Linear and in-fine loans
+- **Linear** (amortissement constant): capital each month = C / n; payment = C/n + balance · r (falls every month). Total interest = C · r · (n + 1) / 2.
+- **In fine**: payment = C · r every month; the whole capital is repaid with the last payment.
+
+## PTZ (2025–2027 rules, `src/lib/data/fr/ptz.json`)
+1. Income used = max(tax income N-2, operation cost / 9); divide by the family coefficient (1, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0, 3.3 for 1…8+ people).
+2. Band = first threshold not exceeded (per zone, per unit of coefficient):
+
+| Zone | T1 | T2 | T3 | T4 (ceiling) |
+|---|---|---|---|---|
+| A bis / A | 25,000 | 31,000 | 37,000 | 49,000 |
+| B1 | 21,500 | 26,000 | 30,000 | 34,500 |
+| B2 | 18,000 | 22,500 | 27,000 | 31,500 |
+| C | 15,000 | 19,500 | 24,000 | 28,500 |
+
+3. Cost ceiling = zone base (A 150k, B1 135k, B2 110k, C 100k) × min(coefficient, 2.4).
+4. Amount = min(cost, ceiling) × share: new flat / old with works 50 / 40 / 40 / 20 %, new house 30 / 20 / 20 / 10 %. Old homes with works: zones B2 and C only. Operation cost used by Credisim: price + works.
+5. The PTZ can't exceed the other loans: capped at half the total borrowed.
+6. Repayment: T1 10-yr deferral / 25 yrs total, T2 8 / 20, T3 2 / 15, T4 0 / 10; 0 %, constant capital after the deferral.
+
+## Smoothing (lissage) with a PTZ
+Choose one total T so that main-loan payment + PTZ payment = T every month, and the main loan is exactly repaid:
+```
+T = (C + Σ_k ptz_k · v^k) / Σ_k v^k,   v = 1 / (1 + r),  k = 1..n (main loan months)
+main payment_k = T − ptz_k
+```
+Not applied when the main loan has a deferral or non-constant payments, or if a month would need a negative main payment.
+
+## Debt ratio with varying payments
+The debt ratio uses the **highest** regular monthly outgoing (payment + insurance), not the first one.
+
+## HCSF duration
+25 years; 27 for a new build with a deferral (limit = 300 + min(deferral, 24) months).
+
+## Renegotiation
+Penalty = min(6 months of interest on the balance at the current rate, 3 % of the balance). New principal = balance (+ penalty + fees + guarantee if financed). Saving = (current payment + insurance) × remaining months − ((new payment + insurance) × new months + upfront costs). Break-even: first month where the cumulated monthly difference covers the upfront costs.
+
+## Check an offer
+Payment expected from (amount, rate, months) within €1; rate implied by the stated payment (bisection) within 0.02 pt; TAEG recomputed from the stated payment, insurance, fees and guarantee within 0.05 pt (a higher stated TAEG up to 0.3 pt is only a warning: hidden costs); usury band check; total cost within max(€50, 0.5 %).

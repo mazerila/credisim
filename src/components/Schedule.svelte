@@ -10,11 +10,16 @@
 
   const lines = $derived(
     view === 'year'
-      ? r.years.map((y) => ({ n: y.year, pay: y.payment + y.insurance, i: y.interest, c: y.capital, ins: y.insurance, bal: y.balance }))
-      : r.rows.map((m) => ({ n: m.k, pay: m.payment + m.insurance, i: m.interest, c: m.capital, ins: m.insurance, bal: m.balance })),
+      ? r.years.map((y) => ({ n: y.year, pay: y.payment + y.insurance, i: y.interest, c: y.capital, ins: y.insurance, bal: y.balance, ptz: ptzByYear[y.year - 1] ?? 0 }))
+      : r.rows.map((m) => ({ n: m.k, pay: m.payment + m.insurance, i: m.interest + (m.accrued ?? 0), c: m.capital, ins: m.insurance, bal: m.balance, ptz: m.ptz ?? 0 })),
   );
-  const shown = $derived(expanded ? lines : lines.slice(0, LIMIT));
   const hasIns = $derived(r.totalInsurance > 0);
+  const hasPtz = $derived(!!r.ptz);
+  const ptzByYear = $derived.by(() => {
+    const out: number[] = [];
+    for (const m of r.rows) out[Math.floor((m.k - 1) / 12)] = (out[Math.floor((m.k - 1) / 12)] ?? 0) + (m.ptz ?? 0);
+    return out;
+  });
 </script>
 
 <section class="card">
@@ -27,21 +32,21 @@
       <thead>
         <tr>
           <th>{t(view === 'year' ? 'colYear' : 'colMonth')}</th><th>{t('colPayment')}</th><th>{t('colInterest')}</th><th>{t('colCapital')}</th>
-          {#if hasIns}<th>{t('colInsurance')}</th>{/if}<th>{t('colBalance')}</th>
+          {#if hasIns}<th>{t('colInsurance')}</th>{/if}{#if hasPtz}<th>{t('colPtz')}</th>{/if}<th>{t('colBalance')}</th>
         </tr>
       </thead>
       <tbody>
-        {#each shown as l (l.n)}
-          <tr>
+        {#each lines as l, i (l.n)}
+          <tr class:more={!expanded && i >= LIMIT}>
             <td>{l.n}</td><td>{fmt.eur(l.pay, 2)}</td><td>{fmt.eur(l.i, 2)}</td><td>{fmt.eur(l.c, 2)}</td>
-            {#if hasIns}<td>{fmt.eur(l.ins, 2)}</td>{/if}<td>{fmt.eur(l.bal, 2)}</td>
+            {#if hasIns}<td>{fmt.eur(l.ins, 2)}</td>{/if}{#if hasPtz}<td>{fmt.eur(l.ptz, 2)}</td>{/if}<td>{fmt.eur(l.bal, 2)}</td>
           </tr>
         {/each}
       </tbody>
     </table>
   </div>
   {#if lines.length > LIMIT}
-    <button type="button" class="link-btn more" onclick={() => (expanded = !expanded)}>
+    <button type="button" class="link-btn more-btn" onclick={() => (expanded = !expanded)}>
       {expanded ? t('showLess') : t('showAll', { n: lines.length })}
     </button>
   {/if}
@@ -55,5 +60,7 @@
   th { font-size: 13px; font-weight: 600; color: var(--text-2); }
   th:first-child, td:first-child { text-align: left; padding-left: 0; }
   td:first-child { color: var(--text-2); }
-  .more { margin-top: 14px; }
+  .more-btn { margin-top: 14px; }
+  tr.more { display: none; }
+  @media print { tr.more { display: table-row; } .more-btn, .head :global(.seg) { display: none; } }
 </style>

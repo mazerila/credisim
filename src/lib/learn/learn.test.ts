@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { en } from './en';
 import { fr } from './fr';
 import { inline, isTopic, TOPICS } from './index';
+import { TOOLS } from '../router.svelte';
 import type { Block, Content } from './types';
 
 const texts = (b: Block): string[] =>
@@ -20,6 +21,7 @@ describe('Learn content', () => {
       for (const id of TOPICS) {
         for (const b of content[id].blocks) {
           for (const s of texts(b)) for (const m of s.matchAll(/\(#learn\/([\w-]+)\)/g)) expect(isTopic(m[1]), `${id}: ${m[1]}`).toBe(true);
+          for (const s of texts(b)) for (const m of s.matchAll(/\(#tools\/([\w-]+)\)/g)) expect((TOOLS as readonly string[]).includes(m[1]), `${id}: ${m[1]}`).toBe(true);
           if ('terms' in b) for (const term of b.terms) if (term.link) expect(isTopic(term.link)).toBe(true);
         }
       }

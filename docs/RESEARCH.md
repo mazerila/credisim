@@ -82,6 +82,7 @@ Sources: [Pretto](https://www.pretto.fr/pret-immobilier/pret-taux-zero-ptz/plafo
 - **4 income tranches**; quotité 20–50 % (flats) / 10–30 % (houses).
 - Repayment: T1 10-yr deferral / 25 yrs · T2 8 / 20 · T3 2 / 15 · T4 0 / 10.
 - Income ceilings 2026 unchanged from 2025: €28,500 (zone C, 1 person) → €161,700 (zone A, 8+). Full table in Pretto source.
+- Exact barème used by the engine (bands per zone, family coefficients, cost ceilings, shares): see `docs/CALCULATIONS.md` § PTZ and `src/lib/data/fr/ptz.json`; sources [stop-loyer.fr](https://www.stop-loyer.fr/baremes-ptz-2026), [calculer-ptz.fr](https://calculer-ptz.fr/tranches-revenus-ptz).
 
 ### Notary fees (frais de notaire)
 Source: [CPIM DMTO 2026](https://www.cpim.fr/droits-mutation-immobilier-2026/), [Kohen Avocats](https://kohenavocats.fr/2026/05/05/frais-notaire-2026-droits-mutation-primo-accedant-compromis/).

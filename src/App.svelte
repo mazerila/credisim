@@ -3,7 +3,9 @@
   import { i18n, t } from './lib/i18n/index.svelte';
   import { parseRoute, route } from './lib/router.svelte';
   import { app, current, loadHash, setTheme, toHash } from './lib/state.svelte';
+  import { SCENARIO_NAMES } from './lib/share';
   import LearnPage from './components/learn/LearnPage.svelte';
+  import ToolsPage from './components/tools/ToolsPage.svelte';
   import BalanceChart from './components/BalanceChart.svelte';
   import Capacity from './components/Capacity.svelte';
   import CompareTable from './components/CompareTable.svelte';
@@ -13,9 +15,12 @@
   import Footer from './components/Footer.svelte';
   import Header from './components/Header.svelte';
   import InputPanel from './components/InputPanel.svelte';
+  import ActionsBar from './components/ActionsBar.svelte';
   import Kpis from './components/Kpis.svelte';
+  import PrintSummary from './components/PrintSummary.svelte';
   import MobileSummary from './components/MobileSummary.svelte';
   import Schedule from './components/Schedule.svelte';
+  import SensitivityGrid from './components/SensitivityGrid.svelte';
   import TaegBreakdown from './components/TaegBreakdown.svelte';
   import TypePicker from './components/TypePicker.svelte';
   import YearBars from './components/YearBars.svelte';
@@ -26,9 +31,9 @@
   // Hash navigation: Learn pages, or a shared simulation opened in a tab where Credisim is already running.
   let lastHash = location.hash;
   function onHashChange() {
-    const wasView = route.view, wasTopic = route.topic;
+    const wasView = route.view, wasTopic = route.topic, wasTool = route.tool;
     if (parseRoute()) {
-      if (wasView !== 'learn' || wasTopic !== route.topic) window.scrollTo({ top: 0 });
+      if (wasView !== route.view || wasTopic !== route.topic || wasTool !== route.tool) window.scrollTo({ top: 0 });
     } else {
       if (location.hash !== lastHash && /[#&]s=/.test(location.hash)) loadHash();
       if (wasView !== 'sim') window.scrollTo({ top: 0 });
@@ -37,8 +42,8 @@
 
   const inp = $derived(current());
   const r = $derived(simulate(inp));
-  const ra = $derived(simulate(app.a));
-  const rb = $derived(app.b ? simulate(app.b) : null);
+  const all = $derived(app.scenarios.map((x) => ({ inp: x, r: x === inp ? r : simulate(x) })));
+  const SERIES_COLORS = ['var(--c-capital)', 'var(--c-interest)', 'var(--c-insurance)', 'var(--c-notary)'];
 
   // Keep the URL in sync so the address bar is always a shareable link.
   let timer: ReturnType<typeof setTimeout>;
@@ -64,6 +69,8 @@
 <main class="container">
   {#if route.view === 'learn'}
     <LearnPage />
+  {:else if route.view === 'tools'}
+    <ToolsPage />
   {:else}
   <section class="hero">
     <h1>{t('heroTitle')}</h1>
@@ -75,9 +82,11 @@
   <div class="layout">
     <aside><InputPanel /></aside>
     <div class="results">
+      <PrintSummary {inp} {r} />
+      <ActionsBar {r} />
       <Kpis {r} {inp} />
-      {#if app.b && rb}
-        <CompareTable a={app.a} b={app.b} {ra} {rb} />
+      {#if all.length > 1}
+        <CompareTable list={all} />
       {/if}
       <div class="two">
         <FinancingPlan {r} {inp} />
@@ -86,17 +95,15 @@
       <div class="two">
         <CostDonut {r} />
         <BalanceChart
-          series={app.b && rb
-            ? [
-                { label: t('scenario', { n: 'A' }), color: 'var(--c-capital)', principal: ra.principal, rows: ra.rows },
-                { label: t('scenario', { n: 'B' }), color: 'var(--c-interest)', principal: rb.principal, rows: rb.rows },
-              ]
-            : [{ label: 'A', color: 'var(--c-capital)', principal: r.principal, rows: r.rows }]}
+          series={all.length > 1
+            ? all.map((x, i) => ({ label: t('scenario', { n: SCENARIO_NAMES[i] }), color: SERIES_COLORS[i], principal: x.r.totalBorrowed, rows: x.r.rows }))
+            : [{ label: 'A', color: 'var(--c-capital)', principal: r.totalBorrowed, rows: r.rows }]}
         />
       </div>
       <YearBars years={r.years} />
       <Capacity {inp} />
       <DurationTable {inp} />
+      <SensitivityGrid {inp} />
       <Schedule {r} />
       <a class="how" href="#learn/calculator">{t('howCalculated')} ›</a>
     </div>

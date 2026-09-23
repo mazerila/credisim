@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "credisim",
+    "site": "creditsimulator",
     "public": "dist",
     "predeploy": ["npm test", "npm run build"],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],

@@ -1,0 +1,26 @@
+{
+  "source": "https://www.stop-loyer.fr/baremes-ptz-2026",
+  "sourceAlt": "https://calculer-ptz.fr/tranches-revenus-ptz",
+  "validFrom": "2025-04-01",
+  "validTo": "2027-12-31",
+  "note": "Income used = max(revenu fiscal de référence N-2, operation cost / 9). The band is found by dividing it by the family coefficient. Operation cost ceiling = zone base × min(coefficient, 2.4). Old homes with works (≥ 25 % of the cost) are eligible in zones B2 and C only.",
+  "coefficients": [1, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0, 3.3],
+  "operationCostCeilingMaxCoefficient": 2.4,
+  "zones": {
+    "A": { "costBase": 150000, "bands": [25000, 31000, 37000, 49000] },
+    "B1": { "costBase": 135000, "bands": [21500, 26000, 30000, 34500] },
+    "B2": { "costBase": 110000, "bands": [18000, 22500, 27000, 31500] },
+    "C": { "costBase": 100000, "bands": [15000, 19500, 24000, 28500] }
+  },
+  "share": {
+    "newFlat": [0.5, 0.4, 0.4, 0.2],
+    "newHouse": [0.3, 0.2, 0.2, 0.1],
+    "oldWithWorks": [0.5, 0.4, 0.4, 0.2]
+  },
+  "repayment": [
+    { "deferralYears": 10, "totalYears": 25 },
+    { "deferralYears": 8, "totalYears": 20 },
+    { "deferralYears": 2, "totalYears": 15 },
+    { "deferralYears": 0, "totalYears": 10 }
+  ]
+}

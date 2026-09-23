@@ -1,5 +1,5 @@
 /** Ids of the live examples an article can embed (rendered by components/learn/Example.svelte). */
-export type ExampleId = 'payment' | 'amortization' | 'taeg' | 'insurance' | 'notary' | 'debt' | 'usury' | 'ptz' | 'durations';
+export type ExampleId = 'payment' | 'amortization' | 'taeg' | 'insurance' | 'notary' | 'debt' | 'usury' | 'ptz' | 'durations' | 'loanTypes';
 
 /**
  * Article content. Text supports **bold** and [links](#learn/topic).
@@ -16,9 +16,10 @@ export type Block =
   | { terms: { term: string; def: string; link?: TopicId }[] };
 
 export type TopicId =
-  | 'loan' | 'monthly-payment' | 'amortization' | 'taeg'
+  | 'loan' | 'monthly-payment' | 'amortization' | 'loan-types' | 'taeg'
   | 'insurance' | 'guarantee' | 'notary'
   | 'usury' | 'debt-ratio' | 'consumer-credit' | 'ptz'
+  | 'check-offer' | 'early-repayment' | 'renegotiation'
   | 'calculator' | 'glossary';
 
 export interface Article {

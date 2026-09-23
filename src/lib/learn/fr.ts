@@ -66,6 +66,33 @@ export const fr: Content = {
     ],
   },
 
+  'loan-types': {
+    title: 'Types d’amortissement et différé',
+    lead: 'La plupart des prêts remboursent le même montant chaque mois, mais il existe d’autres façons de rembourser le capital, et on peut retarder le début.',
+    read: 3,
+    blocks: [
+      { h: 'Trois façons de rembourser le capital' },
+      {
+        list: [
+          '**Échéances constantes :** la même mensualité chaque mois. C’est la norme en France.',
+          '**Amortissement constant :** la même part de capital chaque mois, plus les intérêts. Les échéances démarrent plus haut puis baissent ; le total des intérêts est plus faible.',
+          '**In fine :** vous ne payez que les intérêts et remboursez tout le capital en une fois à la fin. Utilisé par les investisseurs, souvent adossé à une épargne.',
+        ],
+      },
+      { example: 'loanTypes' },
+      { h: 'Le différé' },
+      { p: 'Un différé retarde le remboursement au début, souvent pendant la construction d’un logement neuf.' },
+      {
+        list: [
+          '**Différé partiel :** vous ne payez que les intérêts (et l’assurance). Le capital ne baisse pas encore.',
+          '**Différé total :** vous ne payez rien (sauf l’assurance). Les intérêts s’ajoutent à ce que vous devez : le prêt coûte plus cher.',
+        ],
+      },
+      { p: 'Après le différé, le capital se rembourse sur les mois restants : les mensualités sont donc plus élevées que sans différé. Dans le neuf avec différé, la durée maximale passe de 25 à 27 ans.' },
+      { note: 'Essayez-les dans le simulateur : mode Détaillé → Prêt → Type d’amortissement et Différé.' },
+    ],
+  },
+
   taeg: {
     title: 'Ce que contient le TAEG',
     lead: 'Le TAEG (taux annuel effectif global) est le taux annuel tout compris. C’est le chiffre à comparer entre les offres.',
@@ -224,7 +251,71 @@ export const fr: Content = {
       { h: 'Le remboursement dépend de votre tranche de revenus' },
       { example: 'ptz' },
       { p: 'Pendant le différé, vous ne remboursez rien sur le PTZ, ce qui allège la mensualité totale au début. Les banques « lissent » souvent le prêt principal pour que le total reste constant.' },
-      { note: 'Credisim ajoutera le PTZ au simulateur dans une phase suivante. En attendant, vous pouvez l’estimer avec le simulateur officiel de l’ANIL.' },
+      { note: 'Ajoutez un PTZ dans le simulateur : mode Détaillé → Inclus dans la simulation → Prêt à taux zéro (PTZ). Credisim vérifie votre tranche, estime le montant et peut lisser vos mensualités.' },
+    ],
+  },
+
+  'check-offer': {
+    title: 'Comment vérifier une offre de prêt',
+    lead: 'Une offre de prêt est pleine de chiffres. Quelques vérifications simples montrent s’ils sont cohérents.',
+    read: 3,
+    blocks: [
+      { p: 'Repérez ces chiffres dans l’offre (et dans la fiche FISE) :' },
+      {
+        list: [
+          'montant, taux nominal et durée',
+          'mensualité **hors** assurance, et l’assurance par mois',
+          'frais de dossier, de courtage et garantie',
+          'le **TAEG** et le **coût total du crédit**',
+        ],
+      },
+      { h: 'Ce qu’il faut vérifier' },
+      {
+        steps: [
+          '**La mensualité correspond au taux :** montant, taux et durée donnent une seule mensualité. Un écart de plus d’un ou deux euros signale une erreur, ou un autre taux.',
+          '**Le TAEG est plausible :** avec les frais, la garantie et l’assurance, on peut le recalculer. Un TAEG un peu plus élevé est normal si l’offre inclut des frais non saisis (frais de compte, d’expertise).',
+          '**Le TAEG est sous le taux d’usure** de ce type de prêt.',
+          '**Le coût total est juste :** toutes les échéances et l’assurance, moins le montant emprunté, plus frais et garantie.',
+        ],
+      },
+      { note: 'L’outil « Vérifier mon offre » fait tout cela pour vous : [Outils → Vérifier mon offre](#tools/check-offer).' },
+      { p: 'Vous avez 10 jours de réflexion avant d’accepter une offre de crédit immobilier. Profitez-en pour comparer et négocier l’assurance et les frais.' },
+    ],
+  },
+
+  'early-repayment': {
+    title: 'Rembourser par anticipation',
+    lead: 'Vous pouvez rembourser tout ou partie de votre prêt avant la fin. Vous économisez des intérêts, mais des indemnités peuvent s’appliquer.',
+    read: 3,
+    blocks: [
+      { h: 'Les indemnités (IRA)' },
+      { p: 'Pour un crédit immobilier, la banque peut facturer des indemnités de remboursement anticipé. La loi les plafonne au **plus faible** de :' },
+      { list: ['**6 mois d’intérêts** sur la somme remboursée, au taux du prêt', '**3 % du capital restant dû** avant le remboursement'] },
+      { p: 'Aucune indemnité n’est due en cas de vente suite à une mobilité professionnelle, de décès, ou si le contrat les supprime (c’est fréquent). Les crédits à la consommation ont leur propre plafond, plus bas.' },
+      { h: 'Réduire la durée ou la mensualité ?' },
+      {
+        list: [
+          '**Garder la même mensualité :** le prêt se termine plus tôt. C’est ce qui économise le plus d’intérêts.',
+          '**Garder la même durée :** la mensualité baisse. Utile si votre budget est serré.',
+        ],
+      },
+      { p: 'Rembourser tôt rapporte le plus dans les premières années, quand chaque échéance est surtout composée d’intérêts.' },
+      { note: 'Faites le calcul avec vos chiffres : [Outils → Remboursement anticipé](#tools/early-repayment).' },
+    ],
+  },
+
+  'renegotiation': {
+    title: 'Renégocier ou faire racheter son prêt',
+    lead: 'Si les taux ont baissé depuis votre emprunt, un taux plus bas peut faire économiser des milliers d’euros, à condition que les frais ne mangent pas l’économie.',
+    read: 3,
+    blocks: [
+      { list: ['**Renégociation :** votre propre banque baisse le taux. En général de petits frais, pas de nouvelle garantie.', '**Rachat de crédit :** une autre banque rembourse votre prêt et vous en accorde un nouveau. Vous payez les indemnités, de nouveaux frais et une nouvelle garantie.'] },
+      { h: 'Quand est-ce intéressant ?' },
+      { p: 'Repère courant : dès **0,7 à 1 point** d’écart de taux, avec un capital restant important, dans la **première moitié** du prêt. Plus tard, vos échéances sont surtout du capital et un taux plus bas économise peu.' },
+      { h: 'Les frais à compter' },
+      { list: ['indemnités de remboursement anticipé (plafonnées à 6 mois d’intérêts ou 3 %)', 'frais de dossier et de courtage', 'nouvelle garantie', 'éventuellement une nouvelle assurance'] },
+      { p: 'Le chiffre clé est le **mois de rentabilité** : quand les économies mensuelles ont remboursé les frais.' },
+      { note: 'Comparez votre prêt actuel avec une offre : [Outils → Renégocier ou faire racheter](#tools/renegotiation).' },
     ],
   },
 
@@ -251,7 +342,8 @@ export const fr: Content = {
           'La garantie est estimée (caution environ 0,75 % + 300 € ; hypothèque environ 1,5 % ; PPD environ 1 %). La restitution partielle en fin de prêt avec caution n’est pas déduite.',
           'Les frais sont financés dans un crédit immobilier et payés à part pour un crédit à la consommation.',
           'La capacité d’emprunt compte l’assurance à son niveau du premier mois, ce qui reste prudent.',
-          'Pas encore inclus : PTZ et prêts aidés, différé, taux variables, remboursement anticipé. Ils arrivent dans les prochaines phases.',
+          'Le PTZ suit les règles 2025–2027 (tranches, quotités, plafonds de coût) ; le coût de l’opération retenu est prix + travaux. Son montant final est fixé par la banque.',
+          'Pas encore inclus : taux variables et capés, prêt relais, autres prêts aidés (Action Logement, prêt employeur). Ils arrivent dans les prochaines phases.',
         ],
       },
       { h: 'Données et sources' },

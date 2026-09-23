@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { CREDIT_TYPES, notaryBreakdown, principalOf, usesProject } from '../lib/engine';
+  import { CREDIT_TYPES, notaryBreakdown, principalOf, usesProject, type Amortization, type DeferralType } from '../lib/engine';
   import { fmt, t } from '../lib/i18n/index.svelte';
-  import { addScenarioB, app, current, removeScenarioB, type ScenarioId } from '../lib/state.svelte';
+  import { addScenario, app, current, removeScenario } from '../lib/state.svelte';
+  import { MAX_SCENARIOS, SCENARIO_NAMES } from '../lib/share';
   import NumberField from './ui/NumberField.svelte';
   import Segmented from './ui/Segmented.svelte';
   import SelectField from './ui/SelectField.svelte';
@@ -17,6 +18,10 @@
   const notary = $derived(notaryBreakdown(inp.price, inp.propertyKind, inp.transferTaxZone, inp.firstTimeBuyer));
   const notaryPctAuto = $derived(inp.price > 0 ? notary.total / inp.price : 0);
   const guaranteeAuto = $derived(principalOf({ ...inp, useGuarantee: true, guaranteeAuto: true }));
+  const funding = $derived(principalOf(inp));
+  const ptzEst = $derived(funding.ptzEstimate);
+  const homeLoan = $derived(inp.type === 'mortgage');
+  const years = (m: number) => fmt.duration(m, 'years');
 
   // Switching an estimate off starts the manual field from the current estimate.
   function toggleNotaryAuto(e: Event) {
@@ -36,14 +41,20 @@
     />
   </div>
 
-  {#if app.b}
+  {#if app.scenarios.length > 1}
     <div class="scen">
       <Segmented
         label="Scenario"
-        options={[{ value: 'a' as ScenarioId, label: t('scenario', { n: 'A' }) }, { value: 'b' as ScenarioId, label: t('scenario', { n: 'B' }) }]}
-        bind:value={app.active}
+        options={app.scenarios.map((_, i) => ({ value: String(i), label: t('scenario', { n: SCENARIO_NAMES[i] }) }))}
+        value={String(app.active)}
+        onchange={(v) => (app.active = Number(v))}
       />
-      <button type="button" class="link-btn small" onclick={removeScenarioB}>{t('removeScenario')}</button>
+      <div class="scen-actions">
+        {#if app.scenarios.length < MAX_SCENARIOS}
+          <button type="button" class="link-btn small" onclick={addScenario}>+ {t('addScenarioShort')}</button>
+        {/if}
+        <button type="button" class="link-btn small" onclick={() => removeScenario()}>{t('removeScenarioN', { n: SCENARIO_NAMES[app.active] })}</button>
+      </div>
     </div>
   {/if}
 
@@ -82,11 +93,25 @@
       min={spec.months.min} max={spec.months.max} step={spec.months.step} integer
       unit={t(spec.durationUnit === 'years' ? 'unitYears' : 'unitMonths')}
       factor={spec.durationUnit === 'years' ? 12 : 1} decimals={spec.durationUnit === 'years' ? 1 : 0} />
+    {#if expert && homeLoan}
+      <SelectField id={id('amort')} label={t('amortization')} tip={t('tip_amortization')} learn="amortization" bind:value={inp.amortization}
+        options={(['annuity', 'linear', 'inFine'] as Amortization[]).map((v) => ({ value: v, label: t(`am_${v}`) }))} />
+      <div class="two">
+        <SelectField id={id('deferral')} label={t('deferral')} tip={t('tip_deferral')} learn="loan-types" bind:value={inp.deferralType}
+          options={(['none', 'partial', 'total'] as DeferralType[]).map((v) => ({ value: v, label: t(`df_${v}`) }))} />
+        {#if inp.deferralType !== 'none'}
+          <NumberField id={id('deferral-m')} label={t('deferralMonths')} unit={t('unitMonths')} step={1} min={1} max={Math.max(1, inp.months - 12)} bind:value={inp.deferralMonths} />
+        {/if}
+      </div>
+    {/if}
   </fieldset>
 
   <fieldset>
     <legend>{t('secHousehold')}</legend>
     <NumberField id={id('income')} label={t('income')} tip={t('tip_debt')} learn="debt-ratio" bind:value={inp.income} step={100} />
+    {#if expert}
+      <NumberField id={id('persons')} label={t('persons')} unit="" step={1} min={1} max={12} bind:value={inp.persons} />
+    {/if}
   </fieldset>
 
   {#if expert}
@@ -95,10 +120,20 @@
       <div class="switches">
         {#if has('insurance')}
           <Switch id={id('use-ins')} label={t('opt_insurance')} tip={t('tip_insurance')} learn="insurance" bind:checked={inp.useInsurance}>
+            <Segmented size="sm" label={t('borrowers')} options={[{ value: '1', label: '1 ' + t('borrowers').toLowerCase() }, { value: '2', label: '2 ' + t('borrowers').toLowerCase() }]}
+              value={String(inp.borrowers)} onchange={(v) => (inp.borrowers = Number(v))} />
+            {#if inp.borrowers >= 2}<p class="sub-label">{t('borrowerN', { n: 1 })}</p>{/if}
             <div class="two">
               <NumberField id={id('ins-rate')} label={t('insuranceRate')} unit="%" step={0.01} max={3} bind:value={inp.insuranceRate} />
-              <NumberField id={id('ins-cover')} label={t('insuranceCover')} tip={t('tip_insuranceCover')} learn="insurance" unit="%" step={10} max={200} bind:value={inp.insuranceCover} />
+              <NumberField id={id('ins-cover')} label={t('insuranceCover')} tip={t('tip_insuranceCover')} learn="insurance" unit="%" step={10} max={100} bind:value={inp.insuranceCover} />
             </div>
+            {#if inp.borrowers >= 2}
+              <p class="sub-label">{t('borrowerN', { n: 2 })}</p>
+              <div class="two">
+                <NumberField id={id('ins-rate2')} label={t('insuranceRate')} unit="%" step={0.01} max={3} bind:value={inp.insuranceRate2} />
+                <NumberField id={id('ins-cover2')} label={t('insuranceCover')} unit="%" step={10} max={100} bind:value={inp.insuranceCover2} />
+              </div>
+            {/if}
             <SelectField id={id('ins-base')} label={t('insuranceBase')} tip={t('tip_insuranceBase')} learn="insurance" bind:value={inp.insuranceBase}
               options={[{ value: 'initial', label: t('base_initial') }, { value: 'remaining', label: t('base_remaining') }]} />
           </Switch>
@@ -112,6 +147,44 @@
                 <span class="muted num">({t('ofLoan', { p: fmt.pct(guaranteeAuto.principal ? guaranteeAuto.guarantee / guaranteeAuto.principal : 0) })})</span>{/if}</span></label>
             {#if !inp.guaranteeAuto}
               <NumberField id={id('guar-amount')} label={t('guaranteeAmount')} step={100} bind:value={inp.guaranteeAmount} />
+            {/if}
+          </Switch>
+        {/if}
+        {#if has('ptz') && project}
+          <Switch id={id('use-ptz')} label={t('opt_ptz')} tip={t('tip_ptz')} learn="ptz" bind:checked={inp.usePtz}>
+            <div class="two">
+              <SelectField id={id('ptz-zone')} label={t('ptzZone')} tip={t('tip_zone')} bind:value={inp.ptzZone}
+                options={[{ value: 'A', label: 'A bis / A' }, { value: 'B1', label: 'B1' }, { value: 'B2', label: 'B2' }, { value: 'C', label: 'C' }]} />
+              <SelectField id={id('ptz-kind')} label={t('ptzKind')} bind:value={inp.ptzKind}
+                options={[{ value: 'newFlat', label: t('pk_newFlat') }, { value: 'newHouse', label: t('pk_newHouse') }, { value: 'oldWithWorks', label: t('pk_oldWithWorks') }]} />
+            </div>
+            <div class="two">
+              <NumberField id={id('ptz-persons')} label={t('persons')} unit="" step={1} min={1} max={12} bind:value={inp.persons} />
+              <NumberField id={id('ptz-income')} label={t('taxIncome')} tip={t('tip_taxIncome')} step={1000} bind:value={inp.taxIncome} />
+            </div>
+            {#if ptzEst}
+              <div class="ptz-status" class:bad={!ptzEst.eligible}>
+                {#if ptzEst.eligible}
+                  <b>{t('ptzEligible', { b: ptzEst.band + 1, amount: fmt.eur(ptzEst.amount), share: fmt.pct(ptzEst.share, 0), cost: fmt.eur(ptzEst.costRetained) })}</b>
+                  <span>{ptzEst.deferralMonths
+                    ? t('ptzTerms', { d: years(ptzEst.deferralMonths), r: years(ptzEst.totalMonths - ptzEst.deferralMonths), t: years(ptzEst.totalMonths) })
+                    : t('ptzTermsNoDeferral', { t: years(ptzEst.totalMonths) })}</span>
+                {:else}
+                  <b>{t(ptzEst.issue === 'zone' ? 'ptzZoneIssue' : ptzEst.issue === 'noCost' ? 'ptzNoCost' : 'ptzOverIncome')}</b>
+                {/if}
+              </div>
+            {/if}
+            <label class="check"><input type="checkbox" bind:checked={inp.ptzAuto} onchange={(e) => { if (!(e.target as HTMLInputElement).checked) inp.ptzAmount = funding.ptz || ptzEst?.amount || inp.ptzAmount; }} />
+              <span>{t('notaryAuto')}</span></label>
+            {#if !inp.ptzAuto}
+              <NumberField id={id('ptz-amount')} label={t('ptzAmount')} step={1000} bind:value={inp.ptzAmount} />
+            {/if}
+            {#if funding.ptz > 0 && funding.ptz < (inp.ptzAuto ? (ptzEst?.amount ?? 0) : inp.ptzAmount)}
+              <p class="muted small">{t('ptzCapped')}</p>
+            {/if}
+            <label class="check"><input type="checkbox" bind:checked={inp.smoothing} /> <span>{t('smoothing')}</span></label>
+            {#if inp.smoothing && (inp.amortization !== 'annuity' || inp.deferralType !== 'none')}
+              <p class="muted small">{t('smoothingOff')}</p>
             {/if}
           </Switch>
         {/if}
@@ -157,8 +230,8 @@
     <p class="muted small hint">{t('quickHint')}</p>
   {/if}
 
-  {#if !app.b}
-    <button type="button" class="add" onclick={addScenarioB}>
+  {#if app.scenarios.length === 1}
+    <button type="button" class="add" onclick={addScenario}>
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
       {t('addScenario')}
     </button>
@@ -176,6 +249,13 @@
   @media (max-width: 380px) { .two { grid-template-columns: minmax(0, 1fr); } }
   .switches { display: grid; }
   .hint { margin: -8px 0 0; }
+  .scen-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .sub-label { margin: 2px 0 -4px; font-size: 13px; font-weight: 600; color: var(--text-2); }
+  .ptz-status { display: grid; gap: 4px; padding: 10px 12px; border-radius: 10px; background: var(--ok-soft); font-size: 14px; line-height: 1.4; }
+  .ptz-status b { color: var(--ok); font-weight: 600; }
+  .ptz-status span { color: var(--text-2); }
+  .ptz-status.bad { background: var(--warn-soft); }
+  .ptz-status.bad b { color: var(--warn); }
   .note { margin: -4px 0 0; }
   .check { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
   .check input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; flex: none; }

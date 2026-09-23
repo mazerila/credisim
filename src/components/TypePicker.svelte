@@ -12,11 +12,11 @@
   };
 </script>
 
-<section class="picker" aria-labelledby="type-title">
+<section class="picker no-print" aria-labelledby="type-title">
   <h2 id="type-title" class="visually">{t('typeTitle')}</h2>
   <div class="grid" role="radiogroup" aria-labelledby="type-title">
     {#each TYPES as type (type)}
-      <button type="button" role="radio" aria-checked={app.a.type === type} onclick={() => app.a.type !== type && setType(type)}>
+      <button type="button" role="radio" aria-checked={app.scenarios[0].type === type} onclick={() => app.scenarios[0].type !== type && setType(type)}>
         <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d={ICONS[type]} fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
         <span class="name">{t(`type_${type}`)}</span>
         <span class="hint">{t(`typeHint_${type}`)}</span>

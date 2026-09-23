@@ -4,6 +4,8 @@
   import Info from './ui/Info.svelte';
 
   let { r, inp }: { r: Result; inp: Inputs } = $props();
+  // Show the first month big, and the later steps (deferral, PTZ, smoothing) below.
+  const phases = $derived(r.phases);
 </script>
 
 <section class="kpis" aria-live="polite">
@@ -11,6 +13,15 @@
     <span class="label">{t('kMonthly')}</span>
     <span class="value num">{fmt.eur(r.monthlyTotal)}</span>
     <span class="sub">{r.insuranceMonthly > 0 ? t('kMonthlySub', { ins: fmt.eur(r.insuranceMonthly) }) : t('kMonthlySubNoIns')}</span>
+    {#if phases.length === 2 || phases.length === 3}
+      <ul class="phases">
+        {#each phases as p, i (p.from)}
+          <li><span>{t('kFromTo', { from: p.from, to: p.to })}</span><b class="num">{fmt.eur(p.amount)}</b></li>
+        {/each}
+      </ul>
+    {:else if phases.length > 3}
+      <span class="sub">{t('kVarying', { a: fmt.eur(phases[0].amount), b: fmt.eur(phases[phases.length - 1].amount) })}</span>
+    {/if}
   </div>
 
   <div class="kpi">
@@ -38,6 +49,10 @@
         <span class="pill {r.debtRatio.ok ? 'ok' : 'warn'}">{t(r.debtRatio.ok ? 'debtOk' : 'debtInfo')}</span>
       {/if}
       {#if r.duration && !r.duration.ok}<span class="pill warn">{t('durBad')}</span>{/if}
+      {#if r.moneyLeft}
+        <span class="left">{t('moneyLeft', { v: fmt.eur(r.moneyLeft.total) })}{#if inp.persons > 1} · {t('moneyLeftPer', { p: fmt.eur(r.moneyLeft.perPerson) })}{/if}
+          <Info text={t('tip_moneyLeft')} learn="debt-ratio" /></span>
+      {/if}
     {:else}
       <span class="value num muted">–</span>
       <span class="sub">{t('kDebtNone')}</span>
@@ -58,4 +73,8 @@
   .value { font-family: var(--font-display); font-size: clamp(30px, 3.6vw, 40px); white-space: nowrap; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
   .sub { font-size: 13px; color: var(--text-2); letter-spacing: -0.01em; }
   .pill { margin-top: 6px; }
+  .phases { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.25); display: grid; gap: 2px; font-size: 13px; }
+  .phases li { display: flex; justify-content: space-between; gap: 10px; }
+  .phases span { opacity: 0.85; }
+  .left { font-size: 13px; color: var(--text-2); margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 </style>

@@ -4,7 +4,7 @@ export interface CreditTypeSpec {
   /** Loan amount is derived from a price and a down payment (true) or entered directly. */
   fromPrice: boolean;
   /** Which optional components make sense for this type. */
-  components: Array<'insurance' | 'guarantee' | 'fileFee' | 'brokerFee' | 'notary' | 'works' | 'otherLoans'>;
+  components: Array<'insurance' | 'guarantee' | 'fileFee' | 'brokerFee' | 'notary' | 'works' | 'otherLoans' | 'ptz'>;
   months: { min: number; max: number; step: number };
   /** Duration shown in years (mortgage) or months (consumer). */
   durationUnit: 'years' | 'months';
@@ -22,7 +22,7 @@ export function usesProject(i: Pick<Inputs, 'type' | 'amountOnly'>): boolean {
 export const CREDIT_TYPES: Record<CreditType, CreditTypeSpec> = {
   mortgage: {
     fromPrice: true,
-    components: ['insurance', 'guarantee', 'fileFee', 'brokerFee', 'notary', 'works', 'otherLoans'],
+    components: ['insurance', 'guarantee', 'fileFee', 'brokerFee', 'notary', 'works', 'otherLoans', 'ptz'],
     months: { min: 12, max: 360, step: 12 },
     durationUnit: 'years',
     rate: { min: 0, max: 8, step: 0.05 },
@@ -72,6 +72,17 @@ const base: Inputs = {
   amountOnly: false,
   rate: 3.2,
   months: 300,
+  amortization: 'annuity',
+  deferralType: 'none',
+  deferralMonths: 24,
+  usePtz: false,
+  ptzZone: 'B1',
+  ptzKind: 'newFlat',
+  persons: 2,
+  taxIncome: 52000,
+  ptzAuto: true,
+  ptzAmount: 40000,
+  smoothing: true,
   useInsurance: true,
   useGuarantee: true,
   useFileFee: true,
@@ -82,6 +93,9 @@ const base: Inputs = {
   insuranceRate: 0.3,
   insuranceBase: 'initial',
   insuranceCover: 100,
+  borrowers: 1,
+  insuranceRate2: 0.3,
+  insuranceCover2: 100,
   guarantee: 'caution',
   guaranteeAuto: true,
   guaranteeAmount: 2500,

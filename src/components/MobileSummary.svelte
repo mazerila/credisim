@@ -5,7 +5,7 @@
   let { r }: { r: Result } = $props();
 </script>
 
-<div class="bar" aria-hidden="true">
+<div class="bar no-print" aria-hidden="true">
   <div><span>{t('kMonthly')}</span><b class="num">{fmt.eur(r.monthlyTotal)}</b></div>
   <div><span>{t('kTaeg')}</span><b class="num" class:bad={!r.usury.ok}>{fmt.pct(r.taeg)}</b></div>
   <div><span>{t('kCost')}</span><b class="num">{fmt.eur(r.creditCost)}</b></div>

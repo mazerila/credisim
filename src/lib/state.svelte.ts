@@ -1,16 +1,17 @@
 import { DEFAULTS, type CreditType, type Inputs } from './engine';
 import { i18n, LANGS, type Lang } from './i18n/index.svelte';
-import { decodeShare, encodeShare, type Mode, type ScenarioId } from './share';
+import { decodeShare, encodeShare, MAX_SCENARIOS, type Mode } from './share';
 
-export type { Mode, ScenarioId };
+export type { Mode };
 export type Theme = 'system' | 'light' | 'dark';
 
 interface AppState {
   mode: Mode;
   theme: Theme;
-  active: ScenarioId;
-  a: Inputs;
-  b: Inputs | null;
+  /** index of the scenario being edited */
+  active: number;
+  /** 1 to 4 scenarios, all of the same credit type */
+  scenarios: Inputs[];
 }
 
 const clone = (i: Inputs): Inputs => ({ ...i });
@@ -18,34 +19,36 @@ const clone = (i: Inputs): Inputs => ({ ...i });
 export const app = $state<AppState>({
   mode: 'quick',
   theme: 'system',
-  active: 'a',
-  a: clone(DEFAULTS.mortgage),
-  b: null,
+  active: 0,
+  scenarios: [clone(DEFAULTS.mortgage)],
 });
 
 export function current(): Inputs {
-  return (app.active === 'b' && app.b) || app.a;
+  return app.scenarios[app.active] ?? app.scenarios[0];
 }
 
 /** Switch credit type: start from that type's example values, keep the household. */
 export function setType(type: CreditType) {
-  const keep = { income: current().income, otherLoans: current().otherLoans, useOtherLoans: current().useOtherLoans };
-  const next = { ...clone(DEFAULTS[type]), ...keep };
-  app.a = next;
-  app.b = null;
-  app.active = 'a';
+  const c = current();
+  const keep = { income: c.income, otherLoans: c.otherLoans, useOtherLoans: c.useOtherLoans, persons: c.persons };
+  app.scenarios = [{ ...clone(DEFAULTS[type]), ...keep }];
+  app.active = 0;
 }
 
-export function addScenarioB() {
-  const b = clone(app.a);
-  b.months = Math.max(b.months - (b.type === 'mortgage' ? 60 : 12), b.type === 'mortgage' ? 60 : 12);
-  app.b = b;
-  app.active = 'b';
+/** New scenario: a copy of the one being edited, 5 years (or 12 months) shorter as a starting point. */
+export function addScenario() {
+  if (app.scenarios.length >= MAX_SCENARIOS) return;
+  const next = clone(current());
+  const step = next.type === 'mortgage' ? 60 : 12;
+  next.months = next.months - step >= step ? next.months - step : next.months + step;
+  app.scenarios = [...app.scenarios, next];
+  app.active = app.scenarios.length - 1;
 }
 
-export function removeScenarioB() {
-  app.b = null;
-  app.active = 'a';
+export function removeScenario(index = app.active) {
+  if (app.scenarios.length <= 1) return;
+  app.scenarios = app.scenarios.filter((_, i) => i !== index);
+  app.active = Math.min(app.active, app.scenarios.length - 1);
 }
 
 // ---------- theme ----------
@@ -68,15 +71,14 @@ export function setTheme(theme: Theme) {
 
 // ---------- share link: the whole simulation lives in the URL fragment ----------
 export function toHash(): string {
-  return '#' + encodeShare({ a: app.a, b: app.b, mode: app.mode, active: app.active, lang: i18n.lang });
+  return '#' + encodeShare({ scenarios: app.scenarios, mode: app.mode, active: app.active, lang: i18n.lang });
 }
 
 /** Apply a shared link. The language from the link is shown but not saved as the visitor's preference. */
 export function loadHash(hash = location.hash): boolean {
   const s = decodeShare(hash);
   if (!s) return false;
-  app.a = s.a;
-  app.b = s.b;
+  app.scenarios = s.scenarios;
   app.mode = s.mode;
   app.active = s.active;
   if (s.lang && (LANGS as string[]).includes(s.lang)) i18n.lang = s.lang as Lang;

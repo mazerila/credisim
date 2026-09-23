@@ -4,6 +4,7 @@
   import ExDebt from './examples/ExDebt.svelte';
   import ExDurations from './examples/ExDurations.svelte';
   import ExInsurance from './examples/ExInsurance.svelte';
+  import ExLoanTypes from './examples/ExLoanTypes.svelte';
   import ExNotary from './examples/ExNotary.svelte';
   import ExPayment from './examples/ExPayment.svelte';
   import ExPtz from './examples/ExPtz.svelte';
@@ -13,7 +14,7 @@
   let { id }: { id: ExampleId } = $props();
   const MAP = {
     payment: ExPayment, amortization: ExAmortization, taeg: ExTaeg, insurance: ExInsurance, notary: ExNotary,
-    debt: ExDebt, usury: ExUsury, ptz: ExPtz, durations: ExDurations,
+    debt: ExDebt, usury: ExUsury, ptz: ExPtz, durations: ExDurations, loanTypes: ExLoanTypes,
   };
   const Comp = $derived(MAP[id]);
 </script>

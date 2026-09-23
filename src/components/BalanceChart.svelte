@@ -8,7 +8,7 @@
 
   const W = 420, H = 230, L = 46, RP = 10, T = 14, B = 28;
   const n = $derived(Math.max(1, ...series.map((s) => s.rows.length)));
-  const max = $derived(niceMax(Math.max(1, ...series.map((s) => s.principal))));
+  const max = $derived(niceMax(Math.max(1, ...series.map((s) => Math.max(s.principal, ...s.rows.map((r) => r.balance))))));
   const x = (k: number) => L + ((W - L - RP) * k) / n;
   const y = (v: number) => H - B - ((H - T - B) * v) / max;
   const path = (s: Series) =>

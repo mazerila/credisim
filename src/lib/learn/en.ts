@@ -66,6 +66,33 @@ export const en: Content = {
     ],
   },
 
+  'loan-types': {
+    title: 'Repayment types and deferral',
+    lead: 'Most loans repay the same amount every month, but there are other ways to spread the capital, and you can delay the start.',
+    read: 3,
+    blocks: [
+      { h: 'Three ways to repay the capital' },
+      {
+        list: [
+          '**Constant payments** (échéances constantes): the same payment every month. The norm in France.',
+          '**Constant capital** (amortissement constant): the same slice of capital every month, plus the interest. Payments start higher and fall; total interest is lower.',
+          '**In fine:** you pay only interest, and repay the whole capital in one go at the end. Used by investors, often backed by savings.',
+        ],
+      },
+      { example: 'loanTypes' },
+      { h: 'Deferral (différé)' },
+      { p: 'A deferral delays repayment at the start, typically while a new home is being built.' },
+      {
+        list: [
+          '**Partial deferral:** you pay only the interest (and insurance). The capital does not fall yet.',
+          '**Total deferral:** you pay nothing (except insurance). The interest is added to what you owe, so the loan costs more.',
+        ],
+      },
+      { p: 'After the deferral, the capital is repaid over the remaining months, so payments are higher than without a deferral. For a new build with a deferral, the maximum duration goes from 25 to 27 years.' },
+      { note: 'Try them in the simulator: Detailed mode → Loan → Repayment type and Deferral.' },
+    ],
+  },
+
   taeg: {
     title: 'What the TAEG includes',
     lead: 'The TAEG (taux annuel effectif global) is the all-in yearly rate. It is the one number to compare between offers.',
@@ -224,7 +251,71 @@ export const en: Content = {
       { h: 'Repayment depends on your income band' },
       { example: 'ptz' },
       { p: 'During the deferral you repay nothing on the PTZ, which keeps your total monthly payment low at the start. Banks then often “smooth” the main loan so the total stays constant.' },
-      { note: 'Credisim will add the PTZ to the simulator in a later phase. For now, you can estimate it with the official ANIL simulator.' },
+      { note: 'Add a PTZ in the simulator: Detailed mode → Included in the simulation → Interest-free loan (PTZ). Credisim checks your band, estimates the amount and can smooth your payments.' },
+    ],
+  },
+
+  'check-offer': {
+    title: 'How to check a loan offer',
+    lead: 'A bank offer is full of numbers. A few simple checks tell you whether they hang together.',
+    read: 3,
+    blocks: [
+      { p: 'Look for these figures on the offer (in France, the FISE sheet and the offer itself):' },
+      {
+        list: [
+          'amount, nominal rate and duration',
+          'monthly payment **without** insurance, and the insurance per month',
+          'application fee, broker fee and guarantee',
+          'the **TAEG** and the **total cost of credit**',
+        ],
+      },
+      { h: 'What to check' },
+      {
+        steps: [
+          '**The payment matches the rate:** the amount, rate and duration give exactly one payment. A gap of more than a euro or two means a mistake, or a different rate.',
+          '**The TAEG is plausible:** with the fees, guarantee and insurance, you can recompute it. A slightly higher TAEG is normal if the offer includes costs you did not enter (account fees, valuation).',
+          '**The TAEG is under the usury rate** for this kind of loan.',
+          '**The total cost adds up:** all payments and insurance, minus the amount borrowed, plus fees and guarantee.',
+        ],
+      },
+      { note: 'The “Check my offer” tool does all of this for you: [Tools → Check my offer](#tools/check-offer).' },
+      { p: 'You have 10 days to think before accepting a home-loan offer. Use them to compare, and to negotiate the insurance and fees.' },
+    ],
+  },
+
+  'early-repayment': {
+    title: 'Repaying early',
+    lead: 'You can repay all or part of your loan before the end. It saves interest, but a penalty may apply.',
+    read: 3,
+    blocks: [
+      { h: 'The penalty (IRA)' },
+      { p: 'For a home loan, the bank may charge early-repayment fees (indemnités de remboursement anticipé). The law caps them at the **lower** of:' },
+      { list: ['**6 months of interest** on the amount you repay, at the loan’s rate', '**3 % of the capital still owed** before the repayment'] },
+      { p: 'No penalty is due when you sell after a job move, in case of death, or when the contract waives it (many do). Consumer loans have their own, smaller cap.' },
+      { h: 'Shorter loan or lower payment?' },
+      {
+        list: [
+          '**Keep the same payment:** the loan ends sooner. This saves the most interest.',
+          '**Keep the same end date:** the payment falls. Useful if your budget is tight.',
+        ],
+      },
+      { p: 'Repaying early saves the most in the first years, when most of each payment is interest.' },
+      { note: 'Work it out with your own numbers: [Tools → Early repayment](#tools/early-repayment).' },
+    ],
+  },
+
+  'renegotiation': {
+    title: 'Renegotiating or transferring your loan',
+    lead: 'If rates have fallen since you borrowed, a lower rate can save thousands, as long as the costs don’t eat the saving.',
+    read: 3,
+    blocks: [
+      { list: ['**Renegotiation:** your own bank lowers the rate. Usually a small fee, no new guarantee.', '**Buy-out (rachat):** another bank repays your loan and gives you a new one. You pay the early-repayment penalty, new fees and a new guarantee.'] },
+      { h: 'When is it worth it?' },
+      { p: 'A common rule of thumb: when the rate gap is at least **0.7 to 1 point**, the remaining capital is large, and you are in the **first half** of the loan. Later, most of your payments are capital and a lower rate saves little.' },
+      { h: 'The costs to count' },
+      { list: ['early-repayment penalty (capped at 6 months of interest or 3 %)', 'application and broker fees', 'new guarantee', 'possibly a new insurance'] },
+      { p: 'The key figure is the **break-even month**: when the monthly savings have paid back the costs.' },
+      { note: 'Compare your current loan with an offer: [Tools → Renegotiate or transfer](#tools/renegotiation).' },
     ],
   },
 
@@ -251,7 +342,8 @@ export const en: Content = {
           'The guarantee is an estimate (guarantee company about 0.75 % + €300; mortgage about 1.5 %; lien about 1 %). The partial refund at the end of a guarantee-company loan is not deducted.',
           'Fees are financed inside a home loan and paid upfront for consumer loans.',
           'Borrowing capacity counts insurance at its first-month level, which errs on the safe side.',
-          'Not yet included: PTZ and other assisted loans, deferral, variable rates, early repayment. They come in later phases.',
+          'The PTZ follows the 2025–2027 rules (bands, shares, cost ceilings); the operation cost used is price + works. Its final amount is set by the bank.',
+          'Not yet included: variable and capped rates, bridge loans, other assisted loans (Action Logement, employer loans). They come in later phases.',
         ],
       },
       { h: 'Data and sources' },

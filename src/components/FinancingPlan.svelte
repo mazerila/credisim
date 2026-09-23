@@ -17,7 +17,7 @@
         {#if r.notary}<tr><td>{t('planNotary')} <span class="pct">{fmt.pct(r.notary / inp.price)}</span></td><td>{fmt.eur(r.notary)}</td></tr>{/if}
         {#if r.works}<tr><td>{t('planWorks')}</td><td>{fmt.eur(r.works)}</td></tr>{/if}
         {#if r.fees && financed}<tr><td>{t('planFees')}</td><td>{fmt.eur(r.fees)}</td></tr>{/if}
-        {#if r.guarantee}<tr><td>{t('planGuarantee')} <span class="pct">{fmt.pct(r.guarantee / r.principal)}</span></td><td>{fmt.eur(r.guarantee)}</td></tr>{/if}
+        {#if r.guarantee}<tr><td>{t('planGuarantee')} <span class="pct">{fmt.pct(r.guarantee / r.totalBorrowed)}</span></td><td>{fmt.eur(r.guarantee)}</td></tr>{/if}
         <tr class="sum"><td>{t('planTotal')}</td><td>{fmt.eur(inp.price + r.notary + r.works + (financed ? r.fees : 0) + r.guarantee)}</td></tr>
         <tr class="minus"><td>{t('planDown')}</td><td>− {fmt.eur(inp.downPayment)}</td></tr>
       {:else}
@@ -25,7 +25,11 @@
       {/if}
       {#if r.fees && !financed}<tr class="minus"><td>{t('planFeesUpfront')}</td><td>{fmt.eur(r.fees)}</td></tr>{/if}
       {#if r.guarantee && !project}<tr class="minus"><td>{t('planGuaranteeUpfront')}</td><td>{fmt.eur(r.guarantee)}</td></tr>{/if}
-      <tr class="total"><td>{t('planLoan')}</td><td>{fmt.eur(r.principal)}</td></tr>
+      <tr class="total"><td>{t('planLoan')}</td><td>{fmt.eur(r.totalBorrowed)}</td></tr>
+      {#if r.ptz}
+        <tr class="split"><td>{t('planMain')}</td><td>{fmt.eur(r.principal)}</td></tr>
+        <tr class="split"><td>{t('planPtz')}</td><td>{fmt.eur(r.ptz.amount)}</td></tr>
+      {/if}
     </tbody>
   </table>
 </section>
@@ -36,5 +40,7 @@
   tr.sum td { font-weight: 600; }
   .pct { color: var(--text-3); font-size: 14px; margin-left: 4px; font-variant-numeric: tabular-nums; }
   tr.minus td { color: var(--text-2); }
+  tr.split td { color: var(--text-2); font-size: 15px; padding-left: 14px; border-bottom: 0; padding-block: 4px; }
+  tr.split td:last-child { padding-left: 0; }
   tr.total td { border-bottom: 0; padding-top: 14px; font-size: 19px; font-weight: 600; }
 </style>

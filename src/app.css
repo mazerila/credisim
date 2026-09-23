@@ -182,3 +182,45 @@ table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nu
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* Tools pages: form on the left, results on the right. */
+.tool-layout { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .tool-layout { grid-template-columns: minmax(0, 1fr); } }
+.tool-form { display: grid; gap: 14px; }
+.tool-form h3 { font-family: var(--font-display); font-size: 17px; font-weight: 600; margin: 8px 0 0; letter-spacing: -0.02em; }
+.tool-form h3:first-child { margin-top: 0; }
+.tool-form .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.tool-form .check { display: flex; align-items: flex-start; gap: 8px; font-size: 15px; cursor: pointer; line-height: 1.35; }
+.tool-form .check input { width: 18px; height: 18px; accent-color: var(--accent); margin: 1px 0 0; flex: none; }
+.tool-results { display: grid; gap: 20px; min-width: 0; }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.fig { background: var(--surface); border: 1px solid var(--card-border); box-shadow: var(--shadow); border-radius: var(--radius); padding: 18px 20px; display: grid; gap: 4px; align-content: start; }
+.fig.lead { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.fig.lead .fig-label, .fig.lead .fig-sub { color: inherit; opacity: 0.85; }
+.fig-label { font-size: 14px; color: var(--text-2); font-weight: 500; }
+.fig-value { font-family: var(--font-display); font-size: clamp(26px, 3vw, 34px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.fig-value.good { color: var(--ok); } .fig-value.bad { color: var(--bad); }
+.fig-sub { font-size: 13px; color: var(--text-2); }
+.compare-rows td { padding: 9px 0; border-bottom: 1px solid var(--sep); font-size: 15px; }
+.compare-rows th { font-size: 13px; color: var(--text-2); font-weight: 600; text-align: right; padding: 0 0 8px; }
+.compare-rows th:first-child { text-align: left; }
+.compare-rows td:not(:first-child) { text-align: right; font-weight: 500; }
+.compare-rows tr:last-child td { border-bottom: 0; }
+.hint-box { background: var(--accent-soft); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 14px; line-height: 1.5; margin: 0; }
+
+/* Print / PDF: a clean light report of the results. */
+@media print {
+  :root, :root[data-theme='dark'] {
+    --bg: #ffffff; --surface: #ffffff; --fill: #e8e8ed; --fill-2: #f3f3f5; --text: #111111; --text-2: #555555; --text-3: #777777;
+    --sep: #dddddd; --card-border: #dddddd; --accent: #0071e3; --accent-soft: rgba(0, 113, 227, 0.08); --on-accent: #ffffff;
+    --shadow: none; color-scheme: light;
+  }
+  body { background: #fff; font-size: 12px; }
+  .nav, .hero, .picker, .no-print, aside, footer, .how, .info { display: none !important; }
+  .two { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; gap: 12px !important; }
+  .card { padding: 14px 16px !important; }
+  .layout { display: block !important; margin: 0 !important; }
+  .results { gap: 12px !important; }
+  .card, .kpi, .fig { break-inside: avoid; box-shadow: none !important; border: 1px solid #ddd !important; }
+  @page { margin: 14mm; }
+}

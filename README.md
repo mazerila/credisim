@@ -10,11 +10,14 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
 |---|---|
 | ![Credisim in light mode](docs/images/screenshot-light.png) | ![Credisim in dark mode, French](docs/images/screenshot-dark.png) |
 
-![How it works: the TAEG explainer](docs/images/screenshot-learn.png)
+| Tools: check my offer | How it works |
+|---|---|
+| ![Check my offer tool](docs/images/screenshot-tools.png) | ![How it works: the TAEG explainer](docs/images/screenshot-learn.png) |
 
 ## Features
 
 - **Credit types:** home loan (mortgage), personal loan, car loan, home works loan. Each type has its own defaults, fields and legal-maximum band. A home loan can be simulated from the full project (price, down payment, notary fees) or from the **loan amount only** for a quick estimate.
+- **Home-loan options:** constant payments, constant capital or in fine; partial or total deferral; two borrowers with their own insurance; **PTZ** with band check (2025–2027 rules), amount estimate and payment smoothing; money left each month.
 - **Optional costs you can switch on or off:** borrower insurance (on the initial amount or the remaining balance, with coverage), guarantee (Crédit Logement-type guarantee, mortgage or lender's lien, estimated or entered by hand), notary fees (2026 regulated scale, département rate, first-time-buyer exemption, or a manual %), works, application fee, broker fee, other loans.
 - **Results:**
   - monthly payment and cost of credit
@@ -24,10 +27,12 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
   - the same loan at other durations
   - repayment schedule by month or by year
 - **Charts:** where the money goes, remaining balance, and what each year of payments covers.
-- **Scenario A vs B** comparison, with differences highlighted and both balance curves on one chart.
+- **Up to 4 scenarios** (A–D) compared side by side, differences vs A highlighted, all balance curves on one chart; **rate × duration grid** coloured by the 35 % rule and the legal maximum.
+- **Tools:** early repayment (penalty, interest saved, shorter loan or lower payment), renegotiation / buy-out (saving and break-even month), borrower-insurance switch (loi Lemoine), and **check my offer** (payment, implied rate, TAEG, total cost, legal maximum).
+- **Save, print, export:** save simulations in the browser, print a clean report or save it as PDF, export the schedule as CSV (Excel-ready in FR and EN).
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
 - **Share links:** the whole simulation (both scenarios, every field, mode, language) is stored in the URL fragment.
-- **How it works:** 13 short explainers in English and French (loans, monthly payment, schedule, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
+- **How it works:** 17 short explainers in English and French (loans, monthly payment, schedule, repayment types and deferral, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, checking an offer, early repayment, renegotiation, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
 - **English and French**, detected automatically. Light, dark or system theme. Responsive from phone to desktop.
 
 The full list, with priorities, is in [docs/FEATURES.md](docs/FEATURES.md). What comes next is in [docs/ROADMAP.md](docs/ROADMAP.md).
@@ -55,14 +60,15 @@ npm run dev        # dev server at http://localhost:5173
 src/
   lib/engine/        Pure TypeScript calculation engine (no dependencies)
                      annuity & schedule, TAEG (EU actuarial method), usury bands,
-                     notary scale, guarantee, borrowing capacity, solvers + tests
+                     notary scale, guarantee, PTZ, smoothing, deferral, tools, capacity + tests
   lib/data/fr/       Versioned French regulatory data, each value with its source
   lib/i18n/          en.ts / fr.ts dictionaries, t(), number formatting, language detection
-  lib/share.ts       Share-link encoding and validation (+ tests)
+  lib/share.ts       Share-link encoding and validation, up to 4 scenarios (+ tests)
+  lib/export.ts      CSV export and saved simulations (+ tests)
   lib/learn/         "How it works" articles (en.ts, fr.ts) + content tests
-  lib/router.svelte.ts  Hash routes: simulator, #learn, #learn/<topic>
+  lib/router.svelte.ts  Hash routes: simulator, #tools/<tool>, #learn/<topic>
   lib/state.svelte.ts  App state: credit type, mode, scenarios, theme
-  components/        Svelte 5 UI; ui/ = controls, learn/ = explainer pages and live examples
+  components/        Svelte 5 UI; ui/ = controls, tools/ = Tools pages, learn/ = explainers and live examples
   app.css            Design tokens (light and dark)
 docs/                Research, features, formulas, roadmap, naming
   planning/          Planning report and the Phase 0 prototype
@@ -82,6 +88,7 @@ French rates and rules live in `src/lib/data/fr/`:
 
 | File | Contents | Refresh |
 |---|---|---|
+| `ptz.json` | PTZ bands, family coefficients, cost ceilings, shares, repayment terms (valid until 31 Dec 2027) | When the PTZ rules change |
 | `usury.json` | Legal maximum rates (taux d'usure), one entry per quarter | Every quarter: 1 Jan, 1 Apr, 1 Jul, 1 Oct ([Banque de France](https://www.banque-france.fr/fr/statistiques/taux-et-cours)) |
 | `rules.json` | HCSF limits, notary scale and transfer taxes, guarantee estimates | When the rules change |
 
@@ -93,11 +100,10 @@ The language is chosen in this order: `?lang=en|fr` → the visitor's saved choi
 
 ## Deployment
 
-The build is a static site (`dist/`). `firebase.json` is ready for Firebase Hosting: site `credisim`, SPA rewrite, long cache for hashed assets, and tests plus build run before each deploy.
+The build is a static site (`dist/`). `firebase.json` is ready for Firebase Hosting: site `creditsimulator` (https://creditsimulator.web.app), SPA rewrite, long cache for hashed assets, and tests plus build run before each deploy.
 
 ```bash
 firebase use --add                 # select the Firebase project
-firebase hosting:sites:create credisim
 firebase deploy --only hosting
 ```
 

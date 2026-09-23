@@ -21,7 +21,7 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - EN/FR with detection (H1–H3), share link (I1)
 - Versioned regulatory data (J3), disclaimer
 
-### Phase 2 — "How it works" (Learn) ✅ built, awaiting review
+### Phase 2 — "How it works" (Learn) ✅ confirmed 2026-09-23
 - **Short, simple explainers** (L1–L4), EN/FR: what a loan is, how the monthly payment is calculated, interest vs capital (amortization), what the TAEG includes, insurance, guarantee, notary fees, usury rate, 35 % rule, PTZ basics
 - "How this calculator works": what it computes, the assumptions, the limits, data sources and dates
 - Small live examples inside the explainers (e.g. "€100k at 3 % for 20 years")
@@ -29,12 +29,13 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - Later phases add an explainer for each new feature
 - Also delivered in this phase: lighter dark theme with visible card edges; home-loan "amount only" mode
 
-### Phase 3 — France advanced
+### Phase 3 — France advanced ✅ built, awaiting review
 - **PTZ as an optional component** + multi-loan package with lissage (A10, B10)
 - Deferral, linear, in-fine (A4, A5)
 - Early repayment, renegotiation, Lemoine switch, **check my offer** (B12–B15)
 - Per-borrower insurance (B2), reste à vivre (C3)
 - 4 scenarios, sensitivity grid (F5, F6), PDF / CSV export, saved scenarios (I2–I4)
+- Delivered as: simulator options (repayment type, deferral, 2 borrowers, PTZ with band check and smoothing, money left), a **Tools** section (early repayment, renegotiation, insurance switch, check my offer), print/PDF report, CSV export, saved simulations, and 4 new explainers
 
 ### Phase 4 — More credit types
 - Revolving credit, LOA/LLD vs loan, BNPL real cost, debt consolidation (D2–D5)
