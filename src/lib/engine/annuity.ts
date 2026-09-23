@@ -36,6 +36,8 @@ export interface ScheduleOptions {
    * Return undefined to fall back to the normal amortization for that month.
    */
   paymentFor?: (k: number) => number | undefined;
+  /** Variable rate: annual rate for month k (decimal). A new rate re-computes the payment on the remaining balance and months. */
+  rateFor?: (k: number) => number;
 }
 
 /**
@@ -67,9 +69,20 @@ export function schedule(
   const insuranceFor = (bal: number) =>
     insList.reduce((s, x) => s + cents(((x.base === 'initial' ? principal : bal) * x.rate * x.cover) / 12), 0);
 
+  let rate = annualRate;
+  let rM = r;
   for (let k = 1; k <= months; k++) {
     const insurance = cents(insuranceFor(balance));
-    const interestDue = cents(balance * r);
+    if (opts.rateFor) {
+      const next = opts.rateFor(k);
+      if (next !== rate && k > d + 1) {
+        // Revision: same end date, new payment on what is left.
+        annuity = cents(monthlyPayment(balance, next, months - k + 1));
+      }
+      rate = next;
+      rM = rate / 12;
+    }
+    const interestDue = cents(balance * rM);
 
     if (k <= d) {
       if (dType === 'total') {
@@ -83,7 +96,7 @@ export function schedule(
     }
     if (k === d + 1) {
       const left = months - d;
-      annuity = cents(monthlyPayment(balance, annualRate, left));
+      annuity = cents(monthlyPayment(balance, rate, left));
       linearCapital = cents(balance / left);
     }
 

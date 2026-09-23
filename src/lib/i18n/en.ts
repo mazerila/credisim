@@ -15,6 +15,7 @@ export const en = {
   typeHint_car: 'Car loan: price minus down payment',
   typeHint_works: 'Renovation loan: over €75,000 it follows mortgage rules',
 
+  moreCredits: 'Revolving credit, pay in 3×/4×, car leasing, bridge loan, debt consolidation, rental investment',
   scenario: 'Scenario {n}', addScenario: 'Compare with another scenario', removeScenario: 'Remove scenario B',
 
   secProject: 'Project', secLoan: 'Loan', secOptions: 'Included in the simulation', secHousehold: 'Household',
@@ -99,7 +100,7 @@ export const en = {
   // Learn
   navSim: 'Simulator', navLearn: 'How it works',
   learnTitle: 'How loans work', learnLead: 'Short, simple explanations of credit in France, and of how this simulator calculates.',
-  group_basics: 'The basics', group_costs: 'The costs', group_rules: 'Rules and rights', group_manage: 'Before and after signing', group_about: 'About Credisim',
+  group_basics: 'The basics', group_costs: 'The costs', group_rules: 'Rules and rights', group_manage: 'Before and after signing', group_more: 'Other credits and projects', group_about: 'About Credisim',
   minRead: '{n} min read', allTopics: 'All topics', prev: 'Previous', next: 'Next',
   trySim: 'Try it in the simulator', learnMore: 'Learn more', howCalculated: 'How is this calculated?',
   exAmount: 'Amount', exRate: 'Rate', exYears: 'Duration', exPayment: 'Monthly payment', exInterest: 'Total interest', exTotal: 'Total repaid',
@@ -143,7 +144,7 @@ export const en = {
   sensTitle: 'Monthly payment by rate and duration', sensHint: 'Green: total loans within 35 % of your income. Red: above 35 % or above the legal maximum rate.', sensRate: 'Rate',
 
   // Tools
-  navTools: 'Tools', toolsTitle: 'Tools for your loan', toolsLead: 'Repay early, renegotiate, change insurer, or check a bank offer.',
+  navTools: 'Tools', toolsTitle: 'Tools for your loan', toolsLead: 'Calculators for your home loan, other credits and property projects.',
   allTools: 'All tools', prefilled: 'Pre-filled from your simulation. Change anything.',
   'tool_early-repayment': 'Early repayment', 'toolDesc_early-repayment': 'Repay part of your loan early: the penalty, the interest saved, and your new duration or payment.',
   tool_renegotiation: 'Renegotiate or transfer', toolDesc_renegotiation: 'Is a lower rate worth the costs? Total saving and the month it pays off.',
@@ -183,5 +184,48 @@ export const en = {
   // Consent
   consentTitle: 'Visit statistics', consentText: 'With your consent, Credisim uses Google Analytics (Firebase) to count visits and see which features are used. Your simulation figures are never sent.',
   consentAccept: 'Accept', consentDeny: 'Decline', consentSettings: 'Cookie settings',
+
+  // Variable rates
+  rateType: 'Rate type', rt_fixed: 'Fixed', rt_variable: 'Variable', rt_capped: 'Capped',
+  indexRate: 'Index (Euribor 12 months)', margin: 'Bank margin', cap: 'Cap', rateScenario: 'If the index…',
+  sc_down1: 'falls by 1 point', sc_stable: 'stays the same', sc_up1: 'rises by 1 point', sc_up2: 'rises by 2 points', sc_up3: 'rises by 3 points',
+  tip_rateType: 'Fixed: the rate never changes. Variable: index + margin, revised every year. Capped: variable, but the rate cannot move more than the cap from its starting level.',
+  tip_scenario: 'A what-if for the index over the first two years. The TAEG stays computed at the starting rate, as the law requires.',
+  varTitle: 'How the rate could move', varInitial: 'Starting rate', varMax: 'Highest rate', varMaxMonthly: 'Highest monthly payment',
+  varExtra: 'Extra cost vs a stable rate', varWorst: 'Worst case with the cap: {v}/month', varYear: 'Year',
+  varHint: 'Illustration only: nobody knows how the Euribor will move. Most French home loans use a fixed rate.',
+
+  // Phase 4 tools
+  toolGroup_loan: 'Your home loan', toolGroup_credit: 'Other credits', toolGroup_property: 'Property projects',
+  tool_revolving: 'Revolving credit', toolDesc_revolving: 'What a revolving credit (crédit renouvelable) really costs, and how long it takes to repay.',
+  tool_bnpl: 'Pay in 3 or 4 instalments', toolDesc_bnpl: 'The real cost and TAEG of splitting a purchase into instalments.',
+  'tool_car-lease': 'Car: lease (LOA/LLD) or loan', 'toolDesc_car-lease': 'Compare leasing a car with buying it on credit.',
+  tool_consolidation: 'Debt consolidation', toolDesc_consolidation: 'Group your loans into one: new monthly payment and total cost.',
+  'tool_bridge-loan': 'Bridge loan', 'toolDesc_bridge-loan': 'Buy before you sell: how much the bank advances, and what it costs.',
+  tool_rental: 'Rental investment', toolDesc_rental: 'Yield and monthly cash flow of a buy-to-let, before tax.',
+  'tool_rent-vs-buy': 'Rent or buy?', 'toolDesc_rent-vs-buy': 'Compare your net worth over time if you buy or keep renting.',
+  amountDrawn: 'Amount used', revRate: 'Interest rate', monthlyPayment: 'Monthly payment you choose', loanRateCompare: 'Personal loan rate, to compare',
+  revMin: 'Legal minimum: {v}/month', revMonths: 'Time to repay', revInterest: 'Total interest', revVsLoan: 'Same amount with a personal loan', revExtra: 'Extra cost of the revolving credit',
+  revHint: 'The law requires each payment to repay at least 1/36 of the amount used (1/60 above €3,000), so it is repaid within 3 or 5 years.',
+  purchase: 'Purchase price', instalments: 'Number of instalments', feePct: 'Fees (% of the price)', feeFixed: 'Fixed fees',
+  bnplToday: 'Today', bnplThen: 'Then {n} × {v}', bnplTotal: 'Total paid', bnplHint: 'From 20 November 2026 (directive CCD2), these offers must show a TAEG like any other credit.',
+  bnplFees: 'including fees', bnplFree: 'No fees: this split payment costs nothing.',
+  carPrice: 'Car price', firstPayment: 'First payment / down payment', rentMonthly: 'Monthly rent', leaseMonths: 'Duration', purchaseOption: 'Purchase option at the end',
+  valueAtEnd: 'Value of the car at the end', leaseLoanRate: 'Car loan rate',
+  optLoan: 'Car loan', optLeaseBuy: 'Lease, then buy', optLeaseReturn: 'Lease, then give it back', paidTotal: 'Paid in total', netCost: 'Net cost', netCostHint: 'Net cost = what you paid − what the car is worth if you own it at the end.',
+  leaseRate: 'Implied rate of the lease: {v}', leaseHint: 'LOA: you can buy the car at the end. LLD: you give it back (maintenance is often included).',
+  loansToGroup: 'Loans to group', addLoan: '+ Add a loan', removeLoan: 'Remove', loanN: 'Loan {n}', balanceShort: 'Capital owed', paymentShort: 'Payment', rateShort: 'Rate',
+  consFees: 'Fees and penalties', consBefore: 'Today', consAfter: 'After grouping', consMonthly: 'Monthly payments', consTotal: 'Still to pay', consRatio: 'Debt ratio', consExtra: 'Extra cost of grouping',
+  consHint: 'Grouping loans lowers the monthly payment by spreading it longer, which usually raises the total cost.',
+  homeValue: 'Value of the home you sell', bridgeShare: 'Share advanced by the bank', owed: 'Still owed on that home', bridgeRate: 'Bridge loan rate', bridgeMonths: 'Duration',
+  bridgeMode: 'Interest', bm_partial: 'Paid every month', bm_total: 'Paid at the sale',
+  bridgeAmount: 'Bridge loan', bridgeMonthly: 'Per month', bridgeInterest: 'Total interest', bridgeLeft: 'Left from the sale', bridgeLower: 'If you sell 10 % lower: {v}',
+  bridgeHint: 'The bank advances 60 to 80 % of the estimated value, minus what you still owe, for 12 to 24 months. Legal maximum: {u}.',
+  rentalPrice: 'Price', rentalCosts: 'Notary fees and works', rent: 'Monthly rent', vacancy: 'Empty months per year', ownerCharges: 'Owner charges / month', propertyTax: 'Property tax / year',
+  management: 'Management fee', ownerIns: 'Landlord insurance / year', grossYield: 'Gross yield', netYield: 'Net yield', cashFlow: 'Monthly cash flow', rentalHint: 'Before income tax, which depends on your regime (micro-foncier, réel, LMNP…).',
+  cashNeg: 'You add {v} a month from your pocket', cashPos: 'The rent covers everything, with {v} to spare',
+  rvbHorizon: 'Compare over', rvbPriceGrowth: 'Home price growth / year', rvbSelling: 'Selling costs', rvbRent: 'Current rent', rvbRentGrowth: 'Rent growth / year', rvbReturn: 'Return on savings / year', rvbOwnerCosts: 'Owner costs / year',
+  rvbBuyer: 'If you buy', rvbRenter: 'If you rent', rvbWinner: 'After {n}: buying {w} by {v}', rvbWin: 'wins', rvbLose: 'loses', rvbBreakEven: 'Buying becomes better after {n}.', rvbNever: 'Renting stays better over this period.',
+  rvbHint: 'Net worth = home value minus loan and selling costs (buyer), or savings invested (renter). Both start with the same down payment.',
 };
 export type Dict = typeof en;

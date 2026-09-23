@@ -1,8 +1,13 @@
 import { isTopic, type TopicId } from './learn';
 
 export type View = 'sim' | 'learn' | 'tools';
-export const TOOLS = ['early-repayment', 'renegotiation', 'insurance-switch', 'check-offer'] as const;
-export type ToolId = (typeof TOOLS)[number];
+export const TOOL_GROUPS = [
+  { key: 'loan', tools: ['check-offer', 'early-repayment', 'renegotiation', 'insurance-switch'] },
+  { key: 'credit', tools: ['revolving', 'bnpl', 'car-lease', 'consolidation'] },
+  { key: 'property', tools: ['bridge-loan', 'rental', 'rent-vs-buy'] },
+] as const;
+export const TOOLS = TOOL_GROUPS.flatMap((g) => g.tools);
+export type ToolId = (typeof TOOL_GROUPS)[number]['tools'][number];
 const isTool = (v: string): v is ToolId => (TOOLS as readonly string[]).includes(v);
 
 /**

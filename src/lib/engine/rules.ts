@@ -19,7 +19,8 @@ export function usuryTable(date = new Date()): { table: Quarter; stale: boolean 
  * Which usury band applies. Consumer credit (personal, car, works ≤ €75k) uses
  * amount bands; mortgages and works loans above €75k use duration bands.
  */
-export function usuryCategory(type: CreditType, principal: number, months: number): UsuryCategory {
+export function usuryCategory(type: CreditType, principal: number, months: number, variable = false): UsuryCategory {
+  if (type === 'mortgage' && variable) return 'variable';
   const mortgageLike = type === 'mortgage' || (type === 'works' && principal > rules.consumerCreditMaxForMortgageBands);
   if (mortgageLike) {
     if (months < 120) return 'fixedUnder10y';

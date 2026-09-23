@@ -26,6 +26,7 @@
   import TaegBreakdown from './components/TaegBreakdown.svelte';
   import TypePicker from './components/TypePicker.svelte';
   import YearBars from './components/YearBars.svelte';
+  import VariableRateCard from './components/VariableRateCard.svelte';
 
   if (!parseRoute()) loadHash();
   setTheme(app.theme);
@@ -108,6 +109,7 @@
             : [{ label: 'A', color: 'var(--c-capital)', principal: r.totalBorrowed, rows: r.rows }]}
         />
       </div>
+      {#if r.variable}<VariableRateCard {r} />{/if}
       <YearBars years={r.years} />
       <Capacity {inp} />
       <DurationTable {inp} />

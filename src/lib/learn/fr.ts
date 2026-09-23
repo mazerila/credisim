@@ -93,6 +93,25 @@ export const fr: Content = {
     ],
   },
 
+  'variable-rates': {
+    title: 'Taux variable et taux capé',
+    lead: 'Un taux variable suit un indice du marché. Il peut baisser ou monter pendant le prêt ; un cap limite l’écart.',
+    read: 3,
+    blocks: [
+      { p: 'Taux = **indice + marge de la banque**. En France l’indice est en général l’**Euribor 12 mois**, et le taux est révisé une fois par an. La marge ne change jamais.' },
+      {
+        list: [
+          '**Variable :** le taux suit l’indice sans limite.',
+          '**Capé :** le taux ne peut pas s’écarter de plus d’un certain nombre de points de son niveau de départ (souvent ±1, ±2 ou ±3). La plupart des taux variables français sont capés.',
+        ],
+      },
+      { p: 'À chaque révision, la banque recalcule la mensualité sur le capital restant, à date de fin inchangée. Certains contrats gardent la mensualité et font varier la durée.' },
+      { h: 'Ce que dit la loi' },
+      { list: ['Le TAEG d’un prêt variable est calculé comme si le taux de départ ne changeait jamais.', 'Il doit rester sous le taux d’usure des prêts à taux variable.'] },
+      { note: 'Plus de 98 % des crédits immobiliers français sont à taux fixe. Un taux variable peut se justifier sur un prêt court, ou si vous prévoyez de rembourser par anticipation. Testez les scénarios : mode Détaillé → Prêt → Type de taux.' },
+    ],
+  },
+
   taeg: {
     title: 'Ce que contient le TAEG',
     lead: 'Le TAEG (taux annuel effectif global) est le taux annuel tout compris. C’est le chiffre à comparer entre les offres.',
@@ -319,6 +338,100 @@ export const fr: Content = {
     ],
   },
 
+  revolving: {
+    title: 'Crédit renouvelable et paiement en plusieurs fois',
+    lead: 'Deux façons simples d’acheter maintenant et de payer plus tard, souvent les crédits les plus chers.',
+    read: 3,
+    blocks: [
+      { h: 'Le crédit renouvelable' },
+      { p: 'Une réserve d’argent réutilisable au fur et à mesure du remboursement, souvent liée à une carte de magasin. Les taux sont élevés, proches du taux d’usure pour les petits montants.' },
+      {
+        list: [
+          'Chaque mensualité doit rembourser au moins **1/36** du montant utilisé (jusqu’à 3 000 €) ou **1/60** (au-delà) : il est remboursé en 3 ou 5 ans maximum.',
+          'Pour un achat de plus de 1 000 € en magasin, le vendeur doit aussi proposer un prêt personnel classique.',
+          'Le contrat est reconduit chaque année ; vous pouvez le résilier à tout moment.',
+        ],
+      },
+      { h: 'Le paiement en 3 ou 4 fois' },
+      { p: 'Gratuit quand il n’y a pas de frais. Avec des frais, même faibles, le TAEG peut être très élevé car l’argent n’est prêté que quelques semaines. À partir du 20 novembre 2026 (directive CCD2), ces offres doivent afficher un TAEG.' },
+      { note: 'Voyez le vrai coût : [Outils → Crédit renouvelable](#tools/revolving) et [Outils → Paiement en 3 ou 4 fois](#tools/bnpl).' },
+    ],
+  },
+
+  'car-leasing': {
+    title: 'Voiture : LOA, LLD ou crédit ?',
+    lead: 'La location donne accès à une voiture neuve contre un loyer. Qu’elle batte un crédit dépend de ce que vous faites à la fin.',
+    read: 3,
+    blocks: [
+      {
+        list: [
+          '**LOA** (location avec option d’achat) : vous louez la voiture et pouvez l’acheter à la fin au prix de l’option. Elle suit les règles du crédit à la consommation (fiche d’information, 14 jours pour changer d’avis).',
+          '**LLD** (location longue durée) : vous louez puis rendez la voiture. L’entretien est souvent inclus.',
+          '**Crédit auto :** la voiture est à vous dès le premier jour et vous pouvez la revendre quand vous voulez.',
+        ],
+      },
+      { h: 'Comparer le coût net' },
+      { p: 'Additionnez tout ce que vous payez, puis retirez ce que vaut la voiture à la fin si elle est à vous. Les locations imposent aussi un kilométrage maximum et des frais de remise en état à la restitution.' },
+      { note: 'Comparez avec vos chiffres : [Outils → Auto : LOA/LLD ou crédit](#tools/car-lease).' },
+    ],
+  },
+
+  'debt-consolidation': {
+    title: 'Le rachat de crédits',
+    lead: 'Regrouper plusieurs crédits en un seul baisse la mensualité, mais augmente en général le coût total.',
+    read: 2,
+    blocks: [
+      { p: 'Une banque ou un organisme spécialisé rembourse vos crédits en cours et vous accorde un seul nouveau prêt, en général plus long. Utile quand les mensualités ne rentrent plus dans votre budget.' },
+      {
+        list: [
+          'La mensualité baisse parce que la durée s’allonge : le total des intérêts augmente en général.',
+          'Comptez les frais : frais de dossier, indemnités de remboursement anticipé sur les anciens crédits, garantie si un crédit immobilier est inclus.',
+          'Un intermédiaire ne peut percevoir aucun paiement avant le versement effectif du nouveau prêt.',
+        ],
+      },
+      { note: 'Essayez : [Outils → Rachat de crédits](#tools/consolidation).' },
+    ],
+  },
+
+  'bridge-loan': {
+    title: 'Le prêt relais : acheter avant de vendre',
+    lead: 'Le prêt relais avance une partie de la valeur du logement que vous vendez, pour acheter le suivant d’abord.',
+    read: 3,
+    blocks: [
+      {
+        list: [
+          'La banque avance **60 à 80 %** de la valeur estimée, moins ce que vous devez encore sur ce logement.',
+          'Il dure **12 à 24 mois**. Vous le remboursez en une fois à la vente.',
+          'Les intérêts sont payés chaque mois (différé partiel) ou en totalité à la vente (différé total, plus cher).',
+          'Il est souvent associé à un prêt classique pour le reste du nouvel achat.',
+        ],
+      },
+      { h: 'Le risque' },
+      { p: 'Si la vente tarde ou se fait à un prix plus bas que prévu, vous devez quand même rembourser la totalité. Soyez réaliste sur la valeur et gardez une marge.' },
+      { note: 'Estimez le vôtre : [Outils → Prêt relais](#tools/bridge-loan).' },
+    ],
+  },
+
+  'rental-investment': {
+    title: 'Investissement locatif, et louer ou acheter',
+    lead: 'Un achat pour louer se juge sur son rendement et son cash-flow. L’achat de sa résidence, sur le temps qu’on y reste.',
+    read: 3,
+    blocks: [
+      { h: 'Les rendements' },
+      {
+        list: [
+          '**Rendement brut** = loyer annuel ÷ prix.',
+          '**Rendement net** = (loyers réellement perçus − charges, taxe foncière, gestion, assurance) ÷ coût total, frais de notaire et travaux compris.',
+          '**Cash-flow** = loyer net par mois − mensualité − assurance. Négatif : vous ajoutez de l’argent chaque mois.',
+        ],
+      },
+      { p: 'L’impôt dépend de votre régime : micro-foncier (abattement de 30 % jusqu’à 15 000 € de loyers par an), régime réel, ou location meublée (LMNP). Demandez conseil pour votre situation.' },
+      { h: 'Louer ou acheter sa résidence ?' },
+      { p: 'Acheter coûte cher au départ (frais de notaire, intérêts). C’est rentable si vous restez assez longtemps pour que la valeur du bien et le capital remboursé dépassent ces coûts. Louer et placer la différence peut l’emporter sur de courtes périodes ou quand les prix stagnent.' },
+      { note: 'Essayez les deux : [Outils → Investissement locatif](#tools/rental) et [Outils → Louer ou acheter ?](#tools/rent-vs-buy).' },
+    ],
+  },
+
   calculator: {
     title: 'Comment fonctionne ce simulateur',
     lead: 'Ce que Credisim calcule, les hypothèses retenues et l’origine de ses données.',
@@ -343,7 +456,8 @@ export const fr: Content = {
           'Les frais sont financés dans un crédit immobilier et payés à part pour un crédit à la consommation.',
           'La capacité d’emprunt compte l’assurance à son niveau du premier mois, ce qui reste prudent.',
           'Le PTZ suit les règles 2025–2027 (tranches, quotités, plafonds de coût) ; le coût de l’opération retenu est prix + travaux. Son montant final est fixé par la banque.',
-          'Pas encore inclus : taux variables et capés, prêt relais, autres prêts aidés (Action Logement, prêt employeur). Ils arrivent dans les prochaines phases.',
+          'Taux variables et capés : l’indice suit le scénario choisi pendant deux ans puis reste stable ; la mensualité est recalculée chaque année à date de fin inchangée.',
+          'Pas encore inclus : autres prêts aidés (Action Logement, prêt employeur) et règles des autres pays.',
         ],
       },
       { h: 'Données et sources' },

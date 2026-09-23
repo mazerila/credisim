@@ -1,6 +1,6 @@
 # Feature list
 
-Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (as of Phase 3).
+Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (as of Phase 4).
 "Gap" = something the reviewed tools don't offer, or offer poorly (see RESEARCH.md §1.5).
 
 ## A. Loan engine (any country)
@@ -13,8 +13,8 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | A4 | Deferral: partial (interest only) and total (capitalised) | P1 ✅ | |
 | A5 | Linear (constant capital) and in-fine (interest-only + bullet) loans | P1 ✅ | |
 | A6 | Stepped / modulable payments (paliers) | P2 | |
-| A7 | Variable rate: Euribor + margin, custom rate path, **stress test** (+1/+2/+3 pts) | P2 | ✓ |
-| A8 | Capped variable rate (cap ±1 / ±2) | P2 | |
+| A7 | Variable rate: Euribor + margin, custom rate path, **stress test** (+1/+2/+3 pts) | P2 ✅ | ✓ |
+| A8 | Capped variable rate (cap ±1 / ±2) | P2 ✅ | |
 | A9 | Payment frequency: monthly, quarterly, semi-annual, annual | P2 | |
 | A10 | Multi-loan package: main + PTZ + Action Logement + employer loan, **lissage** to a constant total | P1 ✅ | ✓ |
 
@@ -32,12 +32,12 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | B8 | **HCSF check**: debt ratio ≤ 35 % (insurance incl.), duration ≤ 25 y | P0 ✅ | |
 | B9 | Notary fees: old vs new, département DMTO, first-time-buyer exemption | P0 ✅ | |
 | B10 | PTZ: eligibility (zone, household, income tranche), amount, deferral, schedule | P1 ✅ | |
-| B11 | Bridge loan (prêt relais): sale price, % financed, interest-only / deferred | P2 | |
+| B11 | Bridge loan (prêt relais): sale price, % financed, interest-only / deferred | P2 ✅ | |
 | B12 | Early repayment: IRA = min(6 months interest, 3 % of balance); shorter term vs lower payment | P1 ✅ | |
 | B13 | Renegotiation / buy-out: new rate + fees → savings & break-even month | P1 ✅ | |
 | B14 | **Lemoine switch**: current vs new insurance → remaining savings | P1 ✅ | ✓ |
 | B15 | **Check my offer**: type in a bank offer, verify payment, schedule, TAEG | P1 ✅ | ✓ |
-| B16 | Rental investment: rent, charges, yield, cash-flow, LMNP basics | P2 | |
+| B16 | Rental investment: rent, charges, yield, cash-flow, LMNP basics | P2 ✅ | |
 
 ## C. Project budget & affordability
 
@@ -46,7 +46,7 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | C1 | Project budget: price + works + notary + guarantee + fees − down payment = loan needed | P0 ✅ | ✓ (as one view) |
 | C2 | Borrowing capacity from income, existing loans, 35 % rule | P0 ✅ | |
 | C3 | "Reste à vivre" (money left per month) with household size | P1 ✅ | |
-| C4 | Rent vs buy over N years (incl. resale, price growth, opportunity cost) | P2 | |
+| C4 | Rent vs buy over N years (incl. resale, price growth, opportunity cost) | P2 ✅ | |
 | C5 | Down-payment optimiser: what apport minimises total cost / hits 35 % | P2 | ✓ |
 
 ## D. Consumer credit
@@ -54,10 +54,10 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | # | Feature | Pri | Gap |
 |---|---|---|---|
 | D1 | Personal / car / works loan: payment, TAEG, usury check (consumer bands) | P0 ✅ | |
-| D2 | LOA / LLD vs car loan comparison | P2 | ✓ |
-| D3 | Revolving credit real cost | P2 | |
-| D4 | **BNPL / split-payment real cost** (TAEG applies from 20 Nov 2026 under CCD2) | P2 | ✓ |
-| D5 | Debt consolidation (rachat de crédits) | P2 | |
+| D2 | LOA / LLD vs car loan comparison | P2 ✅ | ✓ |
+| D3 | Revolving credit real cost | P2 ✅ | |
+| D4 | **BNPL / split-payment real cost** (TAEG applies from 20 Nov 2026 under CCD2) | P2 ✅ | ✓ |
+| D5 | Debt consolidation (rachat de crédits) | P2 ✅ | |
 
 ## E. Europe
 

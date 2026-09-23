@@ -17,6 +17,7 @@ export const fr: Dict = {
   typeHint_car: 'Crédit auto : prix moins apport',
   typeHint_works: 'Prêt travaux : au-delà de 75 000 €, il suit les règles immobilières',
 
+  moreCredits: 'Crédit renouvelable, paiement en 3×/4×, LOA/LLD, prêt relais, rachat de crédits, investissement locatif',
   scenario: 'Scénario {n}', addScenario: 'Comparer avec un autre scénario', removeScenario: 'Supprimer le scénario B',
 
   secProject: 'Projet', secLoan: 'Prêt', secOptions: 'Inclus dans la simulation', secHousehold: 'Foyer',
@@ -100,7 +101,7 @@ export const fr: Dict = {
   // Learn
   navSim: 'Simulateur', navLearn: 'Comprendre',
   learnTitle: 'Comprendre le crédit', learnLead: 'Des explications courtes et simples sur le crédit en France, et sur la façon dont ce simulateur calcule.',
-  group_basics: 'Les bases', group_costs: 'Les coûts', group_rules: 'Règles et droits', group_manage: 'Avant et après la signature', group_about: 'À propos de Credisim',
+  group_basics: 'Les bases', group_costs: 'Les coûts', group_rules: 'Règles et droits', group_manage: 'Avant et après la signature', group_more: 'Autres crédits et projets', group_about: 'À propos de Credisim',
   minRead: '{n} min de lecture', allTopics: 'Tous les sujets', prev: 'Précédent', next: 'Suivant',
   trySim: 'Essayer dans le simulateur', learnMore: 'En savoir plus', howCalculated: 'Comment est-ce calculé ?',
   exAmount: 'Montant', exRate: 'Taux', exYears: 'Durée', exPayment: 'Mensualité', exInterest: 'Total des intérêts', exTotal: 'Total remboursé',
@@ -144,7 +145,7 @@ export const fr: Dict = {
   sensTitle: 'Mensualité selon le taux et la durée', sensHint: 'Vert : crédits sous 35 % de vos revenus. Rouge : au-delà de 35 % ou du taux d’usure.', sensRate: 'Taux',
 
   // Tools
-  navTools: 'Outils', toolsTitle: 'Outils pour votre prêt', toolsLead: 'Rembourser par anticipation, renégocier, changer d’assurance ou vérifier une offre.',
+  navTools: 'Outils', toolsTitle: 'Outils pour votre prêt', toolsLead: 'Des calculateurs pour votre crédit immobilier, vos autres crédits et vos projets immobiliers.',
   allTools: 'Tous les outils', prefilled: 'Pré-rempli avec votre simulation. Modifiez librement.',
   'tool_early-repayment': 'Remboursement anticipé', 'toolDesc_early-repayment': 'Rembourser une partie du prêt : indemnités, intérêts économisés, nouvelle durée ou mensualité.',
   tool_renegotiation: 'Renégocier ou faire racheter', toolDesc_renegotiation: 'Un taux plus bas vaut-il les frais ? Économie totale et mois de rentabilité.',
@@ -184,4 +185,47 @@ export const fr: Dict = {
   // Consent
   consentTitle: 'Statistiques de visite', consentText: 'Avec votre accord, Credisim utilise Google Analytics (Firebase) pour compter les visites et voir quelles fonctions sont utilisées. Les chiffres de vos simulations ne sont jamais envoyés.',
   consentAccept: 'Accepter', consentDeny: 'Refuser', consentSettings: 'Gestion des cookies',
+
+  // Variable rates
+  rateType: 'Type de taux', rt_fixed: 'Fixe', rt_variable: 'Variable', rt_capped: 'Capé',
+  indexRate: 'Indice (Euribor 12 mois)', margin: 'Marge de la banque', cap: 'Cap', rateScenario: 'Si l’indice…',
+  sc_down1: 'baisse de 1 point', sc_stable: 'reste stable', sc_up1: 'monte de 1 point', sc_up2: 'monte de 2 points', sc_up3: 'monte de 3 points',
+  tip_rateType: 'Fixe : le taux ne change jamais. Variable : indice + marge, révisé chaque année. Capé : variable, mais le taux ne peut pas s’écarter de plus que le cap de son niveau de départ.',
+  tip_scenario: 'Une hypothèse sur l’indice pendant les deux premières années. Le TAEG reste calculé au taux de départ, comme l’impose la loi.',
+  varTitle: 'Comment le taux pourrait évoluer', varInitial: 'Taux de départ', varMax: 'Taux le plus haut', varMaxMonthly: 'Mensualité la plus haute',
+  varExtra: 'Surcoût par rapport à un taux stable', varWorst: 'Pire cas avec le cap : {v}/mois', varYear: 'Année',
+  varHint: 'Simple illustration : personne ne sait comment l’Euribor évoluera. La plupart des crédits immobiliers français sont à taux fixe.',
+
+  // Phase 4 tools
+  toolGroup_loan: 'Votre crédit immobilier', toolGroup_credit: 'Autres crédits', toolGroup_property: 'Projets immobiliers',
+  tool_revolving: 'Crédit renouvelable', toolDesc_revolving: 'Ce que coûte vraiment un crédit renouvelable, et le temps pour le rembourser.',
+  tool_bnpl: 'Paiement en 3 ou 4 fois', toolDesc_bnpl: 'Le vrai coût et le TAEG d’un achat payé en plusieurs fois.',
+  'tool_car-lease': 'Auto : LOA/LLD ou crédit', 'toolDesc_car-lease': 'Comparer la location d’une voiture avec un achat à crédit.',
+  tool_consolidation: 'Rachat de crédits', toolDesc_consolidation: 'Regrouper vos crédits en un seul : nouvelle mensualité et coût total.',
+  'tool_bridge-loan': 'Prêt relais', 'toolDesc_bridge-loan': 'Acheter avant de vendre : combien la banque avance, et ce que cela coûte.',
+  tool_rental: 'Investissement locatif', toolDesc_rental: 'Rendement et cash-flow mensuel d’un achat pour louer, avant impôts.',
+  'tool_rent-vs-buy': 'Louer ou acheter ?', 'toolDesc_rent-vs-buy': 'Comparez votre patrimoine dans le temps si vous achetez ou restez locataire.',
+  amountDrawn: 'Montant utilisé', revRate: 'Taux d’intérêt', monthlyPayment: 'Mensualité choisie', loanRateCompare: 'Taux d’un prêt personnel, pour comparer',
+  revMin: 'Minimum légal : {v}/mois', revMonths: 'Durée de remboursement', revInterest: 'Total des intérêts', revVsLoan: 'Même montant avec un prêt personnel', revExtra: 'Surcoût du crédit renouvelable',
+  revHint: 'La loi impose que chaque mensualité rembourse au moins 1/36 du montant utilisé (1/60 au-delà de 3 000 €) : il est remboursé en 3 ou 5 ans maximum.',
+  purchase: 'Prix d’achat', instalments: 'Nombre d’échéances', feePct: 'Frais (% du prix)', feeFixed: 'Frais fixes',
+  bnplToday: 'Aujourd’hui', bnplThen: 'Puis {n} × {v}', bnplTotal: 'Total payé', bnplHint: 'À partir du 20 novembre 2026 (directive CCD2), ces offres doivent afficher un TAEG comme tout crédit.',
+  bnplFees: 'dont frais', bnplFree: 'Sans frais : ce paiement en plusieurs fois ne coûte rien.',
+  carPrice: 'Prix de la voiture', firstPayment: 'Premier loyer / apport', rentMonthly: 'Loyer mensuel', leaseMonths: 'Durée', purchaseOption: 'Option d’achat à la fin',
+  valueAtEnd: 'Valeur de la voiture à la fin', leaseLoanRate: 'Taux du crédit auto',
+  optLoan: 'Crédit auto', optLeaseBuy: 'LOA puis achat', optLeaseReturn: 'Location puis restitution', paidTotal: 'Total payé', netCost: 'Coût net', netCostHint: 'Coût net = ce que vous avez payé − ce que vaut la voiture si elle est à vous à la fin.',
+  leaseRate: 'Taux implicite de la LOA : {v}', leaseHint: 'LOA : vous pouvez acheter la voiture à la fin. LLD : vous la rendez (l’entretien est souvent inclus).',
+  loansToGroup: 'Crédits à regrouper', addLoan: '+ Ajouter un crédit', removeLoan: 'Retirer', loanN: 'Crédit {n}', balanceShort: 'Capital restant', paymentShort: 'Mensualité', rateShort: 'Taux',
+  consFees: 'Frais et indemnités', consBefore: 'Aujourd’hui', consAfter: 'Après regroupement', consMonthly: 'Mensualités', consTotal: 'Reste à payer', consRatio: 'Taux d’endettement', consExtra: 'Surcoût du regroupement',
+  consHint: 'Regrouper ses crédits baisse la mensualité en allongeant la durée, ce qui augmente en général le coût total.',
+  homeValue: 'Valeur du bien que vous vendez', bridgeShare: 'Part avancée par la banque', owed: 'Reste dû sur ce bien', bridgeRate: 'Taux du prêt relais', bridgeMonths: 'Durée',
+  bridgeMode: 'Intérêts', bm_partial: 'Payés chaque mois', bm_total: 'Payés à la vente',
+  bridgeAmount: 'Prêt relais', bridgeMonthly: 'Par mois', bridgeInterest: 'Total des intérêts', bridgeLeft: 'Reste de la vente', bridgeLower: 'Si vous vendez 10 % moins cher : {v}',
+  bridgeHint: 'La banque avance 60 à 80 % de la valeur estimée, moins ce que vous devez encore, pour 12 à 24 mois. Taux d’usure : {u}.',
+  rentalPrice: 'Prix', rentalCosts: 'Frais de notaire et travaux', rent: 'Loyer mensuel', vacancy: 'Mois vacants par an', ownerCharges: 'Charges propriétaire / mois', propertyTax: 'Taxe foncière / an',
+  management: 'Frais de gestion', ownerIns: 'Assurance PNO / an', grossYield: 'Rendement brut', netYield: 'Rendement net', cashFlow: 'Cash-flow mensuel', rentalHint: 'Avant impôt sur le revenu, qui dépend de votre régime (micro-foncier, réel, LMNP…).',
+  cashNeg: 'Vous ajoutez {v} par mois de votre poche', cashPos: 'Le loyer couvre tout, avec {v} en plus',
+  rvbHorizon: 'Comparer sur', rvbPriceGrowth: 'Hausse des prix / an', rvbSelling: 'Frais de revente', rvbRent: 'Loyer actuel', rvbRentGrowth: 'Hausse des loyers / an', rvbReturn: 'Rendement de l’épargne / an', rvbOwnerCosts: 'Frais de propriétaire / an',
+  rvbBuyer: 'Si vous achetez', rvbRenter: 'Si vous louez', rvbWinner: 'Après {n} : acheter {w} de {v}', rvbWin: 'l’emporte', rvbLose: 'est perdant', rvbBreakEven: 'Acheter devient plus intéressant après {n}.', rvbNever: 'Louer reste plus intéressant sur cette période.',
+  rvbHint: 'Patrimoine = valeur du bien moins le prêt et les frais de revente (acheteur), ou épargne placée (locataire). Les deux partent du même apport.',
 };

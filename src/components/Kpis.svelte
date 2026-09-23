@@ -27,7 +27,7 @@
   <div class="kpi">
     <span class="label">{t('kTaeg')} <Info text={t('tip_taeg')} learn="taeg" /></span>
     <span class="value num">{fmt.pct(r.taeg)}</span>
-    <span class="sub">{t('kTaegSub', { rate: fmt.pct(inp.rate / 100) })}</span>
+    <span class="sub">{t('kTaegSub', { rate: fmt.pct(r.variable ? r.variable.initialRate : inp.rate / 100) })}</span>
     <span class="pill {r.usury.ok ? 'ok' : 'bad'}">{t(r.usury.ok ? 'usuryOk' : 'usuryBad', { u: fmt.pct(r.usury.limit) })}</span>
     {#if r.usury.stale}<span class="pill warn">{t('usuryStale', { q: r.usury.quarter })}</span>{/if}
   </div>

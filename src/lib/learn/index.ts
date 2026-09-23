@@ -5,11 +5,12 @@ import type { Content, TopicId } from './types';
 
 export type { Article, Block, ExampleId, TopicId } from './types';
 
-export const GROUPS: { key: 'basics' | 'costs' | 'rules' | 'manage' | 'about'; topics: TopicId[] }[] = [
-  { key: 'basics', topics: ['loan', 'monthly-payment', 'amortization', 'loan-types', 'taeg'] },
+export const GROUPS: { key: 'basics' | 'costs' | 'rules' | 'manage' | 'more' | 'about'; topics: TopicId[] }[] = [
+  { key: 'basics', topics: ['loan', 'monthly-payment', 'amortization', 'loan-types', 'variable-rates', 'taeg'] },
   { key: 'costs', topics: ['insurance', 'guarantee', 'notary'] },
   { key: 'rules', topics: ['usury', 'debt-ratio', 'consumer-credit', 'ptz'] },
   { key: 'manage', topics: ['check-offer', 'early-repayment', 'renegotiation'] },
+  { key: 'more', topics: ['revolving', 'car-leasing', 'debt-consolidation', 'bridge-loan', 'rental-investment'] },
   { key: 'about', topics: ['calculator', 'glossary'] },
 ];
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CREDIT_TYPES, notaryBreakdown, principalOf, usesProject, type Amortization, type DeferralType } from '../lib/engine';
+  import { CREDIT_TYPES, notaryBreakdown, principalOf, usesProject, type Amortization, type DeferralType, type RateScenario, type RateType } from '../lib/engine';
   import { fmt, t } from '../lib/i18n/index.svelte';
   import { addScenario, app, current, removeScenario } from '../lib/state.svelte';
   import { MAX_SCENARIOS, SCENARIO_NAMES } from '../lib/share';
@@ -87,8 +87,28 @@
 
   <fieldset>
     <legend>{t('secLoan')}</legend>
-    <SliderField id={id('rate')} label={t('rate')} tip={t('tip_rate')} learn="monthly-payment" bind:value={inp.rate}
-      min={spec.rate.min} max={spec.rate.max} step={spec.rate.step} unit="%" decimals={2} />
+    {#if homeLoan && (expert || inp.rateType !== 'fixed')}
+      <div class="rate-type">
+        <span class="lbl">{t('rateType')}</span>
+        <Segmented size="sm" label={t('rateType')} options={(['fixed', 'variable', 'capped'] as RateType[]).map((v) => ({ value: v, label: t(`rt_${v}`) }))} bind:value={inp.rateType} />
+      </div>
+    {/if}
+    {#if homeLoan && inp.rateType !== 'fixed'}
+      <div class="two">
+        <NumberField id={id('index')} label={t('indexRate')} unit="%" step={0.05} max={15} bind:value={inp.indexRate} />
+        <NumberField id={id('margin')} label={t('margin')} unit="%" step={0.05} max={10} bind:value={inp.margin} />
+      </div>
+      <div class="two">
+        {#if inp.rateType === 'capped'}
+          <NumberField id={id('cap')} label={t('cap')} unit="pt" step={0.5} min={0.5} max={5} bind:value={inp.cap} />
+        {/if}
+        <SelectField id={id('scenario')} label={t('rateScenario')} tip={t('tip_scenario')} learn="variable-rates" bind:value={inp.scenario}
+          options={(['down1', 'stable', 'up1', 'up2', 'up3'] as RateScenario[]).map((v) => ({ value: v, label: t(`sc_${v}`) }))} />
+      </div>
+    {:else}
+      <SliderField id={id('rate')} label={t('rate')} tip={t('tip_rate')} learn="monthly-payment" bind:value={inp.rate}
+        min={spec.rate.min} max={spec.rate.max} step={spec.rate.step} unit="%" decimals={2} />
+    {/if}
     <SliderField id={id('months')} label={t('duration')} bind:value={inp.months}
       min={spec.months.min} max={spec.months.max} step={spec.months.step} integer
       unit={t(spec.durationUnit === 'years' ? 'unitYears' : 'unitMonths')}
@@ -250,6 +270,8 @@
   .switches { display: grid; }
   .hint { margin: -8px 0 0; }
   .scen-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .rate-type { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .rate-type .lbl { font-size: 14px; color: var(--text-2); }
   .sub-label { margin: 2px 0 -4px; font-size: 13px; font-weight: 600; color: var(--text-2); }
   .ptz-status { display: grid; gap: 4px; padding: 10px 12px; border-radius: 10px; background: var(--ok-soft); font-size: 14px; line-height: 1.4; }
   .ptz-status b { color: var(--ok); font-weight: 600; }

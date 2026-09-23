@@ -23,9 +23,12 @@
       </button>
     {/each}
   </div>
+  <a class="more" href="#tools">{t('moreCredits')} ›</a>
 </section>
 
 <style>
+  .more { display: inline-block; margin-top: 12px; font-size: 14px; color: var(--accent); text-decoration: none; }
+  .more:hover { text-decoration: underline; }
   .visually { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
   @media (max-width: 860px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

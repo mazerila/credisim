@@ -20,6 +20,7 @@ export type TopicId =
   | 'insurance' | 'guarantee' | 'notary'
   | 'usury' | 'debt-ratio' | 'consumer-credit' | 'ptz'
   | 'check-offer' | 'early-repayment' | 'renegotiation'
+  | 'variable-rates' | 'revolving' | 'car-leasing' | 'debt-consolidation' | 'bridge-loan' | 'rental-investment'
   | 'calculator' | 'glossary';
 
 export interface Article {

@@ -77,6 +77,29 @@ export function principalOf(i: Inputs): Funding {
   return { principal: total - ptz, ptz, ptzEstimate: ptzEst, notary, guarantee, fees, works };
 }
 
+function variableSummary(
+  i: Inputs, path: (year: number) => number, principal: number, initialRate: number,
+  ins: InsuranceSpec[], opts: ScheduleOptions, rows: Row[], flat: Row[],
+): NonNullable<Result['variable']> {
+  const years = Math.ceil(i.months / 12);
+  const yearRates = Array.from({ length: years }, (_, y) => path(y));
+  const cost = (rs: Row[]) => rs.reduce((s, r) => s + r.interest + (r.accrued ?? 0) + r.insurance, 0);
+  let worstMonthly: number | null = null;
+  if (i.rateType === 'capped') {
+    const top = initialRate + i.cap / 100;
+    const worst = schedule(principal, initialRate, i.months, ins, { ...opts, rateFor: (k) => (k <= 12 ? initialRate : top) });
+    worstMonthly = Math.max(...worst.map((r) => r.payment + r.insurance));
+  }
+  return {
+    initialRate,
+    maxRate: Math.max(...yearRates),
+    yearRates,
+    maxMonthly: Math.max(...rows.map((r) => r.payment + r.insurance)),
+    costIfStable: cost(flat),
+    worstMonthly,
+  };
+}
+
 export function insuranceSpecs(i: Inputs): InsuranceSpec[] {
   const spec = CREDIT_TYPES[i.type];
   if (!i.useInsurance || !spec.components.includes('insurance')) return [];
@@ -122,11 +145,30 @@ function phasesOf(rows: Row[], skipLast: boolean): PaymentPhase[] {
   return out;
 }
 
+const SCENARIO_SHIFT = { down1: -1, stable: 0, up1: 1, up2: 2, up3: 3 } as const;
+
+/**
+ * Variable / capped rate path: index + margin, revised every year. The index moves
+ * by the scenario's shift over the first two years, then stays there. A cap limits the
+ * move from the initial rate (both ways). Rates never go below 0.
+ */
+export function variableRatePath(i: Inputs): ((year: number) => number) | null {
+  if (i.type !== 'mortgage' || i.rateType === 'fixed') return null;
+  const initial = (i.indexRate + i.margin) / 100;
+  const shift = SCENARIO_SHIFT[i.scenario] / 100;
+  return (year: number) => {
+    let rate = (i.indexRate / 100) + shift * Math.min(year, 2) / 2 + i.margin / 100;
+    if (i.rateType === 'capped') rate = Math.min(initial + i.cap / 100, Math.max(initial - i.cap / 100, rate));
+    return Math.max(0, rate);
+  };
+}
+
 export function simulate(i: Inputs, today = new Date()): Result {
   const spec = CREDIT_TYPES[i.type];
   const f = principalOf(i);
   const { principal, notary, guarantee, fees, works } = f;
-  const rate = i.rate / 100;
+  const path = variableRatePath(i);
+  const rate = path ? path(0) : i.rate / 100;
   const ins = insuranceSpecs(i);
   const homeLoan = i.type === 'mortgage';
   const deferralMonths = homeLoan && i.deferralType !== 'none' ? i.deferralMonths : 0;
@@ -142,7 +184,7 @@ export function simulate(i: Inputs, today = new Date()): Result {
 
   let smoothingApplied = false;
   let mainOpts = opts;
-  if (i.smoothing && ptzRows.length && (!homeLoan || (i.amortization === 'annuity' && deferralMonths === 0))) {
+  if (i.smoothing && ptzRows.length && !path && (!homeLoan || (i.amortization === 'annuity' && deferralMonths === 0))) {
     const T = smoothedTotal(principal, rate, i.months, ptzRows.map((r) => r.payment));
     if (T !== undefined) {
       smoothingApplied = true;
@@ -150,7 +192,10 @@ export function simulate(i: Inputs, today = new Date()): Result {
     }
   }
 
+  if (path) mainOpts = { ...mainOpts, rateFor: (k: number) => path(Math.floor((k - 1) / 12)) };
   const mainRows = schedule(principal, rate, i.months, ins, mainOpts);
+  // The TAEG of a variable-rate loan is computed as if the initial rate never changed (EU rule).
+  const flatRows = path ? schedule(principal, rate, i.months, ins, opts) : mainRows;
   const rows = ptzRows.length ? combine(mainRows, ptzRows) : mainRows;
 
   const totalInterest = mainRows.reduce((s, r) => s + r.interest + (r.accrued ?? 0), 0);
@@ -164,10 +209,10 @@ export function simulate(i: Inputs, today = new Date()): Result {
 
   // TAEG of the main loan (upfront costs belong to it): the figure checked against usury.
   const upfront = fees + guarantee;
-  const mainFlows = mainRows.map((r) => r.payment + r.insurance);
+  const mainFlows = flatRows.map((r) => r.payment + r.insurance);
   const taeg = actuarialRate(principal - upfront, mainFlows);
   const taegNoFees = actuarialRate(principal, mainFlows);
-  const interestPart = principal > 0 ? actuarialRate(principal, mainRows.map((r) => r.payment)) : 0;
+  const interestPart = principal > 0 ? actuarialRate(principal, flatRows.map((r) => r.payment)) : 0;
   const taegParts = {
     interest: interestPart,
     insurance: Math.max(0, taegNoFees - interestPart),
@@ -176,7 +221,7 @@ export function simulate(i: Inputs, today = new Date()): Result {
   const taegGlobal = ptzRows.length ? actuarialRate(principal + f.ptz - upfront, rows.map((r) => r.payment + r.insurance)) : taeg;
 
   const { table, stale } = usuryTable(today);
-  const category = usuryCategory(i.type, principal, i.months);
+  const category = usuryCategory(i.type, principal, i.months, !!path);
   const limit = usuryLimit(category, table);
 
   const other = on(i.useOtherLoans && spec.components.includes('otherLoans'), i.otherLoans);
@@ -203,6 +248,7 @@ export function simulate(i: Inputs, today = new Date()): Result {
     usury: { ok: taeg <= limit, limit, value: taeg, category, quarter: table.quarter, stale },
     debtRatio: i.income > 0 ? { ok: ratio <= RULES.hcsf.maxDebtRatio, limit: RULES.hcsf.maxDebtRatio, value: ratio } : null,
     duration: spec.hcsf ? { ok: i.months <= maxMonths, limit: maxMonths, value: i.months } : null,
+    variable: path ? variableSummary(i, path, principal, rate, ins, opts, mainRows, flatRows) : null,
     moneyLeft: i.income > 0 ? { total: left, perPerson: left / Math.max(1, i.persons) } : null,
   };
 }

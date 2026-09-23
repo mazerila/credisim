@@ -33,6 +33,8 @@ const ENUMS: Partial<Record<keyof Inputs, readonly string[]>> = {
   deferralType: ['none', 'partial', 'total'],
   ptzZone: ['A', 'B1', 'B2', 'C'],
   ptzKind: ['newFlat', 'newHouse', 'oldWithWorks'],
+  rateType: ['fixed', 'variable', 'capped'],
+  scenario: ['down1', 'stable', 'up1', 'up2', 'up3'],
 };
 
 const b64 = {

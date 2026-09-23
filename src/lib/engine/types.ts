@@ -6,6 +6,9 @@ export type TransferTaxZone = 'raised' | 'standard' | 'indre';
 export type Amortization = 'annuity' | 'linear' | 'inFine';
 export type DeferralType = 'none' | 'partial' | 'total';
 export type PtzZone = 'A' | 'B1' | 'B2' | 'C';
+export type RateType = 'fixed' | 'variable' | 'capped';
+/** How the index moves in a variable-rate scenario, in points reached after 2 years. */
+export type RateScenario = 'down1' | 'stable' | 'up1' | 'up2' | 'up3';
 export type PtzKind = 'newFlat' | 'newHouse' | 'oldWithWorks';
 
 /** Everything the user can enter. Money in euros, rates in percent (3.2 = 3.2 %). */
@@ -34,6 +37,16 @@ export interface Inputs {
   amortization: Amortization;
   deferralType: DeferralType;
   deferralMonths: number;
+
+  /** Home loan rate type. Variable = index + margin, revised every year. */
+  rateType: RateType;
+  /** index (Euribor 12 months), % */
+  indexRate: number;
+  /** bank margin, % */
+  margin: number;
+  /** capped: maximum move from the initial rate, in points (both ways) */
+  cap: number;
+  scenario: RateScenario;
 
   // PTZ (home loan): eligibility inputs, amount, and smoothing of the main loan
   usePtz: boolean;
@@ -99,7 +112,7 @@ export interface YearRow {
 }
 
 export type UsuryCategory =
-  | 'fixedUnder10y' | 'fixed10to20y' | 'fixed20yPlus'
+  | 'fixedUnder10y' | 'fixed10to20y' | 'fixed20yPlus' | 'variable'
   | 'upTo3000' | 'upTo6000' | 'above6000';
 
 export interface Check {
@@ -156,6 +169,18 @@ export interface Result {
   debtRatio: Check | null;
   /** HCSF duration rule; mortgages only */
   duration: Check | null;
+  /** variable / capped rate: what the scenario does to the loan */
+  variable: {
+    initialRate: number;
+    maxRate: number;
+    /** rate for each year of the loan */
+    yearRates: number[];
+    maxMonthly: number;
+    /** interest + insurance if the rate stayed at its initial level */
+    costIfStable: number;
+    /** capped only: payment if the rate hits the cap from year 2 */
+    worstMonthly: number | null;
+  } | null;
   /** income − highest monthly outgoings − other loans */
   moneyLeft: { total: number; perPerson: number } | null;
 }

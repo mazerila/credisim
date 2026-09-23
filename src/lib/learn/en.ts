@@ -93,6 +93,25 @@ export const en: Content = {
     ],
   },
 
+  'variable-rates': {
+    title: 'Variable and capped rates',
+    lead: 'A variable rate follows a market index. It can fall or rise during the loan; a cap limits how far.',
+    read: 3,
+    blocks: [
+      { p: 'Rate = **index + bank margin**. In France the index is usually the **Euribor 12 months**, and the rate is revised once a year. The margin never changes.' },
+      {
+        list: [
+          '**Variable:** the rate follows the index with no limit.',
+          '**Capped (capé):** the rate cannot move more than a set number of points from its starting level (often ±1, ±2 or ±3). Most French variable loans are capped.',
+        ],
+      },
+      { p: 'At each revision the bank recalculates the payment on what is left, keeping the same end date. Some contracts keep the payment and change the duration instead.' },
+      { h: 'What the law says' },
+      { list: ['The TAEG of a variable loan is calculated as if the starting rate never changed.', 'It must stay under the usury rate for variable loans.'] },
+      { note: 'Over 98 % of French home loans are fixed-rate. A variable rate can make sense for a short loan, or if you expect to repay early. Try the scenarios in the simulator: Detailed mode → Loan → Rate type.' },
+    ],
+  },
+
   taeg: {
     title: 'What the TAEG includes',
     lead: 'The TAEG (taux annuel effectif global) is the all-in yearly rate. It is the one number to compare between offers.',
@@ -319,6 +338,100 @@ export const en: Content = {
     ],
   },
 
+  revolving: {
+    title: 'Revolving credit and paying in instalments',
+    lead: 'Two easy ways to buy now and pay later, often the most expensive credits there are.',
+    read: 3,
+    blocks: [
+      { h: 'Revolving credit (crédit renouvelable)' },
+      { p: 'A reserve of money you can use again as you repay it, often linked to a store card. Rates are high, close to the legal maximum for small amounts.' },
+      {
+        list: [
+          'Each payment must repay at least **1/36** of what you used (up to €3,000) or **1/60** (above), so it is repaid within 3 or 5 years.',
+          'For a purchase over €1,000 in a shop, the seller must also offer a classic personal loan.',
+          'The contract is renewed every year; you can end it at any time.',
+        ],
+      },
+      { h: 'Pay in 3 or 4 instalments' },
+      { p: 'Free when there are no fees. With fees, even small ones, the TAEG can be very high because the money is borrowed for only a few weeks. From 20 November 2026 (directive CCD2) these offers must show a TAEG.' },
+      { note: 'See the real cost: [Tools → Revolving credit](#tools/revolving) and [Tools → Pay in 3 or 4 instalments](#tools/bnpl).' },
+    ],
+  },
+
+  'car-leasing': {
+    title: 'Car leasing: LOA, LLD or a loan?',
+    lead: 'Leasing gives you a new car for a monthly rent. Whether it beats a loan depends on what you do at the end.',
+    read: 3,
+    blocks: [
+      {
+        list: [
+          '**LOA** (location avec option d’achat): you rent the car and can buy it at the end for the option price. It follows consumer-credit rules (information sheet, 14 days to change your mind).',
+          '**LLD** (location longue durée): you rent and give it back. Maintenance is often included.',
+          '**Car loan:** you own the car from day one and can sell it whenever you want.',
+        ],
+      },
+      { h: 'Compare the net cost' },
+      { p: 'Add up everything you pay, then subtract what the car is worth at the end if it is yours. Leases also come with a mileage limit and charges for wear when you return the car.' },
+      { note: 'Compare with your own figures: [Tools → Car: lease or loan](#tools/car-lease).' },
+    ],
+  },
+
+  'debt-consolidation': {
+    title: 'Debt consolidation',
+    lead: 'Grouping several loans into one lowers the monthly payment, but usually raises the total cost.',
+    read: 2,
+    blocks: [
+      { p: 'A bank or a specialist repays your current loans and gives you a single new one, usually over a longer period. Useful when the payments no longer fit your budget.' },
+      {
+        list: [
+          'The monthly payment falls because the duration is longer: the total interest paid usually goes up.',
+          'Count the costs: application fee, early-repayment fees on the old loans, a guarantee if a home loan is included.',
+          'An intermediary may not take any fee before the new loan is actually paid out.',
+        ],
+      },
+      { note: 'Try it: [Tools → Debt consolidation](#tools/consolidation).' },
+    ],
+  },
+
+  'bridge-loan': {
+    title: 'Bridge loans: buy before you sell',
+    lead: 'A bridge loan (prêt relais) advances part of the value of the home you are selling, so you can buy the next one first.',
+    read: 3,
+    blocks: [
+      {
+        list: [
+          'The bank advances **60 to 80 %** of the estimated value, minus what you still owe on that home.',
+          'It lasts **12 to 24 months**. You repay it in one go when you sell.',
+          'Interest is paid every month (partial deferral) or all at the sale (total deferral, more expensive).',
+          'It is usually combined with a normal loan for the rest of the new purchase.',
+        ],
+      },
+      { h: 'The risk' },
+      { p: 'If the sale takes longer or the price is lower than expected, you still have to repay the full amount. Be realistic about the value, and keep a margin.' },
+      { note: 'Estimate yours: [Tools → Bridge loan](#tools/bridge-loan).' },
+    ],
+  },
+
+  'rental-investment': {
+    title: 'Rental investment, and rent or buy',
+    lead: 'Buying to let is judged on yield and monthly cash flow. Buying your own home, on how long you stay.',
+    read: 3,
+    blocks: [
+      { h: 'Yields' },
+      {
+        list: [
+          '**Gross yield** = yearly rent ÷ price.',
+          '**Net yield** = (rent actually collected − charges, property tax, management, insurance) ÷ total cost including notary fees and works.',
+          '**Cash flow** = net rent per month − loan payment − insurance. Negative means you add money every month.',
+        ],
+      },
+      { p: 'Income tax depends on your regime: micro-foncier (30 % allowance up to €15,000 of rent a year), the real regime, or furnished rental (LMNP). Ask an adviser for your case.' },
+      { h: 'Rent or buy your home?' },
+      { p: 'Buying costs a lot at the start (notary fees, interest). It pays off when you stay long enough for the home’s value and the capital repaid to outweigh those costs. Renting and investing the difference can win over short periods or when prices stall.' },
+      { note: 'Try both: [Tools → Rental investment](#tools/rental) and [Tools → Rent or buy?](#tools/rent-vs-buy).' },
+    ],
+  },
+
   calculator: {
     title: 'How this calculator works',
     lead: 'What Credisim calculates, the assumptions it makes, and where its data comes from.',
@@ -343,7 +456,8 @@ export const en: Content = {
           'Fees are financed inside a home loan and paid upfront for consumer loans.',
           'Borrowing capacity counts insurance at its first-month level, which errs on the safe side.',
           'The PTZ follows the 2025–2027 rules (bands, shares, cost ceilings); the operation cost used is price + works. Its final amount is set by the bank.',
-          'Not yet included: variable and capped rates, bridge loans, other assisted loans (Action Logement, employer loans). They come in later phases.',
+          'Variable and capped rates: the index follows your chosen scenario over two years, then stays; the payment is recalculated each year at the same end date.',
+          'Not yet included: other assisted loans (Action Logement, employer loans), and country rules outside France.',
         ],
       },
       { h: 'Data and sources' },

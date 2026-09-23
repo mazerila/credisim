@@ -17,7 +17,7 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
 ## Features
 
 - **Credit types:** home loan (mortgage), personal loan, car loan, home works loan. Each type has its own defaults, fields and legal-maximum band. A home loan can be simulated from the full project (price, down payment, notary fees) or from the **loan amount only** for a quick estimate.
-- **Home-loan options:** constant payments, constant capital or in fine; partial or total deferral; two borrowers with their own insurance; **PTZ** with band check (2025–2027 rules), amount estimate and payment smoothing; money left each month.
+- **Home-loan options:** fixed, variable or capped rate (Euribor + margin, index scenarios, yearly revision, worst case); constant payments, constant capital or in fine; partial or total deferral; two borrowers with their own insurance; **PTZ** with band check (2025–2027 rules), amount estimate and payment smoothing; money left each month.
 - **Optional costs you can switch on or off:** borrower insurance (on the initial amount or the remaining balance, with coverage), guarantee (Crédit Logement-type guarantee, mortgage or lender's lien, estimated or entered by hand), notary fees (2026 regulated scale, département rate, first-time-buyer exemption, or a manual %), works, application fee, broker fee, other loans.
 - **Results:**
   - monthly payment and cost of credit
@@ -28,11 +28,14 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
   - repayment schedule by month or by year
 - **Charts:** where the money goes, remaining balance, and what each year of payments covers.
 - **Up to 4 scenarios** (A–D) compared side by side, differences vs A highlighted, all balance curves on one chart; **rate × duration grid** coloured by the 35 % rule and the legal maximum.
-- **Tools:** early repayment (penalty, interest saved, shorter loan or lower payment), renegotiation / buy-out (saving and break-even month), borrower-insurance switch (loi Lemoine), and **check my offer** (payment, implied rate, TAEG, total cost, legal maximum).
+- **Tools (11):**
+  - *Your home loan:* check my offer, early repayment, renegotiation / buy-out, borrower-insurance switch (loi Lemoine)
+  - *Other credits:* revolving credit, pay in 3×/4× (real TAEG), car lease (LOA/LLD) vs loan, debt consolidation
+  - *Property projects:* bridge loan, rental investment (yields and cash flow), rent or buy
 - **Save, print, export:** save simulations in the browser, print a clean report or save it as PDF, export the schedule as CSV (Excel-ready in FR and EN).
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
 - **Share links:** the whole simulation (both scenarios, every field, mode, language) is stored in the URL fragment.
-- **How it works:** 17 short explainers in English and French (loans, monthly payment, schedule, repayment types and deferral, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, checking an offer, early repayment, renegotiation, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
+- **How it works:** 23 short explainers in English and French (loans, monthly payment, schedule, repayment types and deferral, variable rates, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, checking an offer, early repayment, renegotiation, revolving credit and BNPL, car leasing, debt consolidation, bridge loans, rental investment, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
 - **English and French**, detected automatically. Light, dark or system theme. Responsive from phone to desktop.
 
 The full list, with priorities, is in [docs/FEATURES.md](docs/FEATURES.md). What comes next is in [docs/ROADMAP.md](docs/ROADMAP.md).
@@ -61,7 +64,8 @@ npm run dev        # dev server at http://localhost:5173
 src/
   lib/engine/        Pure TypeScript calculation engine (no dependencies)
                      annuity & schedule, TAEG (EU actuarial method), usury bands,
-                     notary scale, guarantee, PTZ, smoothing, deferral, tools, capacity + tests
+                     notary scale, guarantee, PTZ, smoothing, deferral, variable rates,
+                     tools (credits.ts, property.ts, tools.ts), capacity + tests
   lib/data/fr/       Versioned French regulatory data, each value with its source
   lib/i18n/          en.ts / fr.ts dictionaries, t(), number formatting, language detection
   lib/share.ts       Share-link encoding and validation, up to 4 scenarios (+ tests)

@@ -100,3 +100,27 @@ Penalty = min(6 months of interest on the balance at the current rate, 3 % of th
 
 ## Check an offer
 Payment expected from (amount, rate, months) within €1; rate implied by the stated payment (bisection) within 0.02 pt; TAEG recomputed from the stated payment, insurance, fees and guarantee within 0.05 pt (a higher stated TAEG up to 0.3 pt is only a warning: hidden costs); usury band check; total cost within max(€50, 0.5 %).
+
+## Variable and capped rates
+Rate in year y = index_y + margin, with index_y = index + shift × min(y, 2) / 2 (shift from the scenario: −1, 0, +1, +2, +3 points). Capped: clamp to [initial − cap, initial + cap]. At each yearly change the payment is recalculated on the remaining balance and months (same end date). The TAEG and the usury check use the initial rate as if it never changed (EU rule), against the "variable" usury band.
+
+## Revolving credit
+Minimum payment = interest + drawn / 36 (≤ €3,000) or drawn / 60 (above) (loi Lagarde). The schedule repays at least that much capital each month; the TAEG is the actuarial rate of those flows.
+
+## Pay in instalments (BNPL)
+n equal instalments, the first on the day of purchase with the fees. Credit = price − first instalment; TAEG = actuarial rate that equates (credit − fees) with the n − 1 later instalments.
+
+## Car lease vs loan
+Lease total = first payment + rent × months (+ option if you buy). Loan total = first payment + annuity(price − first payment). Net cost = total − value of the car at the end if you own it. Implied lease rate: actuarial rate of the rents plus the option, against price − first payment.
+
+## Debt consolidation
+Months left per loan = monthsFromPayment(balance, rate, payment). Before: Σ payment × months left. After: annuity(Σ balances + fees, new rate, new months) × new months.
+
+## Bridge loan
+Amount = value × share − capital still owed. Partial deferral: amount × r monthly, amount repaid at the sale. Total deferral: amount × (1 + r)^months repaid at the sale. Also shows what is left from the sale, and the same at a price 10 % lower. Usury band: bridge loans.
+
+## Rental investment (before income tax)
+Gross yield = rent × 12 / price. Net rent = rent × (12 − empty months) − charges × 12 − property tax − management % × rents − landlord insurance. Net yield = net rent / (price + notary + works). Cash flow = net rent / 12 − payment − insurance.
+
+## Rent or buy
+Both start with the same cash (the down payment). Each month the renter's savings grow at the savings return and receive (buyer's outgoings − rent), where the buyer pays the loan, insurance and owner costs. Buyer's net worth = value × (1 + growth)^years × (1 − selling costs) − capital still owed. Rents and owner costs grow at the rent-growth rate.

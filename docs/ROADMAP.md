@@ -29,7 +29,7 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - Later phases add an explainer for each new feature
 - Also delivered in this phase: lighter dark theme with visible card edges; home-loan "amount only" mode
 
-### Phase 3 — France advanced ✅ built, awaiting review
+### Phase 3 — France advanced ✅ confirmed 2026-09-23
 - **PTZ as an optional component** + multi-loan package with lissage (A10, B10)
 - Deferral, linear, in-fine (A4, A5)
 - Early repayment, renegotiation, Lemoine switch, **check my offer** (B12–B15)
@@ -37,10 +37,11 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - 4 scenarios, sensitivity grid (F5, F6), PDF / CSV export, saved scenarios (I2–I4)
 - Delivered as: simulator options (repayment type, deferral, 2 borrowers, PTZ with band check and smoothing, money left), a **Tools** section (early repayment, renegotiation, insurance switch, check my offer), print/PDF report, CSV export, saved simulations, and 4 new explainers
 
-### Phase 4 — More credit types
+### Phase 4 — More credit types ✅ built, awaiting review
 - Revolving credit, LOA/LLD vs loan, BNPL real cost, debt consolidation (D2–D5)
 - Bridge loan, rental investment (B11, B16), rent vs buy (C4)
 - Variable / capped rates + Euribor stress (A7, A8)
+- Delivered as: rate type Fixed / Variable / Capped in the home-loan simulator (index + margin, cap, index scenario, yearly revision, worst case); 7 new tools grouped as Other credits (revolving, pay in 3×/4×, car lease vs loan, debt consolidation) and Property projects (bridge loan, rental investment, rent or buy); 6 new explainers
 
 ### Phase 5 — Europe & reach
 - Country presets BE, DE, ES, IT, PT, NL (E1–E6), more languages (H4)
