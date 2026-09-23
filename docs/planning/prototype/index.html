@@ -1,0 +1,531 @@
+<title>Credisim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F2F4F7; --surface:#FFFFFF; --surface-2:#E9EDF2; --ink:#142032; --muted:#5A6577; --line:#D6DCE4;
+  --accent:#1E5E7E; --accent-ink:#FFFFFF; --accent-soft:#DCEAF1;
+  --cap:#2E6C8C; --int:#C58427; --ins:#8472B5; --fee:#8B98A7; --not:#4A8A69;
+  --ok:#2A7A57; --ok-bg:#E1F1E8; --warn:#9C6410; --warn-bg:#FAEFD9; --bad:#AE3B2B; --bad-bg:#F8E2DD;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E141D; --surface:#161F2C; --surface-2:#1D2838; --ink:#E4EAF2; --muted:#98A5B7; --line:#2A374B;
+    --accent:#72B4D6; --accent-ink:#0E141D; --accent-soft:#1B3445;
+    --cap:#5EA3C6; --int:#E2A64F; --ins:#A897D8; --fee:#7B889A; --not:#6BB58D;
+    --ok:#62C394; --ok-bg:#16322A; --warn:#E4AE58; --warn-bg:#352A15; --bad:#EE8373; --bad-bg:#3A1F1B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E141D; --surface:#161F2C; --surface-2:#1D2838; --ink:#E4EAF2; --muted:#98A5B7; --line:#2A374B;
+  --accent:#72B4D6; --accent-ink:#0E141D; --accent-soft:#1B3445;
+  --cap:#5EA3C6; --int:#E2A64F; --ins:#A897D8; --fee:#7B889A; --not:#6BB58D;
+  --ok:#62C394; --ok-bg:#16322A; --warn:#E4AE58; --warn-bg:#352A15; --bad:#EE8373; --bad-bg:#3A1F1B;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 40px}
+.num{font-variant-numeric:tabular-nums}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.brand span{color:var(--muted);font-size:13px}
+.tag{font-size:11px;text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted)}
+.spacer{flex:1}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{background:var(--surface);color:var(--muted);border:0;padding:6px 11px;font:600 13px var(--sans);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.btn{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 12px;font:600 13px var(--sans);cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.layout{max-width:1280px;margin:20px auto 0;display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:920px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+aside.form{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 18px 18px}
+fieldset{border:0;padding:0;margin:0;padding-top:14px;display:grid;gap:10px}
+fieldset+fieldset{border-top:1px solid var(--line);margin-top:14px}
+legend{font-family:var(--serif);font-size:18px;font-weight:600;padding:0;margin-bottom:4px}
+.field{display:grid;gap:4px;min-width:0}
+.field>span{font-size:13px;color:var(--muted);font-weight:500}
+.in{display:flex;align-items:center;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.in input,.in select{flex:1;min-width:0;width:100%;background:transparent;border:0;color:var(--ink);font:500 15px var(--sans);padding:7px 9px;font-variant-numeric:tabular-nums}
+.in select{cursor:pointer}
+.in em{font-style:normal;color:var(--muted);font-size:13px;padding-right:10px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.hint{font-size:12px;color:var(--muted)}
+
+main.results{display:grid;gap:20px;min-width:0}
+.example{font-size:13px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.kpi.lead{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.kpi.lead .klabel,.kpi.lead .ksub{color:inherit;opacity:.85}
+.klabel{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+.kval{font-family:var(--serif);font-size:32px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.ksub{font-size:13px;color:var(--muted)}
+.pill{display:inline-block;justify-self:start;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;margin-top:4px}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.bad{background:var(--bad-bg);color:var(--bad)} .pill.warn{background:var(--warn-bg);color:var(--warn)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.panel h2{font-family:var(--serif);font-size:20px;font-weight:600;margin:0 0 12px;text-wrap:balance}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}
+
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.plan td{padding:5px 0;border-bottom:1px dashed var(--line)}
+.plan td:last-child{text-align:right}
+.plan tr.sum td{border-bottom:0;border-top:1px solid var(--ink);font-weight:700;padding-top:8px}
+.plan tr.minus td{color:var(--muted)}
+
+.taegbar{display:flex;height:26px;border-radius:5px;overflow:hidden;background:var(--surface-2);position:relative}
+.taegbar div{height:100%}
+.taegwrap{position:relative;padding-top:24px}
+.usury-mark{position:absolute;top:18px;bottom:-6px;border-left:2px dashed var(--bad)}
+.usury-mark span{position:absolute;top:-20px;right:4px;font-size:12px;color:var(--bad);white-space:nowrap;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend b{font-weight:600;font-variant-numeric:tabular-nums}
+
+.donutwrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.donutwrap svg{width:190px;max-width:100%;height:auto;flex:none}
+.dlist{display:grid;gap:6px;font-size:14px;flex:1;min-width:180px}
+.dlist div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding-bottom:4px}
+.dlist i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px}
+
+.chart svg{width:100%;height:auto;display:block}
+.scroll{overflow-x:auto}
+.cmp th,.cmp td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.cmp th:first-child,.cmp td:first-child{text-align:left;color:var(--muted);font-weight:500}
+.cmp thead th{font-family:var(--serif);font-size:16px}
+.cmp .cur{background:var(--accent-soft)}
+.cmp td.flag{color:var(--bad);font-weight:600}
+.sched th,.sched td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.sched th{position:sticky;top:0;background:var(--surface);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.sched th:first-child,.sched td:first-child{text-align:left}
+.schedbox{max-height:420px;overflow:auto}
+.panelhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.panelhead h2{margin:0}
+footer{max-width:1280px;margin:24px auto 0;font-size:12px;color:var(--muted);display:grid;gap:4px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:6px;font-size:13px;font-weight:600}
+@media (prefers-reduced-motion:no-preference){.kval{transition:color .2s}}
+</style>
+
+<header class="top">
+  <div class="brand"><b>Credisim</b><span data-i18n="appTag">Loan simulator</span></div>
+  <span class="tag" data-i18n="protoBadge">Prototype</span>
+  <div class="spacer"></div>
+  <div class="seg" role="group" aria-label="Language">
+    <button id="lang-en" type="button" aria-pressed="false">EN</button>
+    <button id="lang-fr" type="button" aria-pressed="false">FR</button>
+  </div>
+  <button class="btn" id="share" type="button" data-i18n="share">Copy share link</button>
+</header>
+
+<div class="layout">
+  <aside class="form">
+    <fieldset>
+      <legend data-i18n="secProject">Your project</legend>
+      <label class="field"><span data-i18n="price">Property price</span><div class="in"><input id="price" type="number" min="0" step="1000"><em>€</em></div></label>
+      <div class="row2">
+        <label class="field"><span data-i18n="ptype">Property</span><div class="in"><select id="ptype"><option value="old" data-i18n="old">Existing home</option><option value="new" data-i18n="new">New build</option></select></div></label>
+        <label class="field"><span data-i18n="notaryPct">Notary fees</span><div class="in"><input id="notaryPct" type="number" min="0" max="15" step="0.1"><em>%</em></div></label>
+      </div>
+      <div class="row2">
+        <label class="field"><span data-i18n="works">Works</span><div class="in"><input id="works" type="number" min="0" step="1000"><em>€</em></div></label>
+        <label class="field"><span data-i18n="apport">Down payment</span><div class="in"><input id="apport" type="number" min="0" step="1000"><em>€</em></div></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend data-i18n="secLoan">Loan</legend>
+      <label class="field"><span><span data-i18n="rate">Nominal rate</span> · <b class="num" id="rate-out"></b></span>
+        <input id="rate" type="range" min="0.5" max="6" step="0.05"></label>
+      <label class="field"><span><span data-i18n="years">Duration</span> · <b class="num" id="years-out"></b></span>
+        <input id="years" type="range" min="5" max="30" step="1"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend data-i18n="secIns">Borrower insurance</legend>
+      <div class="row2">
+        <label class="field"><span data-i18n="insRate">Annual rate</span><div class="in"><input id="insRate" type="number" min="0" max="2" step="0.01"><em>%</em></div></label>
+        <label class="field"><span data-i18n="insCover">Total coverage</span><div class="in"><input id="insCover" type="number" min="0" max="200" step="10"><em>%</em></div></label>
+      </div>
+      <label class="field"><span data-i18n="insMode">Calculated on</span><div class="in"><select id="insMode"><option value="initial" data-i18n="insInitial">Initial capital (bank contract)</option><option value="crd" data-i18n="insCrd">Remaining capital (other insurer)</option></select></div></label>
+      <p class="hint" data-i18n="insCoverHint">100% for one borrower; 200% for a couple each covered at 100%.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend data-i18n="secFees">Fees &amp; guarantee</legend>
+      <div class="row2">
+        <label class="field"><span data-i18n="fileFee">Application fee</span><div class="in"><input id="fileFee" type="number" min="0" step="100"><em>€</em></div></label>
+        <label class="field"><span data-i18n="brokerFee">Broker fee</span><div class="in"><input id="brokerFee" type="number" min="0" step="100"><em>€</em></div></label>
+      </div>
+      <label class="field"><span data-i18n="guarantee">Guarantee</span><div class="in"><select id="guarantee"><option value="caution" data-i18n="gCaution">Guarantee company (Crédit Logement type)</option><option value="hypo" data-i18n="gHypo">Mortgage (hypothèque)</option><option value="none" data-i18n="gNone">None</option></select></div></label>
+    </fieldset>
+
+    <fieldset>
+      <legend data-i18n="secHousehold">Household</legend>
+      <div class="row2">
+        <label class="field"><span data-i18n="income">Net monthly income</span><div class="in"><input id="income" type="number" min="0" step="100"><em>€</em></div></label>
+        <label class="field"><span data-i18n="otherLoans">Other loans / month</span><div class="in"><input id="otherLoans" type="number" min="0" step="50"><em>€</em></div></label>
+      </div>
+    </fieldset>
+  </aside>
+
+  <main class="results">
+    <p class="example" data-i18n="example">Example project, change any field on the left: everything updates instantly.</p>
+
+    <section class="kpis" aria-live="polite">
+      <div class="kpi lead"><span class="klabel" data-i18n="kMonthly">Monthly payment</span><span class="kval" id="k-monthly"></span><span class="ksub" id="k-monthly-sub"></span></div>
+      <div class="kpi"><span class="klabel" data-i18n="kTaeg">TAEG (all-in rate)</span><span class="kval" id="k-taeg"></span><span class="ksub" id="k-taeg-sub"></span><span class="pill" id="k-usury"></span></div>
+      <div class="kpi"><span class="klabel" data-i18n="kCost">Total cost of credit</span><span class="kval" id="k-cost"></span><span class="ksub" data-i18n="kCostSub">interest, insurance, fees, guarantee</span></div>
+      <div class="kpi"><span class="klabel" data-i18n="kDebt">Debt ratio</span><span class="kval" id="k-debt"></span><span class="ksub" data-i18n="kDebtSub">HCSF limit: 35%</span><span class="pill" id="k-debt-pill"></span><span class="pill" id="k-dur-pill" hidden></span></div>
+    </section>
+
+    <div class="grid2">
+      <section class="panel">
+        <h2 data-i18n="planTitle">Financing plan</h2>
+        <table class="plan num"><tbody id="plan"></tbody></table>
+      </section>
+      <section class="panel">
+        <h2 data-i18n="taegTitle">What's inside the TAEG</h2>
+        <div class="taegwrap"><div class="taegbar" id="taegbar"></div><div class="usury-mark" id="usury-mark"><span id="usury-label"></span></div></div>
+        <div class="legend" id="taeg-legend"></div>
+        <p class="hint" style="margin-top:12px" data-i18n="taegHint">The TAEG is the rate you really pay once insurance, fees and the guarantee are counted. By law it must stay under the usury rate.</p>
+      </section>
+    </div>
+
+    <div class="grid2">
+      <section class="panel">
+        <h2 data-i18n="donutTitle">Where your money goes</h2>
+        <div class="donutwrap"><svg id="donut" viewBox="0 0 200 200" role="img"></svg><div class="dlist" id="dlist"></div></div>
+      </section>
+      <section class="panel chart">
+        <h2 data-i18n="balTitle">Remaining capital</h2>
+        <svg id="balance" viewBox="0 0 520 240" role="img"></svg>
+      </section>
+    </div>
+
+    <section class="panel chart">
+      <h2 data-i18n="barsTitle">What each year's payments cover</h2>
+      <svg id="bars" viewBox="0 0 900 280" role="img"></svg>
+      <div class="legend" id="bars-legend"></div>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="cmpTitle">Same project, other durations</h2>
+      <div class="scroll"><table class="cmp" id="cmp"></table></div>
+    </section>
+
+    <section class="panel">
+      <div class="panelhead">
+        <h2 data-i18n="schedTitle">Amortization schedule</h2>
+        <div class="seg" role="group">
+          <button id="by-year" type="button" aria-pressed="true" data-i18n="byYear">By year</button>
+          <button id="by-month" type="button" aria-pressed="false" data-i18n="byMonth">By month</button>
+        </div>
+      </div>
+      <div class="schedbox"><table class="sched" id="sched"></table></div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <span data-i18n="footData">Usury rates: Banque de France, Q3 2026 (valid until 30 Sep 2026). HCSF rules as confirmed in March 2026. Notary and guarantee costs are estimates.</span>
+  <span data-i18n="footDisc">Simulation for information only. This is not a loan offer.</span>
+</footer>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const I18N = {
+  en: {
+    appTag:"Loan simulator", protoBadge:"Prototype", share:"Copy share link", copied:"Link copied", linkReady:"Share link is in the address bar",
+    secProject:"Your project", price:"Property price", ptype:"Property", old:"Existing home", new:"New build", notaryPct:"Notary fees", works:"Works", apport:"Down payment",
+    secLoan:"Loan", rate:"Nominal rate", years:"Duration", yearsUnit:"{n} years",
+    secIns:"Borrower insurance", insRate:"Annual rate", insCover:"Total coverage", insMode:"Calculated on",
+    insInitial:"Initial capital (bank contract)", insCrd:"Remaining capital (other insurer)", insCoverHint:"100% for one borrower; 200% for a couple each covered at 100%.",
+    secFees:"Fees & guarantee", fileFee:"Application fee", brokerFee:"Broker fee", guarantee:"Guarantee",
+    gCaution:"Guarantee company (Crédit Logement type)", gHypo:"Mortgage (hypothèque)", gNone:"None",
+    secHousehold:"Household", income:"Net monthly income", otherLoans:"Other loans / month",
+    example:"Example project, change any field on the left: everything updates instantly.",
+    kMonthly:"Monthly payment", kMonthlySub:"incl. {ins} insurance", kTaeg:"TAEG (all-in rate)", kTaegSub:"nominal rate {rate}",
+    kCost:"Total cost of credit", kCostSub:"interest, insurance, fees, guarantee", kDebt:"Debt ratio", kDebtSub:"HCSF limit: 35%",
+    usuryOk:"Under usury rate {u}", usuryBad:"Over usury rate {u}: not allowed", debtOk:"Within the 35% rule", debtBad:"Over 35%: hard to finance", durBad:"Over 25 years (HCSF)",
+    planTitle:"Financing plan", planPrice:"Property price", planNotary:"Notary fees", planWorks:"Works", planFees:"Application + broker fees", planGuarantee:"Guarantee",
+    planTotal:"Total project cost", planApport:"Down payment", planLoan:"Amount borrowed",
+    taegTitle:"What's inside the TAEG", taegNominal:"Interest", taegIns:"Insurance", taegFees:"Fees & guarantee", taegUsury:"usury {u}",
+    taegHint:"The TAEG is the rate you really pay once insurance, fees and the guarantee are counted. By law it must stay under the usury rate.",
+    donutTitle:"Where your money goes", donutCenter:"on top of the price", dInterest:"Interest", dInsurance:"Insurance", dGuarantee:"Guarantee", dFees:"Bank & broker fees", dNotary:"Notary fees",
+    balTitle:"Remaining capital", barsTitle:"What each year's payments cover", lCapital:"Capital repaid", lInterest:"Interest", lInsurance:"Insurance",
+    cmpTitle:"Same project, other durations", cmpDur:"Duration", cmpMonthly:"Monthly payment", cmpInterest:"Total interest", cmpIns:"Total insurance", cmpCost:"Total cost of credit", cmpTaeg:"TAEG", cmpDebt:"Debt ratio", yrs:"{n} yrs",
+    schedTitle:"Amortization schedule", byYear:"By year", byMonth:"By month",
+    colYear:"Year", colMonth:"Month", colPayment:"Payment", colInterest:"Interest", colCapital:"Capital", colIns:"Insurance", colBal:"Remaining",
+    footData:"Usury rates: Banque de France, Q3 2026 (valid until 30 Sep 2026). HCSF rules as confirmed in March 2026. Notary and guarantee costs are estimates.",
+    footDisc:"Simulation for information only. This is not a loan offer."
+  },
+  fr: {
+    appTag:"Simulateur de crédit", protoBadge:"Prototype", share:"Copier le lien", copied:"Lien copié", linkReady:"Le lien de partage est dans la barre d'adresse",
+    secProject:"Votre projet", price:"Prix du bien", ptype:"Type de bien", old:"Ancien", new:"Neuf", notaryPct:"Frais de notaire", works:"Travaux", apport:"Apport personnel",
+    secLoan:"Prêt", rate:"Taux nominal", years:"Durée", yearsUnit:"{n} ans",
+    secIns:"Assurance emprunteur", insRate:"Taux annuel", insCover:"Quotité totale", insMode:"Calculée sur",
+    insInitial:"Capital initial (contrat groupe)", insCrd:"Capital restant dû (délégation)", insCoverHint:"100 % pour un emprunteur ; 200 % pour un couple couvert à 100 % chacun.",
+    secFees:"Frais et garantie", fileFee:"Frais de dossier", brokerFee:"Frais de courtage", guarantee:"Garantie",
+    gCaution:"Caution (type Crédit Logement)", gHypo:"Hypothèque", gNone:"Aucune",
+    secHousehold:"Foyer", income:"Revenus nets mensuels", otherLoans:"Autres crédits / mois",
+    example:"Projet d'exemple : modifiez n'importe quel champ à gauche, tout se met à jour.",
+    kMonthly:"Mensualité", kMonthlySub:"dont {ins} d'assurance", kTaeg:"TAEG", kTaegSub:"taux nominal {rate}",
+    kCost:"Coût total du crédit", kCostSub:"intérêts, assurance, frais, garantie", kDebt:"Taux d'endettement", kDebtSub:"plafond HCSF : 35 %",
+    usuryOk:"Sous le taux d'usure ({u})", usuryBad:"Au-dessus de l'usure ({u}) : interdit", debtOk:"Respecte les 35 %", debtBad:"Au-delà de 35 % : difficile", durBad:"Plus de 25 ans (HCSF)",
+    planTitle:"Plan de financement", planPrice:"Prix du bien", planNotary:"Frais de notaire", planWorks:"Travaux", planFees:"Frais de dossier et courtage", planGuarantee:"Garantie",
+    planTotal:"Coût total du projet", planApport:"Apport", planLoan:"Montant emprunté",
+    taegTitle:"Ce que contient le TAEG", taegNominal:"Intérêts", taegIns:"Assurance", taegFees:"Frais et garantie", taegUsury:"usure {u}",
+    taegHint:"Le TAEG est le taux réellement payé une fois l'assurance, les frais et la garantie comptés. La loi l'oblige à rester sous le taux d'usure.",
+    donutTitle:"Où va votre argent", donutCenter:"en plus du prix", dInterest:"Intérêts", dInsurance:"Assurance", dGuarantee:"Garantie", dFees:"Frais bancaires et courtage", dNotary:"Frais de notaire",
+    balTitle:"Capital restant dû", barsTitle:"Ce que couvrent vos échéances chaque année", lCapital:"Capital remboursé", lInterest:"Intérêts", lInsurance:"Assurance",
+    cmpTitle:"Même projet, autres durées", cmpDur:"Durée", cmpMonthly:"Mensualité", cmpInterest:"Total des intérêts", cmpIns:"Total assurance", cmpCost:"Coût total du crédit", cmpTaeg:"TAEG", cmpDebt:"Endettement", yrs:"{n} ans",
+    schedTitle:"Tableau d'amortissement", byYear:"Par année", byMonth:"Par mois",
+    colYear:"Année", colMonth:"Mois", colPayment:"Échéance", colInterest:"Intérêts", colCapital:"Capital", colIns:"Assurance", colBal:"Restant dû",
+    footData:"Taux d'usure : Banque de France, T3 2026 (valables jusqu'au 30/09/2026). Règles HCSF confirmées en mars 2026. Frais de notaire et de garantie estimés.",
+    footDisc:"Simulation indicative, sans valeur d'offre de prêt."
+  }
+};
+const LANGS = Object.keys(I18N);
+let LANG = 'en';
+// Same precedence as Suncast: ?lang= → saved → browser → French time zone → en.
+// In production an IP-country header from the CDN slots in before the browser language.
+(function pickLang(){
+  const q = new URLSearchParams(location.search).get('lang');
+  if (LANGS.includes(q)) { LANG = q; return; }
+  try { const s = localStorage.getItem('credisim.lang'); if (LANGS.includes(s)) { LANG = s; return; } } catch(_) {}
+  for (const l of (navigator.languages || [navigator.language || ''])) {
+    const c = String(l).slice(0,2).toLowerCase();
+    if (LANGS.includes(c)) { LANG = c; return; }
+  }
+  try { const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; if (/^Europe\/(Paris|Monaco)|^Indian\/Reunion|^America\/(Martinique|Guadeloupe|Cayenne)/.test(tz)) LANG = 'fr'; } catch(_) {}
+})();
+function t(key, vars){ let s = (I18N[LANG]||{})[key] ?? I18N.en[key] ?? key; return vars ? s.replace(/\{(\w+)\}/g,(m,k)=>k in vars?vars[k]:m) : s; }
+
+const $ = id => document.getElementById(id);
+const locale = () => LANG === 'fr' ? 'fr-FR' : 'en-IE';
+const eur = (v, d=0) => new Intl.NumberFormat(locale(), {style:'currency', currency:'EUR', maximumFractionDigits:d, minimumFractionDigits:d}).format(v);
+const pct = (v, d=2) => new Intl.NumberFormat(locale(), {style:'percent', maximumFractionDigits:d, minimumFractionDigits:d}).format(v);
+const compact = v => new Intl.NumberFormat(locale(), {notation:'compact', maximumFractionDigits:1}).format(v);
+
+// Regulatory data (would live in data/fr/*.json with validity dates)
+const USURY = { quarter:'2026-Q3', lt10:0.0407, lt20:0.0457, ge20:0.0529 };
+const HCSF = { maxRatio:0.35, maxYears:25 };
+
+const DEFAULTS = { price:320000, ptype:'old', notaryPct:7.5, works:15000, apport:50000, rate:3.2, years:25,
+  insRate:0.30, insCover:100, insMode:'initial', fileFee:1000, brokerFee:2500, guarantee:'caution', income:6200, otherLoans:0 };
+const KEYS = Object.keys(DEFAULTS);
+let state = { ...DEFAULTS };
+let schedMode = 'year';
+
+// ---------- engine ----------
+function loanAmount(s){
+  const notary = s.price * s.notaryPct / 100;
+  const base = s.price + notary + s.works + s.fileFee + s.brokerFee - s.apport;
+  if (base <= 0) return { notary, C:0, guar:0 };
+  let C, guar;
+  if (s.guarantee === 'caution') { C = (base + 300) / (1 - 0.0075); guar = 0.0075 * C + 300; }
+  else if (s.guarantee === 'hypo') { C = base / (1 - 0.015); guar = 0.015 * C; }
+  else { C = base; guar = 0; }
+  return { notary, C: Math.round(C), guar };
+}
+function schedule(C, rateAnnual, n, insRate, insMode, cover){
+  const r = rateAnnual / 12, rows = [];
+  const pay = r > 0 ? C * r / (1 - Math.pow(1 + r, -n)) : C / n;
+  const payR = Math.round(pay * 100) / 100;
+  let bal = C;
+  for (let k = 1; k <= n; k++) {
+    const int = Math.round(bal * r * 100) / 100;
+    let cap = k === n ? bal : payR - int;
+    const ins = Math.round((insMode === 'initial' ? C : bal) * insRate * cover / 12 * 100) / 100;
+    bal = Math.max(0, Math.round((bal - cap) * 100) / 100);
+    rows.push({ k, pay: int + cap, int, cap, ins, bal });
+  }
+  return rows;
+}
+function actuarialRate(net, flows){
+  if (net <= 0) return 0;
+  let i = 0.003;
+  for (let it = 0; it < 100; it++) {
+    let f = -net, df = 0;
+    for (let k = 0; k < flows.length; k++) { const d = Math.pow(1 + i, -(k + 1)); f += flows[k] * d; df -= (k + 1) * flows[k] * d / (1 + i); }
+    const step = f / df; i -= step;
+    if (Math.abs(step) < 1e-12) break;
+  }
+  return Math.pow(1 + i, 12) - 1;
+}
+function usuryFor(years){ return years < 10 ? USURY.lt10 : years < 20 ? USURY.lt20 : USURY.ge20; }
+function compute(s){
+  const { notary, C, guar } = loanAmount(s);
+  const n = s.years * 12;
+  const rows = C > 0 ? schedule(C, s.rate / 100, n, s.insRate / 100, s.insMode, s.insCover / 100) : [];
+  const sum = f => rows.reduce((a, r) => a + r[f], 0);
+  const totalInt = sum('int'), totalIns = sum('ins');
+  const fees = s.fileFee + s.brokerFee;
+  const taegAll = actuarialRate(C - fees - guar, rows.map(r => r.pay + r.ins));
+  const taegIns = actuarialRate(C, rows.map(r => r.pay + r.ins));
+  const taegNom = actuarialRate(C, rows.map(r => r.pay));
+  const monthly = rows.length ? rows[0].pay + rows[0].ins : 0;
+  const debt = s.income > 0 ? (monthly + s.otherLoans) / s.income : 0;
+  return { notary, C, guar, fees, rows, totalInt, totalIns, monthly, insMonthly: rows[0]?.ins || 0,
+    taegAll, taegIns, taegNom, cost: totalInt + totalIns + fees + guar, debt, usury: usuryFor(s.years) };
+}
+
+// ---------- rendering ----------
+function applyLang(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  $('lang-en').setAttribute('aria-pressed', LANG === 'en'); $('lang-fr').setAttribute('aria-pressed', LANG === 'fr');
+}
+function pill(el, ok, okText, badText){ el.className = 'pill ' + (ok ? 'ok' : 'bad'); el.textContent = ok ? okText : badText; }
+
+function render(){
+  const s = state, R = compute(s);
+  $('rate-out').textContent = pct(s.rate / 100);
+  $('years-out').textContent = t('yearsUnit', { n: s.years });
+
+  $('k-monthly').textContent = eur(R.monthly);
+  $('k-monthly-sub').textContent = t('kMonthlySub', { ins: eur(R.insMonthly) });
+  $('k-taeg').textContent = pct(R.taegAll);
+  $('k-taeg-sub').textContent = t('kTaegSub', { rate: pct(s.rate / 100) });
+  pill($('k-usury'), R.taegAll <= R.usury, t('usuryOk', { u: pct(R.usury) }), t('usuryBad', { u: pct(R.usury) }));
+  $('k-cost').textContent = eur(R.cost);
+  $('k-debt').textContent = pct(R.debt, 1);
+  pill($('k-debt-pill'), R.debt <= HCSF.maxRatio, t('debtOk'), t('debtBad'));
+  const durPill = $('k-dur-pill'); durPill.hidden = s.years <= HCSF.maxYears;
+  if (!durPill.hidden) { durPill.className = 'pill warn'; durPill.textContent = t('durBad'); }
+
+  // financing plan
+  const total = s.price + R.notary + s.works + R.fees + R.guar;
+  const line = (k, v, cls='') => `<tr class="${cls}"><td>${t(k)}</td><td>${v}</td></tr>`;
+  $('plan').innerHTML = line('planPrice', eur(s.price)) + line('planNotary', eur(R.notary)) + (s.works ? line('planWorks', eur(s.works)) : '')
+    + line('planFees', eur(R.fees)) + (R.guar ? line('planGuarantee', eur(R.guar)) : '')
+    + line('planTotal', eur(total), 'sum') + line('planApport', '− ' + eur(s.apport), 'minus') + line('planLoan', eur(R.C), 'sum');
+
+  // TAEG composition vs usury
+  const parts = [
+    { k:'taegNominal', v:R.taegNom, c:'--int' },
+    { k:'taegIns', v:Math.max(0, R.taegIns - R.taegNom), c:'--ins' },
+    { k:'taegFees', v:Math.max(0, R.taegAll - R.taegIns), c:'--fee' }
+  ];
+  const scale = Math.max(R.usury, R.taegAll) * 1.12;
+  $('taegbar').innerHTML = parts.map(p => `<div style="width:${p.v / scale * 100}%;background:var(${p.c})" title="${t(p.k)}"></div>`).join('');
+  $('usury-mark').style.left = (R.usury / scale * 100) + '%';
+  $('usury-label').textContent = t('taegUsury', { u: pct(R.usury) });
+  $('taeg-legend').innerHTML = parts.map(p => `<span><i style="background:var(${p.c})"></i>${t(p.k)} <b>+${pct(p.v)}</b></span>`).join('') + `<span>= <b>${pct(R.taegAll)}</b></span>`;
+
+  renderDonut(R); renderBalance(R); renderBars(R); renderCompare(); renderSchedule(R);
+  saveHash();
+}
+
+function renderDonut(R){
+  const segs = [
+    { k:'dInterest', v:R.totalInt, c:'--int' }, { k:'dInsurance', v:R.totalIns, c:'--ins' },
+    { k:'dNotary', v:R.notary, c:'--not' }, { k:'dGuarantee', v:R.guar, c:'--cap' }, { k:'dFees', v:R.fees, c:'--fee' }
+  ].filter(x => x.v > 0);
+  const total = segs.reduce((a, x) => a + x.v, 0) || 1;
+  const rad = 72, circ = 2 * Math.PI * rad; let off = 0;
+  let svg = `<circle cx="100" cy="100" r="${rad}" style="fill:none;stroke:var(--surface-2)" stroke-width="26"/>`;
+  segs.forEach(x => { const len = x.v / total * circ;
+    svg += `<circle cx="100" cy="100" r="${rad}" transform="rotate(-90 100 100)" style="fill:none;stroke:var(${x.c})" stroke-width="26" stroke-dasharray="${Math.max(0, len - 1.5)} ${circ}" stroke-dashoffset="${-off}"/>`; off += len; });
+  svg += `<text x="100" y="98" text-anchor="middle" style="fill:var(--ink);font:600 20px var(--serif)">${compact(total)} €</text>`
+       + `<text x="100" y="118" text-anchor="middle" style="fill:var(--muted);font:12px var(--sans)">${t('donutCenter')}</text>`;
+  $('donut').innerHTML = svg; $('donut').setAttribute('aria-label', t('donutTitle'));
+  $('dlist').innerHTML = segs.map(x => `<div><span><i style="background:var(${x.c})"></i>${t(x.k)}</span><b class="num">${eur(x.v)}</b></div>`).join('');
+}
+
+function niceMax(v){ if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p; }
+function axisY(W, H, L, T, B, max, ticks=4){
+  let g = '';
+  for (let i = 0; i <= ticks; i++) { const v = max * i / ticks, y = H - B - (H - T - B) * i / ticks;
+    g += `<line x1="${L}" x2="${W - 8}" y1="${y}" y2="${y}" style="stroke:var(--line)" stroke-width="1"/>`
+       + `<text x="${L - 8}" y="${y + 4}" text-anchor="end" style="fill:var(--muted);font:12px var(--sans)">${compact(v)}</text>`; }
+  return g;
+}
+function renderBalance(R){
+  const W = 520, H = 240, L = 52, T = 12, B = 28, svg = $('balance');
+  if (!R.rows.length) { svg.innerHTML = ''; return; }
+  const max = niceMax(R.C), n = R.rows.length;
+  const x = k => L + (W - 8 - L) * k / n, y = v => H - B - (H - T - B) * v / max;
+  const pts = [[0, R.C], ...R.rows.map(r => [r.k, r.bal])];
+  const path = pts.map((p, i) => (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ' ' + y(p[1]).toFixed(1)).join('');
+  let g = axisY(W, H, L, T, B, max);
+  const years = n / 12, step = years > 20 ? 5 : years > 10 ? 2 : 1;
+  for (let yr = 0; yr <= years; yr += step) g += `<text x="${x(yr * 12)}" y="${H - 8}" text-anchor="middle" style="fill:var(--muted);font:12px var(--sans)">${yr}</text>`;
+  g += `<path d="${path} L${x(n)} ${y(0)} L${x(0)} ${y(0)}Z" style="fill:var(--cap);opacity:.14"/>`;
+  g += `<path d="${path}" style="fill:none;stroke:var(--cap)" stroke-width="2.5"/>`;
+  const mid = R.rows.find(r => r.bal <= R.C / 2);
+  if (mid) g += `<circle cx="${x(mid.k)}" cy="${y(mid.bal)}" r="4" style="fill:var(--surface);stroke:var(--cap)" stroke-width="2"/>`
+    + `<text x="${x(mid.k) + 8}" y="${y(mid.bal) - 8}" style="fill:var(--ink);font:600 12px var(--sans)">50 % · ${t('yrs', { n: (mid.k / 12).toFixed(1) })}</text>`;
+  svg.innerHTML = g; svg.setAttribute('aria-label', t('balTitle'));
+}
+function yearly(rows){
+  const out = [];
+  rows.forEach(r => { const i = Math.floor((r.k - 1) / 12);
+    out[i] = out[i] || { y: i + 1, pay:0, int:0, cap:0, ins:0, bal:0 };
+    const o = out[i]; o.pay += r.pay; o.int += r.int; o.cap += r.cap; o.ins += r.ins; o.bal = r.bal; });
+  return out;
+}
+function renderBars(R){
+  const W = 900, H = 280, L = 56, T = 12, B = 28, svg = $('bars');
+  const ys = yearly(R.rows); if (!ys.length) { svg.innerHTML = ''; return; }
+  const max = niceMax(Math.max(...ys.map(o => o.int + o.cap + o.ins)));
+  const slot = (W - 8 - L) / ys.length, bw = Math.max(4, slot * 0.7);
+  const y = v => (H - T - B) * v / max;
+  let g = axisY(W, H, L, T, B, max);
+  ys.forEach((o, i) => {
+    const x0 = L + i * slot + (slot - bw) / 2; let base = H - B;
+    [['cap', '--cap'], ['int', '--int'], ['ins', '--ins']].forEach(([f, c]) => { const h = y(o[f]); base -= h;
+      g += `<rect x="${x0.toFixed(1)}" y="${base.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0, h).toFixed(1)}" style="fill:var(${c})"><title>${t('colYear')} ${o.y}: ${eur(o[f])}</title></rect>`; });
+    if (ys.length <= 12 || o.y === 1 || o.y % 5 === 0) g += `<text x="${(x0 + bw / 2).toFixed(1)}" y="${H - 8}" text-anchor="middle" style="fill:var(--muted);font:12px var(--sans)">${o.y}</text>`;
+  });
+  svg.innerHTML = g; svg.setAttribute('aria-label', t('barsTitle'));
+  $('bars-legend').innerHTML = [['lCapital', '--cap'], ['lInterest', '--int'], ['lInsurance', '--ins']].map(([k, c]) => `<span><i style="background:var(${c})"></i>${t(k)}</span>`).join('');
+}
+function renderCompare(){
+  const durs = [...new Set([10, 15, 20, 25, state.years])].sort((a, b) => a - b);
+  const res = durs.map(d => ({ d, R: compute({ ...state, years: d }) }));
+  const cell = (d, v, flag) => `<td class="${d === state.years ? 'cur' : ''} ${flag ? 'flag' : ''}">${v}</td>`;
+  let h = `<thead><tr><th>${t('cmpDur')}</th>${res.map(({ d }) => `<th class="${d === state.years ? 'cur' : ''}">${t('yrs', { n: d })}</th>`).join('')}</tr></thead><tbody>`;
+  const row = (k, fn, flagFn) => `<tr><td>${t(k)}</td>${res.map(({ d, R }) => cell(d, fn(R), flagFn && flagFn(R, d))).join('')}</tr>`;
+  h += row('cmpMonthly', R => eur(R.monthly)) + row('cmpInterest', R => eur(R.totalInt)) + row('cmpIns', R => eur(R.totalIns))
+     + row('cmpCost', R => eur(R.cost)) + row('cmpTaeg', R => pct(R.taegAll), R => R.taegAll > R.usury)
+     + row('cmpDebt', R => pct(R.debt, 1), R => R.debt > HCSF.maxRatio) + '</tbody>';
+  $('cmp').innerHTML = h;
+}
+function renderSchedule(R){
+  const byYear = schedMode === 'year', rows = byYear ? yearly(R.rows) : R.rows;
+  let h = `<thead><tr><th>${t(byYear ? 'colYear' : 'colMonth')}</th><th>${t('colPayment')}</th><th>${t('colInterest')}</th><th>${t('colCapital')}</th><th>${t('colIns')}</th><th>${t('colBal')}</th></tr></thead><tbody>`;
+  rows.forEach(r => { h += `<tr><td>${byYear ? r.y : r.k}</td><td>${eur(r.pay + r.ins, 2)}</td><td>${eur(r.int, 2)}</td><td>${eur(r.cap, 2)}</td><td>${eur(r.ins, 2)}</td><td>${eur(r.bal, 2)}</td></tr>`; });
+  $('sched').innerHTML = h + '</tbody>';
+  $('by-year').setAttribute('aria-pressed', byYear); $('by-month').setAttribute('aria-pressed', !byYear);
+}
+
+// ---------- state, share link ----------
+function readInputs(){ KEYS.forEach(k => { const el = $(k), v = el.value; state[k] = typeof DEFAULTS[k] === 'number' ? (parseFloat(v) || 0) : v; }); }
+function writeInputs(){ KEYS.forEach(k => { $(k).value = state[k]; }); }
+function saveHash(){ const p = new URLSearchParams(); KEYS.forEach(k => { if (state[k] !== DEFAULTS[k]) p.set(k, state[k]); }); history.replaceState(null, '', '#' + p.toString()); }
+function loadHash(){ const p = new URLSearchParams(location.hash.slice(1)); KEYS.forEach(k => { if (p.has(k)) state[k] = typeof DEFAULTS[k] === 'number' ? parseFloat(p.get(k)) || 0 : p.get(k); }); }
+function toast(msg){ const el = $('toast'); el.textContent = msg; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2200); }
+
+KEYS.forEach(k => $(k).addEventListener('input', () => { readInputs(); render(); }));
+$('ptype').addEventListener('change', () => { state.notaryPct = state.ptype === 'new' ? 2.5 : 7.5; $('notaryPct').value = state.notaryPct; render(); });
+function setLang(l){ LANG = l; try { localStorage.setItem('credisim.lang', l); } catch(_) {} applyLang(); render(); }
+$('lang-en').onclick = () => setLang('en'); $('lang-fr').onclick = () => setLang('fr');
+$('by-year').onclick = () => { schedMode = 'year'; renderSchedule(compute(state)); };
+$('by-month').onclick = () => { schedMode = 'month'; renderSchedule(compute(state)); };
+$('share').onclick = async () => { saveHash(); try { await navigator.clipboard.writeText(location.href); toast(t('copied')); } catch(_) { toast(t('linkReady')); } };
+
+loadHash(); writeInputs(); applyLang(); render();
+</script>

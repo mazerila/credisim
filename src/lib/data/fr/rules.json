@@ -1,0 +1,29 @@
+{
+  "hcsf": {
+    "source": "https://www.cpim.fr/hcsf-2026-plafond-endettement/",
+    "confirmed": "2026-03",
+    "maxDebtRatio": 0.35,
+    "maxYears": 25,
+    "maxYearsNewBuildWithDeferral": 27
+  },
+  "consumerCreditMaxForMortgageBands": 75000,
+  "notary": {
+    "source": "https://www.cpim.fr/droits-mutation-immobilier-2026/",
+    "transferTax": { "raised": 0.0631865, "standard": 0.0580665, "indre": 0.0509006, "newBuild": 0.00715 },
+    "emolumentBrackets": [
+      { "upTo": 6500, "rate": 0.03870 },
+      { "upTo": 17000, "rate": 0.01596 },
+      { "upTo": 60000, "rate": 0.01064 },
+      { "upTo": null, "rate": 0.00799 }
+    ],
+    "vat": 0.2,
+    "securityContribution": 0.001,
+    "disbursements": 1200
+  },
+  "guarantee": {
+    "source": "https://perlib.fr/articles/credit-logement",
+    "caution": { "rate": 0.0075, "fixed": 300 },
+    "hypo": { "rate": 0.015, "fixed": 0 },
+    "ppd": { "rate": 0.01, "fixed": 0 }
+  }
+}

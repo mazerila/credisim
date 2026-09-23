@@ -1,0 +1,355 @@
+<title>Credisim Planning Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F2F4F7; --surface:#FFFFFF; --surface-2:#E9EDF2; --ink:#142032; --muted:#5A6577; --line:#D6DCE4;
+  --accent:#1E5E7E; --accent-soft:#DCEAF1; --int:#C58427;
+  --ok:#2A7A57; --ok-bg:#E1F1E8; --warn:#9C6410; --warn-bg:#FAEFD9; --bad:#AE3B2B; --bad-bg:#F8E2DD;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E141D; --surface:#161F2C; --surface-2:#1D2838; --ink:#E4EAF2; --muted:#98A5B7; --line:#2A374B;
+    --accent:#72B4D6; --accent-soft:#1B3445; --int:#E2A64F;
+    --ok:#62C394; --ok-bg:#16322A; --warn:#E4AE58; --warn-bg:#352A15; --bad:#EE8373; --bad-bg:#3A1F1B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E141D; --surface:#161F2C; --surface-2:#1D2838; --ink:#E4EAF2; --muted:#98A5B7; --line:#2A374B;
+  --accent:#72B4D6; --accent-soft:#1B3445; --int:#E2A64F;
+  --ok:#62C394; --ok-bg:#16322A; --warn:#E4AE58; --warn-bg:#352A15; --bad:#EE8373; --bad-bg:#3A1F1B;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:0 64px}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px}
+@media (max-width:880px){.wrap{grid-template-columns:minmax(0,1fr)} nav.toc{display:none}}
+nav.toc{position:sticky;top:calc(24px + env(safe-area-inset-top,0px));align-self:start;padding-top:48px;font-size:14px;display:grid;gap:6px}
+nav.toc b{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:4px}
+nav.toc a{color:var(--muted);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+main{min-width:0}
+header.doc{padding-block:48px 28px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+h1{font-family:var(--serif);font-size:clamp(34px,5vw,50px);font-weight:600;line-height:1.08;margin:10px 0 14px;text-wrap:balance;letter-spacing:-.01em}
+.lede{font-size:19px;max-width:64ch;color:var(--ink);margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;font-size:14px;color:var(--muted)}
+section{padding-block:36px 8px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+h2{font-family:var(--serif);font-size:30px;font-weight:600;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--serif);font-size:21px;font-weight:600;margin:26px 0 8px}
+p,li{max-width:70ch}
+.sub{color:var(--muted);margin:0 0 18px}
+.tbl{overflow-x:auto;margin:14px 0 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;background:var(--surface-2)}
+td.tool{font-weight:600;white-space:nowrap}
+td.tool small{display:block;font-weight:400;color:var(--muted)}
+.c{text-align:center}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px}
+.dot.y{background:var(--ok)} .dot.p{background:linear-gradient(90deg,var(--ok) 50%,var(--line) 50%)} .dot.n{border:2px solid var(--line)}
+tr.us td{background:var(--accent-soft)}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.04em;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.P0{background:var(--accent);color:var(--bg)} .P1{background:var(--accent-soft);color:var(--accent)} .P2{background:var(--surface-2);color:var(--muted)}
+.gap{color:var(--int);font-weight:700}
+.opps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 28px;margin-top:12px;padding:0;list-style:none}
+@media (max-width:640px){.opps{grid-template-columns:minmax(0,1fr)}}
+.opps li{border-top:2px solid var(--int);padding-top:10px}
+.opps b{display:block;font-family:var(--serif);font-size:18px;font-weight:600}
+.opps span{color:var(--muted);font-size:14.5px}
+.mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:10px}
+@media (max-width:760px){.mods{grid-template-columns:minmax(0,1fr)}}
+.mod{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.mod h4{font-family:var(--serif);font-size:18px;margin:0 0 8px;font-weight:600}
+.mod ul{list-style:none;padding:0;margin:0;display:grid;gap:6px;font-size:14.5px}
+.mod li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:baseline}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+@media (max-width:760px){.facts{grid-template-columns:minmax(0,1fr)}}
+.fact{border-left:3px solid var(--accent);padding:2px 0 2px 14px}
+.fact .n{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.fact .l{font-size:14px;color:var(--muted)}
+.phases{display:grid;gap:0;margin-top:14px;counter-reset:ph}
+.phase{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;padding:16px 0;border-top:1px solid var(--line)}
+@media (max-width:560px){.phase{grid-template-columns:minmax(0,1fr);gap:4px}}
+.phase .when{font-weight:700;color:var(--accent)}
+.phase .when small{display:block;font-weight:400;color:var(--muted)}
+.phase p{margin:0}
+.names td:nth-child(3){white-space:nowrap}
+.v-ok{color:var(--ok);font-weight:700} .v-bad{color:var(--bad);font-weight:700} .v-mid{color:var(--warn);font-weight:700}
+.note{background:var(--warn-bg);color:var(--ink);border-radius:8px;padding:12px 16px;font-size:14.5px;margin-top:14px}
+.note b{color:var(--warn)}
+ol.src{font-size:13.5px;color:var(--muted);padding-left:20px;display:grid;gap:3px}
+ol.src a{word-break:break-word}
+.files{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13.5px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;white-space:pre;line-height:1.55}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <b>Contents</b>
+  <a href="#summary">Summary</a>
+  <a href="#market">Existing solutions</a>
+  <a href="#gaps">Gaps to exploit</a>
+  <a href="#features">Feature list</a>
+  <a href="#rules">French rules, 2026</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#stack">Stack</a>
+  <a href="#naming">Naming</a>
+  <a href="#next">Next steps</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<main>
+<header class="doc">
+  <div class="eyebrow">Planning report · Credit simulator for France &amp; Europe</div>
+  <h1>Credisim: the true cost of a loan, in one view</h1>
+  <p class="lede">A neutral, bilingual (EN/FR) web simulator for mortgages and other loans. It covers insurance, fees, the guarantee, notary costs, the TAEG and the legal limits, with charts and scenario comparison. No sign-up and no sales call.</p>
+  <div class="meta"><span>22 September 2026</span><span>Research on 12 existing tools</span><span>Prototype: <code>docs/planning/prototype/index.html</code></span></div>
+</header>
+
+<section id="summary">
+  <h2>Summary</h2>
+  <p>The French market is served by <b>broker simulators</b> (Meilleurtaux, Pretto, Empruntis) whose job is to generate leads, and by the <b>public ANIL tools</b>, which are neutral but dated. Each question (payment, capacity, notary, PTZ, TAEG) lives on a separate page. German broker tools (Interhyp, Hypofriend) are better at <b>comparing scenarios</b> but stop at the border.</p>
+  <p>Credisim's position: <b>one project view that stays neutral</b> (the full budget, every loan in it, every cost). It explains the TAEG and checks it live against the usury rate and the HCSF rules, in English and French. Everything is calculated in the browser.</p>
+  <div class="facts">
+    <div class="fact"><div class="n">5.29 %</div><div class="l">Usury ceiling, fixed ≥ 20 yrs (Q3 2026). The TAEG must stay below it.</div></div>
+    <div class="fact"><div class="n">35 % · 25 yrs</div><div class="l">HCSF debt-ratio and duration limits, insurance included</div></div>
+    <div class="fact"><div class="n">20 Nov 2026</div><div class="l">CCD2 takes effect: the TAEG must also be shown for mini-loans and buy-now-pay-later</div></div>
+  </div>
+</section>
+
+<section id="market">
+  <h2>Existing solutions</h2>
+  <p class="sub">The most important tools reviewed, grouped by who publishes them. Based on their public simulator pages, September 2026.</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Tool</th><th>Type</th><th>Strengths</th><th>Weaknesses for our purpose</th></tr></thead>
+    <tbody>
+      <tr><td class="tool"><a href="https://www.meilleurtaux.com/credit-immobilier/simulation-de-pret-immobilier/calcul-des-mensualites.html">Meilleurtaux</a><small>🇫🇷 broker</small></td><td>Lead-gen</td><td>Slider "calculette" (€20k–1.5M), market rate pre-filled, insurance. Separate tools: debt ratio, capacity, schedule, notary, TAEG, renegotiation. Rate barometer and price map.</td><td>One calculator per question, so there is no single project view. The calculette leaves out the PTZ. French only. Steers users to an advisor.</td></tr>
+      <tr><td class="tool"><a href="https://www.pretto.fr/simulation-pret-immobilier/">Pretto</a><small>🇫🇷 broker</small></td><td>Lead-gen</td><td>Best UX: a quick estimate in 3 minutes, then a detailed simulator. Income, savings, 5–27 yrs. Matches the profile against 125 banks (Finspot). Tools for capacity, notary, PTZ, early repayment, renegotiation.</td><td>The journey ends with an application. Comparison is limited to changing rate, duration and down payment. French only.</td></tr>
+      <tr><td class="tool"><a href="https://www.empruntis.com/financement/comparateur/comparateur-pret-immobilier.php">Empruntis</a><small>🇫🇷 broker</small></td><td>Lead-gen</td><td>Rate comparator plus a network of agencies.</td><td>The product is the comparison of offers, not the calculation.</td></tr>
+      <tr><td class="tool"><a href="https://www.anil.org/outils/outils-de-calcul/">ANIL</a><small>🇫🇷 public agency</small></td><td>Neutral</td><td>The reference tools: loan schedule, PTZ, full "financing diagnosis", notary fees, mortgage fees, capital-gains tax, rental yield. Always up to date with the rules.</td><td>Dated form-based UX, few visuals, no comparison, no sharing, French only.</td></tr>
+      <tr><td class="tool"><a href="https://www.tableau-amortissement.pro/">Amortia</a><small>🇫🇷 independent</small></td><td>Neutral</td><td>Clean amortization tables with export. Runs 100 % in the browser, no sign-up.</td><td>Covers the schedule only. <b>Its name clashes with one of your candidates.</b></td></tr>
+      <tr><td class="tool">Bank simulators<small>Crédit Agricole, BNP, SG, LCL…</small></td><td>Lender</td><td>A realistic baseline for that bank.</td><td>Show only their own product and their own insurance on the initial capital.</td></tr>
+      <tr><td class="tool">Consumer lenders<small>Cetelem, Cofidis, Sofinco, Floa</small></td><td>Lender</td><td>Amount and duration give the payment and TAEG as a representative example.</td><td>No schedule, no comparison, no leasing (LOA/LLD) vs loan.</td></tr>
+      <tr><td class="tool"><a href="https://www.interhyp.de/baufinanzierungsrechner/">Interhyp</a><small>🇩🇪 broker</small></td><td>Lead-gen</td><td>Live scenario changes: rate, repayment rate (Tilgung), fixed-rate period (Zinsbindung), equity. Schedule, extra repayments (Sondertilgung), follow-up financing (Anschlussfinanzierung).</td><td>German market and German language only.</td></tr>
+      <tr><td class="tool"><a href="https://hypofriend.de/en/german-mortgage-calculator">Hypofriend</a><small>🇩🇪 broker, English</small></td><td>Lead-gen</td><td>In English. Transfer tax by location, rate estimate by loan-to-value, <b>compares fixed-rate periods</b>, purchase-cost breakdown.</td><td>Germany only.</td></tr>
+      <tr><td class="tool"><a href="https://www.finanztip.de/tilgungsrechner/">Finanztip</a><small>🇩🇪 consumer org</small></td><td>Neutral</td><td>Trusted, neutral repayment calculator.</td><td>Germany only, basic.</td></tr>
+      <tr><td class="tool"><a href="https://www.mortgagecalculator.net/eur/">mortgagecalculator.net/eur</a><small>EU generic</small></td><td>Ad-funded</td><td>Fixed-payment, fixed-capital and interest-only loans, overpayments.</td><td>No country rules at all: no fees, taxes, insurance modes or legal limits.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Coverage by category</h3>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th class="c">Neutral</th><th class="c">Whole project in one view</th><th class="c">PTZ + other loans</th><th class="c">Scenario compare</th><th class="c">English</th><th class="c">Share / export</th></tr></thead>
+    <tbody>
+      <tr><td>🇫🇷 Brokers</td><td class="c"><i class="dot n" title="No"></i></td><td class="c"><i class="dot p" title="Partial"></i></td><td class="c"><i class="dot p" title="Partial"></i></td><td class="c"><i class="dot p" title="Partial"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot p"></i></td></tr>
+      <tr><td>🇫🇷 ANIL</td><td class="c"><i class="dot y" title="Yes"></i></td><td class="c"><i class="dot p"></i></td><td class="c"><i class="dot p"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td></tr>
+      <tr><td>Banks &amp; lenders</td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot n"></i></td></tr>
+      <tr><td>🇩🇪 Brokers</td><td class="c"><i class="dot n"></i></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot p"></i></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot p"></i></td><td class="c"><i class="dot p"></i></td></tr>
+      <tr class="us"><td><b>Credisim (target)</b></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot y"></i></td><td class="c"><i class="dot y"></i></td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub" style="font-size:13px">● yes &nbsp; ◐ partial or split across separate tools &nbsp; ○ no. This is a category-level reading; individual tools vary.</p>
+</section>
+
+<section id="gaps">
+  <h2>Gaps to exploit</h2>
+  <p class="sub">These are the differentiators. They are marked <span class="gap">gap</span> in the feature list.</p>
+  <ul class="opps">
+    <li><b>One neutral project view</b><span>Budget, all loans and all costs on one screen. No sign-up, no call-back.</span></li>
+    <li><b>The TAEG explained</b><span>Shows how many points come from interest, insurance and fees, checked live against the usury rate.</span></li>
+    <li><b>Insurance done properly</b><span>Bank contract on the initial capital vs another insurer on the remaining capital, coverage per borrower, and savings from switching insurer (Lemoine law).</span></li>
+    <li><b>Multi-loan packages</b><span>Main loan + PTZ + Action Logement, with the total payment smoothed to stay constant (lissage). Meilleurtaux's calculette leaves the PTZ out.</span></li>
+    <li><b>"Check my offer"</b><span>Type in a real bank offer and verify its schedule and TAEG. No mainstream tool does this.</span></li>
+    <li><b>Scenario comparison</b><span>2–4 scenarios overlaid, as German tools do and French tools rarely do.</span></li>
+    <li><b>English for France</b><span>Expats and cross-border workers have no good English tool that knows French rules.</span></li>
+    <li><b>Europe in one tool</b><span>Presets for France, Belgium, Germany, Spain, Italy, the Netherlands. Every current tool stops at its own border.</span></li>
+  </ul>
+</section>
+
+<section id="features">
+  <h2>Feature list</h2>
+  <p class="sub"><span class="chip P0">P0</span> MVP &nbsp; <span class="chip P1">P1</span> v1 &nbsp; <span class="chip P2">P2</span> later. Full table with IDs: <code>docs/FEATURES.md</code>.</p>
+  <div class="mods">
+    <div class="mod"><h4>Credit type &amp; options</h4><ul>
+      <li><span class="chip P0">P0</span><span>Choose the credit type: mortgage, personal, car, works (more in Phase 4) <span class="gap">gap</span></span></li>
+      <li><span class="chip P0">P0</span><span>Turn each component on or off: insurance, guarantee, fees, notary, works, other loans (PTZ in Phase 3) <span class="gap">gap</span></span></li>
+    </ul></div>
+    <div class="mod"><h4>Learn: how it works</h4><ul>
+      <li><span class="chip P1">P1</span><span>Short, simple explainers on loans and credit (EN/FR)</span></li>
+      <li><span class="chip P1">P1</span><span>How this calculator works: formulas in plain words, assumptions, data dates</span></li>
+      <li><span class="chip P1">P1</span><span>Live mini-examples; every ⓘ links to its explainer</span></li>
+    </ul></div>
+    <div class="mod"><h4>Loan engine</h4><ul>
+      <li><span class="chip P0">P0</span><span>Fixed-payment loan, schedule by month and by year</span></li>
+      <li><span class="chip P0">P0</span><span>Solve for any one of amount, rate, duration or payment</span></li>
+      <li><span class="chip P1">P1</span><span>Payment deferral (partial / total), fixed-capital and interest-only loans</span></li>
+      <li><span class="chip P1">P1</span><span>Multi-loan package with smoothing <span class="gap">gap</span></span></li>
+      <li><span class="chip P2">P2</span><span>Variable and capped rates, Euribor stress test <span class="gap">gap</span></span></li>
+    </ul></div>
+    <div class="mod"><h4>France mortgage</h4><ul>
+      <li><span class="chip P0">P0</span><span>Insurance on initial or remaining capital <span class="gap">gap</span></span></li>
+      <li><span class="chip P0">P0</span><span>Application fee, broker fee, guarantee (guarantee company / mortgage)</span></li>
+      <li><span class="chip P0">P0</span><span>TAEG and insurance share (TAEA), TAEG breakdown <span class="gap">gap</span></span></li>
+      <li><span class="chip P0">P0</span><span>Usury rate and HCSF checks, notary fees</span></li>
+      <li><span class="chip P1">P1</span><span>PTZ, early repayment (penalty cap), renegotiation, insurer switch, check my offer <span class="gap">gap</span></span></li>
+      <li><span class="chip P2">P2</span><span>Bridge loan, rental investment</span></li>
+    </ul></div>
+    <div class="mod"><h4>Budget &amp; affordability</h4><ul>
+      <li><span class="chip P0">P0</span><span>Financing plan: price + costs − down payment = loan</span></li>
+      <li><span class="chip P0">P0</span><span>Borrowing capacity at 35 %</span></li>
+      <li><span class="chip P1">P1</span><span>Money left to live on each month (reste à vivre)</span></li>
+      <li><span class="chip P2">P2</span><span>Rent vs buy, down-payment optimiser</span></li>
+    </ul></div>
+    <div class="mod"><h4>Consumer credit &amp; Europe</h4><ul>
+      <li><span class="chip P1">P1</span><span>Personal, car and works loans with the consumer usury bands</span></li>
+      <li><span class="chip P2">P2</span><span>Leasing (LOA/LLD) vs loan, revolving credit, <b>real cost of buy-now-pay-later</b> (CCD2) <span class="gap">gap</span></span></li>
+      <li><span class="chip P2">P2</span><span>Country presets: BE, DE, ES, IT, PT, NL</span></li>
+    </ul></div>
+    <div class="mod"><h4>Charts &amp; UX</h4><ul>
+      <li><span class="chip P0">P0</span><span>Yearly payment breakdown, remaining capital, cost donut</span></li>
+      <li><span class="chip P0">P0</span><span>Live sliders, Quick and Expert modes, ⓘ help on every term</span></li>
+      <li><span class="chip P0">P0</span><span>Compare 2 scenarios (4 in P1)</span></li>
+      <li><span class="chip P1">P1</span><span>Rate × duration sensitivity grid, presets, guided flow</span></li>
+    </ul></div>
+    <div class="mod"><h4>Language, sharing, trust</h4><ul>
+      <li><span class="chip P0">P0</span><span>EN + FR; order: <code>?lang</code> → saved → IP country → browser</span></li>
+      <li><span class="chip P0">P0</span><span>Share link, calculation in the browser, dated regulatory data</span></li>
+      <li><span class="chip P1">P1</span><span>PDF report, CSV/Excel export, saved scenarios</span></li>
+      <li><span class="chip P2">P2</span><span>Embed widget, more languages, optional account</span></li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="rules">
+  <h2>French rules the engine must encode</h2>
+  <p class="sub">A snapshot as of 22 September 2026. Stored as versioned data with validity dates. See <code>docs/RESEARCH.md</code>.</p>
+  <h3>Usury rates, Q3 2026 (valid until 30 Sep)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Mortgage</th><th>Usury</th><th>Consumer</th><th>Usury</th></tr></thead>
+    <tbody>
+      <tr><td>Fixed &lt; 10 yrs</td><td>4.07 %</td><td>≤ €3,000</td><td>23.53 %</td></tr>
+      <tr><td>Fixed 10–20 yrs</td><td>4.57 %</td><td>€3,000–6,000</td><td>15.67 %</td></tr>
+      <tr><td>Fixed ≥ 20 yrs</td><td>5.29 %</td><td>&gt; €6,000</td><td>8.56 %</td></tr>
+      <tr><td>Variable</td><td>5.28 %</td><td></td><td></td></tr>
+      <tr><td>Bridge loan</td><td>6.39 %</td><td></td><td></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>Update due 1 Oct 2026:</b> the Banque de France publishes the Q4 rates at the end of September.</div>
+
+  <h3>Other parameters</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Topic</th><th>Rule / value</th></tr></thead>
+    <tbody>
+      <tr><td>HCSF</td><td>Debt ratio ≤ 35 % of net income, insurance included. Duration ≤ 25 yrs (27 for new-build with deferral). Banks may exceed these limits for 20 % of their loans.</td></tr>
+      <tr><td>PTZ</td><td>Available until 31 Dec 2027. 4 income tranches; finances 20–50 % of the cost for flats, 10–30 % for houses. Deferral / total length: T1 10/25 yrs, T2 8/20, T3 2/15, T4 0/10. 2026 income ceilings unchanged: €28,500 (zone C, 1 person) to €161,700 (zone A, 8+).</td></tr>
+      <tr><td>Notary fees</td><td>Existing homes ≈ 7–8.5 %; transfer taxes 6.32 % in most départements (raised until Mar 2028). First-time buyers are exempt from the increase (5.81 %). New build ≈ 2–3 %.</td></tr>
+      <tr><td>Guarantee</td><td>Crédit Logement ≈ 0.75 % + €300; about 60–80 % of the mutual-fund (FMG) share is refunded at the end. A mortgage (hypothèque) costs ≈ 1–2 %.</td></tr>
+      <tr><td>Insurance</td><td>Lemoine law: switch insurer at any time. No health questionnaire at ≤ €200k per borrower if repaid before age 60. Total-invalidity threshold set at 66 % since 1 Sep 2026.</td></tr>
+      <tr><td>TAEG</td><td>EU actuarial method: solve for the monthly rate <i>i</i> in net amount = Σ flows / (1+<i>i</i>)<sup>k</sup>, then TAEG = (1+<i>i</i>)<sup>12</sup> − 1.</td></tr>
+      <tr><td>CCD2</td><td>From 20 Nov 2026: the TAEG also applies to loans under €200 and to buy-now-pay-later; overdraft fees count in the TAEG; standard pre-contract information (SECCI) readable on mobile.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="roadmap">
+  <h2>Roadmap</h2>
+  <p class="sub">Each phase ends with a review gate: you confirm it before the next one starts.</p>
+  <div class="phases">
+    <div class="phase"><div class="when">Phase 0<small>done</small></div><p><b>HTML prototype.</b> Financing plan, insurance, fees and guarantee, TAEG breakdown, usury and HCSF checks, charts, duration comparison, schedule, EN/FR, share link.</p></div>
+    <div class="phase"><div class="when">Phase 1<small>built · in review</small></div><p><b>The real app.</b> Vite + Svelte + TypeScript, and a calculation engine with its own tests. A <b>credit type selector</b> (mortgage, personal, car, works) and <b>on/off toggles</b> for each component (insurance, guarantee, fees, notary, works, other loans). Quick and Expert modes, charts, 2-scenario compare, EN/FR, share link, Firebase config.</p></div>
+    <div class="phase"><div class="when">Phase 2<small>learn</small></div><p><b>How it works.</b> Short, simple explainers in EN/FR: what a loan is, how the monthly payment is calculated, interest vs capital, what's inside the TAEG, insurance, guarantee, notary fees, usury rate, the 35 % rule, the PTZ. Plus "how this calculator works", with live mini-examples and links from every ⓘ.</p></div>
+    <div class="phase"><div class="when">Phase 3<small>France advanced</small></div><p>PTZ as an optional component, combined with the main loan (lissage). Payment deferral, fixed-capital and interest-only loans, early repayment, renegotiation, insurer switch, <b>check my offer</b>, 4 scenarios, PDF/CSV export.</p></div>
+    <div class="phase"><div class="when">Phase 4<small>more credit types</small></div><p>Revolving credit, leasing (LOA/LLD) vs loan, buy-now-pay-later cost, debt consolidation, bridge loan, rental investment, variable and capped rates.</p></div>
+    <div class="phase"><div class="when">Phase 5<small>Europe &amp; reach</small></div><p>Country presets (BE, DE, ES, IT, PT, NL), more languages, SEO pages, embed widget, analytics.</p></div>
+  </div>
+</section>
+
+<section id="stack">
+  <h2>Proposed stack</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Engine</td><td>TypeScript, pure functions</td><td>Reused by the UI, a future API and workers. Golden-file tests (Vitest) accurate to the cent.</td></tr>
+      <tr><td>UI</td><td>Svelte 5 + Vite (static)</td><td>Small bundle, simple Firebase deploy; SEO pages in Phase 5.</td></tr>
+      <tr><td>Charts</td><td>Custom SVG components</td><td>No dependency, follows the theme; the prototype proved it works.</td></tr>
+      <tr><td>i18n</td><td><code>en.json</code> / <code>fr.json</code> + <code>t(key, vars)</code></td><td>The same pattern as Suncast.</td></tr>
+      <tr><td>Hosting</td><td>Firebase Hosting or Cloudflare Pages</td><td>Cloudflare gives the <code>CF-IPCountry</code> header for free, for IP-based language detection.</td></tr>
+      <tr><td>Analytics</td><td>PostHog, cookie-less</td><td>As in Suncast.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Repository</h3>
+<div class="files">github.com/mazerila/credisim
+  README.md
+  src/                   the app (engine, data, i18n, components)
+  docs/RESEARCH.md       existing solutions, rules, sources
+  docs/FEATURES.md       full feature list with priorities
+  docs/CALCULATIONS.md   formulas (annuity, TAEG, insurance, IRA…)
+  docs/ROADMAP.md        phases, stack, repo layout, risks
+  docs/NAMING.md         name check and proposals
+  docs/planning/planning-report.html   this page
+  docs/planning/prototype/index.html   Phase 0 prototype</div>
+</section>
+
+<section id="naming">
+  <h2>Naming</h2>
+  <p class="sub">Checked with web search and whois. Confirm on INPI and EUIPO before buying domains.</p>
+  <div class="tbl"><table class="names">
+    <thead><tr><th>Name</th><th>Conflict</th><th>Domains</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><b>Credisim</b></td><td>None found</td><td>.fr ✓ .eu ✓ · .com taken</td><td class="v-ok">Chosen</td></tr>
+      <tr><td><b>Amortia</b></td><td>A French amortization simulator with the same positioning (tableau-amortissement.pro)</td><td>.fr ✓ .eu ✓ · .com taken</td><td class="v-bad">Avoid</td></tr>
+      <tr><td><b>Annuitia</b></td><td>None found. From <i>annuité</i> / Annuität / annuity</td><td>.com ✓ .fr ✓</td><td class="v-ok">Best backup</td></tr>
+      <tr><td><b>Échéa</b></td><td>None found. From <i>échéance</i></td><td>.fr ✓ .eu ✓</td><td class="v-mid">Possible</td></tr>
+      <tr><td><b>Mensua</b></td><td>None found. From <i>mensualité</i></td><td>.fr ✓</td><td class="v-mid">France-only feel</td></tr>
+      <tr><td><b>Credilator</b></td><td>No exact match; <b>Crediator</b> (a Spanish lending service with poor reviews) is one letter away</td><td>.com ✓ .fr ✓ .eu ✓</td><td class="v-mid">Possible, but check confusion risk</td></tr>
+      <tr><td><b>Credalia</b></td><td>A Swiss personal-loan company</td><td>—</td><td class="v-bad">Avoid</td></tr>
+    </tbody>
+  </table></div>
+  <p>Suggested taglines: <i>« Le vrai coût de votre crédit, en clair. »</i> / <i>"The true cost of your loan, in plain sight."</i></p>
+</section>
+
+<section id="next">
+  <h2>Next steps</h2>
+  <ul>
+    <li>Decide the name, then register <code>credisim.fr</code> + <code>credisim.eu</code> (or <code>annuitia.com</code>).</li>
+    <li>Collect 3–5 real bank offers (with their schedules) to use as golden test cases.</li>
+    <li>Set up the repo: <code>packages/engine</code> first, with tests, then the UI.</li>
+    <li>Pick the host based on whether IP-country detection matters (Cloudflare) or staying on Firebase (Suncast).</li>
+    <li>Set a calendar reminder for quarterly usury updates (1 Jan / Apr / Jul / Oct).</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ol class="src">
+    <li><a href="https://www.banque-france.fr/fr/statistiques/taux-et-cours/taux-dusure-2026-q3">Banque de France: Taux d'usure 2026-Q3</a></li>
+    <li><a href="https://www.cpim.fr/hcsf-2026-plafond-endettement/">CPIM: HCSF 2026</a></li>
+    <li><a href="https://www.pretto.fr/pret-immobilier/pret-taux-zero-ptz/plafonds-ptz-2026/">Pretto: Plafonds PTZ 2026</a></li>
+    <li><a href="https://calculer-ptz.fr/tranches-revenus-ptz">calculer-ptz.fr: Tranches PTZ 2026</a></li>
+    <li><a href="https://www.hestia.fr/blog/evolution-ptz">Hestia: Évolution PTZ</a></li>
+    <li><a href="https://www.cpim.fr/droits-mutation-immobilier-2026/">CPIM: Droits de mutation 2026</a></li>
+    <li><a href="https://kohenavocats.fr/2026/05/05/frais-notaire-2026-droits-mutation-primo-accedant-compromis/">Kohen Avocats: Frais de notaire 2026</a></li>
+    <li><a href="https://perlib.fr/articles/credit-logement">Perlib: Crédit Logement 2026</a></li>
+    <li><a href="https://www.april.fr/assurance-pret/guide/loi-lemoine">April: Loi Lemoine</a></li>
+    <li><a href="https://financesclaires.fr/assurance-emprunteur/loi-lemoine/loi-lemoine-2026/">Finances Claires: Loi Lemoine 2026</a></li>
+    <li><a href="https://kohenavocats.fr/2026/09/18/credit-consommation-reforme-20-novembre-2026-mini-credit-taeg-recours-contester/">Kohen Avocats: Crédit conso, 20 novembre 2026</a></li>
+    <li><a href="https://www.anil.org/outils/outils-de-calcul/">ANIL: Outils de calcul</a></li>
+    <li><a href="https://www.meilleurtaux.com/credit-immobilier/simulation-de-pret-immobilier/calcul-des-mensualites.html">Meilleurtaux: Calculette</a></li>
+    <li><a href="https://www.pretto.fr/simulation-pret-immobilier/">Pretto: Simulation</a></li>
+    <li><a href="https://www.interhyp.de/baufinanzierungsrechner/">Interhyp: Baufinanzierungsrechner</a></li>
+    <li><a href="https://hypofriend.de/en/german-mortgage-calculator">Hypofriend: German mortgage calculator</a></li>
+    <li><a href="https://www.tableau-amortissement.pro/">Amortia: tableau-amortissement.pro</a></li>
+    <li><a href="https://www.euribor-rates.eu/fr/taux-euribor-actuels/4/euribor-taux-12-mois/">euribor-rates.eu: Euribor 12 mois</a></li>
+  </ol>
+</section>
+</main>
+</div>

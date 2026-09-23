@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Credisim — simulate the true cost of a mortgage or consumer loan: monthly payment, TAEG, insurance, fees, notary costs, legal checks. English & French." />
+    <meta name="theme-color" content="#F5F5F7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Apple devices use SF Pro; Inter is the closest match elsewhere. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <title>Credisim — loan simulator</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try { const th = localStorage.getItem('credisim.theme'); if (th === 'light' || th === 'dark') document.documentElement.dataset.theme = th; } catch (_) {}
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

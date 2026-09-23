@@ -1,0 +1,12 @@
+{
+  "source": "https://www.banque-france.fr/fr/statistiques/taux-et-cours/taux-dusure-2026-q3",
+  "quarters": [
+    {
+      "quarter": "2026-Q3",
+      "validFrom": "2026-07-01",
+      "validTo": "2026-09-30",
+      "mortgage": { "fixedUnder10y": 0.0407, "fixed10to20y": 0.0457, "fixed20yPlus": 0.0529, "variable": 0.0528, "bridge": 0.0639 },
+      "consumer": { "upTo3000": 0.2353, "upTo6000": 0.1567, "above6000": 0.0856 }
+    }
+  ]
+}
