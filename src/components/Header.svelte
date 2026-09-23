@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { i18n, setLang, t, type Lang } from '../lib/i18n/index.svelte';
+  import { t } from '../lib/i18n/index.svelte';
   import { route } from '../lib/router.svelte';
   import SharePanel from './SharePanel.svelte';
   import ThemeButton from './ui/ThemeButton.svelte';
-  import Segmented from './ui/Segmented.svelte';
+  import LangMenu from './ui/LangMenu.svelte';
 
   let sharing = $state(false);
 
@@ -22,13 +22,7 @@
     </nav>
     <div class="tools">
       <ThemeButton />
-      <Segmented
-        size="sm"
-        label={t('lang')}
-        options={[{ value: 'en', label: 'EN' }, { value: 'fr', label: 'FR' }]}
-        value={i18n.lang}
-        onchange={(v: Lang) => setLang(v)}
-      />
+      <LangMenu />
       <div class="share-wrap">
       <button type="button" class="share" onclick={() => (sharing = !sharing)} aria-expanded={sharing} hidden={route.view !== 'sim'}>
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -62,5 +56,5 @@
     background: var(--accent); color: var(--on-accent); padding: 6px 14px; font-size: 14px; font-weight: 500;
   }
   .share:hover { background: var(--accent-hover); }
-  @media (max-width: 420px) { .share span { display: none; } .share { padding: 7px 9px; } }
+  @media (max-width: 560px) { .share span { display: none; } .share { padding: 7px 9px; } }
 </style>

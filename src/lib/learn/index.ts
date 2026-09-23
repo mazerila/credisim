@@ -16,10 +16,10 @@ export const GROUPS: { key: 'basics' | 'costs' | 'rules' | 'manage' | 'more' | '
 
 export const TOPICS: TopicId[] = GROUPS.flatMap((g) => g.topics);
 
-const CONTENT: Record<Lang, Content> = { en, fr };
+const CONTENT = { en, fr } as const;
 
 export function article(lang: Lang, id: TopicId) {
-  return CONTENT[lang][id];
+  return (CONTENT as Partial<Record<Lang, Content>>)[lang]?.[id] ?? CONTENT.en[id];
 }
 
 export function isTopic(v: string): v is TopicId {

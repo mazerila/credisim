@@ -1,14 +1,15 @@
 import type { Result } from './engine';
 
 /**
- * Repayment schedule as CSV. French Excel expects ";" and decimal commas,
- * English Excel "," and dots. A BOM makes Excel read UTF-8 correctly.
+ * Repayment schedule as CSV. Excel in French, German, Spanish and Italian expects ";" and
+ * decimal commas; English Excel "," and dots. A BOM makes Excel read UTF-8 correctly.
  */
-export function scheduleCsv(r: Result, lang: 'en' | 'fr', headers: string[]): string {
-  const sep = lang === 'fr' ? ';' : ',';
+export function scheduleCsv(r: Result, lang: string, headers: string[]): string {
+  const comma = lang !== 'en';
+  const sep = comma ? ';' : ',';
   const num = (v: number) => {
     const s = v.toFixed(2);
-    return lang === 'fr' ? s.replace('.', ',') : s;
+    return comma ? s.replace('.', ',') : s;
   };
   const hasPtz = !!r.ptz;
   const lines = [headers.filter((_, i) => hasPtz || i !== 5).join(sep)];

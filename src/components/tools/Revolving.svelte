@@ -21,7 +21,7 @@
   <div class="tool-results">
     <div class="figs">
       <div class="fig lead"><span class="fig-label">{t('revInterest')}</span><span class="fig-value">{fmt.eur(r.totalInterest)}</span><span class="fig-sub">{t('revMonths')} {fmt.duration(r.months, 'months')}</span></div>
-      <div class="fig"><span class="fig-label">TAEG</span><span class="fig-value" class:bad={r.taeg > r.usuryLimit}>{fmt.pct(r.taeg)}</span><span class="fig-sub">{t('taegMax', { u: fmt.pct(r.usuryLimit) })}</span></div>
+      <div class="fig"><span class="fig-label">{t('kTaeg')}</span><span class="fig-value" class:bad={r.taeg > r.usuryLimit}>{fmt.pct(r.taeg)}</span><span class="fig-sub">{t('taegMax', { u: fmt.pct(r.usuryLimit) })}</span></div>
       <div class="fig"><span class="fig-label">{t('revExtra')}</span><span class="fig-value bad">+{fmt.eur(Math.max(0, r.extraCost))}</span><span class="fig-sub">{t('revVsLoan')}</span></div>
     </div>
     <section class="card">

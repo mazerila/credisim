@@ -4,7 +4,7 @@
   import { route } from '../../lib/router.svelte';
   import ArticleView from './ArticleView.svelte';
   import { current } from '../../lib/state.svelte';
-  const notFrance = $derived(current().country !== 'FR');
+  const notFrance = $derived(current().country !== 'FR' || !['en', 'fr'].includes(i18n.lang));
 </script>
 
 {#if route.topic}

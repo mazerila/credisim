@@ -26,7 +26,7 @@
     {#each parts.filter((p) => p.v > 0.00005 || p.key === 'taegInterest') as p (p.key)}
       <li><i style="background:{p.c}"></i>{t(p.key)}<b class="num">{fmt.pct(p.v)}</b></li>
     {/each}
-    <li class="eq">TAEG<b class="num">{fmt.pct(r.taeg)}</b></li>
+    <li class="eq">{t('kTaeg')}<b class="num">{fmt.pct(r.taeg)}</b></li>
   </ul>
   {#if r.ptz}<p class="muted small global">{t('taegGlobalLine', { v: fmt.pct(r.taegGlobal) })}</p>{/if}
   <p class="muted small">{t(r.usury.applies ? 'taegHint' : 'taegHintEU')}</p>

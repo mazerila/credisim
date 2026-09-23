@@ -1,8 +1,13 @@
 import { track } from '../analytics';
 import { en, type Dict } from './en';
+import { de } from './de';
+import { es } from './es';
 import { fr } from './fr';
+import { it } from './it';
 
-export const DICTS = { en, fr } as const;
+export const DICTS = { en, fr, de, es, it } as const;
+/** Languages that have their own Learn articles; the others read them in English. */
+export const LEARN_LANGS = ['en', 'fr'] as const;
 export type Lang = keyof typeof DICTS;
 export const LANGS = Object.keys(DICTS) as Lang[];
 export type Key = keyof Dict;
@@ -20,8 +25,11 @@ function detect(): Lang {
   const q = new URLSearchParams(location.search).get('lang');
   if (isLang(q)) return q;
   try { const s = localStorage.getItem(STORAGE_KEY); if (isLang(s)) return s; } catch { /* storage blocked */ }
-  const country = (window as { __COUNTRY__?: string }).__COUNTRY__;
-  if (country) return ['FR', 'BE', 'LU', 'MC', 'CH'].includes(country.toUpperCase()) ? 'fr' : 'en';
+  const country = (window as { __COUNTRY__?: string }).__COUNTRY__?.toUpperCase();
+  if (country) {
+    const byCountry: Record<string, Lang> = { FR: 'fr', BE: 'fr', LU: 'fr', MC: 'fr', DE: 'de', AT: 'de', ES: 'es', IT: 'it' };
+    return byCountry[country] ?? 'en';
+  }
   for (const l of navigator.languages ?? [navigator.language]) {
     const c = l.slice(0, 2).toLowerCase();
     if (isLang(c)) return c;
@@ -43,7 +51,8 @@ export function t(key: Key, vars?: Record<string, string | number>): string {
   return vars ? s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m)) : s;
 }
 
-const locale = () => (i18n.lang === 'fr' ? 'fr-FR' : 'en-IE');
+const LOCALES: Record<Lang, string> = { en: 'en-IE', fr: 'fr-FR', de: 'de-DE', es: 'es-ES', it: 'it-IT' };
+const locale = () => LOCALES[i18n.lang];
 
 export const fmt = {
   eur: (v: number, digits = 0) =>

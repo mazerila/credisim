@@ -22,7 +22,7 @@
   </div>
   <div class="tool-results">
     <div class="figs">
-      <div class="fig lead"><span class="fig-label">TAEG</span><span class="fig-value">{fmt.pct(r.taeg)}</span><span class="fig-sub">{t('taegMax', { u: fmt.pct(r.usuryLimit) })}</span></div>
+      <div class="fig lead"><span class="fig-label">{t('kTaeg')}</span><span class="fig-value">{fmt.pct(r.taeg)}</span><span class="fig-sub">{t('taegMax', { u: fmt.pct(r.usuryLimit) })}</span></div>
       <div class="fig"><span class="fig-label">{t('bnplToday')}</span><span class="fig-value">{fmt.eur(r.today, 2)}</span><span class="fig-sub">{t('bnplThen', { n: Number(n) - 1, v: fmt.eur(r.instalment, 2) })}</span></div>
       <div class="fig"><span class="fig-label">{t('bnplTotal')}</span><span class="fig-value" class:bad={r.fees > 0}>{fmt.eur(r.total, 2)}</span><span class="fig-sub">{t('bnplFees')} {fmt.eur(r.fees, 2)}</span></div>
     </div>
