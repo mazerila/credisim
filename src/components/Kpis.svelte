@@ -28,7 +28,11 @@
     <span class="label">{t('kTaeg')} <Info text={t('tip_taeg')} learn="taeg" /></span>
     <span class="value num">{fmt.pct(r.taeg)}</span>
     <span class="sub">{t('kTaegSub', { rate: fmt.pct(r.variable ? r.variable.initialRate : inp.rate / 100) })}</span>
-    <span class="pill {r.usury.ok ? 'ok' : 'bad'}">{t(r.usury.ok ? 'usuryOk' : 'usuryBad', { u: fmt.pct(r.usury.limit) })}</span>
+    {#if r.usury.applies}
+      <span class="pill {r.usury.ok ? 'ok' : 'bad'}">{t(r.usury.ok ? 'usuryOk' : 'usuryBad', { u: fmt.pct(r.usury.limit) })}</span>
+    {:else}
+      <span class="pill neutral">{t('usuryNone')}</span>
+    {/if}
     {#if r.usury.stale}<span class="pill warn">{t('usuryStale', { q: r.usury.quarter })}</span>{/if}
   </div>
 
@@ -42,11 +46,13 @@
     <span class="label">{t('kDebt')} <Info text={t('tip_debt')} learn="debt-ratio" /></span>
     {#if r.debtRatio}
       <span class="value num">{fmt.pct(r.debtRatio.value, 1)}</span>
-      <span class="sub">{t('kDebtSub')}</span>
-      {#if r.duration}
+      <span class="sub">{t(r.debtRatio.kind === 'law' ? 'debtLawSub' : 'debtGuideSub', { p: fmt.pct(r.debtRatio.limit, 0) })}</span>
+      {#if r.debtRatio.kind === 'law' && r.duration}
         <span class="pill {r.debtRatio.ok ? 'ok' : 'bad'}">{t(r.debtRatio.ok ? 'debtOk' : 'debtBad')}</span>
-      {:else}
+      {:else if r.debtRatio.kind === 'law'}
         <span class="pill {r.debtRatio.ok ? 'ok' : 'warn'}">{t(r.debtRatio.ok ? 'debtOk' : 'debtInfo')}</span>
+      {:else}
+        <span class="pill {r.debtRatio.ok ? 'ok' : 'warn'}">{t(r.debtRatio.ok ? 'debtGuideOk' : 'debtGuideBad', { p: fmt.pct(r.debtRatio.limit, 0) })}</span>
       {/if}
       {#if r.duration && !r.duration.ok}<span class="pill warn">{t('durBad')}</span>{/if}
       {#if r.moneyLeft}
@@ -73,6 +79,7 @@
   .value { font-family: var(--font-display); font-size: clamp(30px, 3.6vw, 40px); white-space: nowrap; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
   .sub { font-size: 13px; color: var(--text-2); letter-spacing: -0.01em; }
   .pill { margin-top: 6px; }
+  .pill.neutral { background: var(--fill-2); color: var(--text-2); }
   .phases { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.25); display: grid; gap: 2px; font-size: 13px; }
   .phases li { display: flex; justify-content: space-between; gap: 10px; }
   .phases span { opacity: 0.85; }

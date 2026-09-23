@@ -1,5 +1,6 @@
 import { byYear, combine, principalFromPayment, schedule, type InsuranceSpec, type ScheduleOptions } from './annuity';
 import { CREDIT_TYPES, usesProject } from './creditTypes';
+import { COUNTRIES, countryGuarantee, purchaseCosts } from './countries';
 import { guaranteeParams, notaryFees, RULES, usuryCategory, usuryLimit, usuryTable } from './rules';
 import { ptzEstimate, type PtzEstimate } from './ptz';
 import { actuarialRate } from './taeg';
@@ -10,6 +11,7 @@ const on = (flag: boolean, v: number) => (flag ? Math.max(0, v) : 0);
 export function notaryOf(i: Inputs): number {
   const spec = CREDIT_TYPES[i.type];
   if (i.type !== 'mortgage' || i.amountOnly || !i.useNotary || !spec.components.includes('notary')) return 0;
+  if (i.country !== 'FR') return i.notaryAuto ? purchaseCosts(i).total : (i.price * i.notaryPct) / 100;
   return i.notaryAuto
     ? notaryFees(i.price, i.propertyKind, i.transferTaxZone, i.firstTimeBuyer)
     : (i.price * i.notaryPct) / 100;
@@ -45,8 +47,8 @@ export function principalOf(i: Inputs): Funding {
     const principal = Math.max(0, Math.round(i.amount));
     let guarantee = 0;
     if (i.useGuarantee && has('guarantee') && principal > 0) {
-      const g = guaranteeParams(i.guarantee);
-      guarantee = i.guaranteeAuto ? principal * g.rate + g.fixed : Math.max(0, i.guaranteeAmount);
+      const g = guaranteeRates(i);
+      guarantee = !i.guaranteeAuto ? Math.max(0, i.guaranteeAmount) : g && (!g.maxLoan || principal <= g.maxLoan) ? principal * g.rate + g.fixed : 0;
     }
     return { principal, notary: 0, guarantee, fees, works: 0, ...none };
   }
@@ -57,10 +59,14 @@ export function principalOf(i: Inputs): Funding {
   let total = Math.round(base);
   let guarantee = 0;
   if (i.useGuarantee && has('guarantee')) {
-    if (i.guaranteeAuto) {
-      const g = guaranteeParams(i.guarantee);
+    const g = guaranteeRates(i);
+    if (i.guaranteeAuto && g) {
       total = Math.round((base + g.fixed) / (1 - g.rate));
       guarantee = total * g.rate + g.fixed;
+      // e.g. NHG only exists up to a loan ceiling
+      if (g.maxLoan && total > g.maxLoan) { total = Math.round(base); guarantee = 0; }
+    } else if (i.guaranteeAuto) {
+      total = Math.round(base);
     } else {
       guarantee = Math.max(0, i.guaranteeAmount);
       total = Math.round(base + guarantee);
@@ -69,7 +75,7 @@ export function principalOf(i: Inputs): Funding {
 
   let ptz = 0;
   let ptzEst: PtzEstimate | null = null;
-  if (i.usePtz && has('ptz')) {
+  if (i.usePtz && has('ptz') && i.country === 'FR') {
     ptzEst = ptzEstimate(i.ptzZone, i.ptzKind, i.persons, i.taxIncome, i.price + works);
     const wanted = i.ptzAuto ? (ptzEst.eligible ? ptzEst.amount : 0) : Math.max(0, Math.round(i.ptzAmount));
     ptz = Math.min(wanted, Math.floor(total / 2));
@@ -98,6 +104,15 @@ function variableSummary(
     costIfStable: cost(flat),
     worstMonthly,
   };
+}
+
+/** France: guarantee company / mortgage / lien. Elsewhere: the country's usual deed or guarantee. */
+function guaranteeRates(i: Inputs): { rate: number; fixed: number; maxLoan?: number } | null {
+  if (i.country === 'FR') {
+    const fr = i.guarantee === 'caution' || i.guarantee === 'hypo' || i.guarantee === 'ppd' ? i.guarantee : 'caution';
+    return guaranteeParams(fr);
+  }
+  return countryGuarantee(i);
 }
 
 export function insuranceSpecs(i: Inputs): InsuranceSpec[] {
@@ -223,6 +238,8 @@ export function simulate(i: Inputs, today = new Date()): Result {
   const { table, stale } = usuryTable(today);
   const category = usuryCategory(i.type, principal, i.months, !!path);
   const limit = usuryLimit(category, table);
+  const country = COUNTRIES[i.country] ?? COUNTRIES.FR;
+  const usuryApplies = country.usury;
 
   const other = on(i.useOtherLoans && spec.components.includes('otherLoans'), i.otherLoans);
   const ratio = i.income > 0 ? (monthlyMax + other) / i.income : 0;
@@ -245,9 +262,9 @@ export function simulate(i: Inputs, today = new Date()): Result {
     creditCost: totalInterest + totalInsurance + fees + guarantee,
     taeg, taegParts, taegGlobal,
     taea: taegParts.insurance,
-    usury: { ok: taeg <= limit, limit, value: taeg, category, quarter: table.quarter, stale },
-    debtRatio: i.income > 0 ? { ok: ratio <= RULES.hcsf.maxDebtRatio, limit: RULES.hcsf.maxDebtRatio, value: ratio } : null,
-    duration: spec.hcsf ? { ok: i.months <= maxMonths, limit: maxMonths, value: i.months } : null,
+    usury: { ok: !usuryApplies || taeg <= limit, limit, value: taeg, category, quarter: table.quarter, stale, applies: usuryApplies },
+    debtRatio: i.income > 0 ? { ok: ratio <= country.debt.limit, limit: country.debt.limit, value: ratio, kind: country.debt.kind } : null,
+    duration: spec.hcsf && i.country === 'FR' ? { ok: i.months <= maxMonths, limit: maxMonths, value: i.months } : null,
     variable: path ? variableSummary(i, path, principal, rate, ins, opts, mainRows, flatRows) : null,
     moneyLeft: i.income > 0 ? { total: left, perPerson: left / Math.max(1, i.persons) } : null,
   };
@@ -258,7 +275,7 @@ export function simulate(i: Inputs, today = new Date()): Result {
  * debt ratio at the limit. Insurance on remaining capital is approximated by its
  * first (highest) month, which keeps the estimate on the safe side.
  */
-export function borrowingCapacity(i: Inputs, maxRatio = RULES.hcsf.maxDebtRatio): number {
+export function borrowingCapacity(i: Inputs, maxRatio = (COUNTRIES[i.country] ?? COUNTRIES.FR).debt.limit): number {
   const spec = CREDIT_TYPES[i.type];
   const other = on(i.useOtherLoans && spec.components.includes('otherLoans'), i.otherLoans);
   const budget = i.income * maxRatio - other;

@@ -9,13 +9,13 @@
     { key: 'taegInsurance' as const, v: r.taegParts.insurance, c: 'var(--c-insurance)' },
     { key: 'taegFees' as const, v: r.taegParts.fees, c: 'var(--c-fees)' },
   ]);
-  const scale = $derived(Math.max(r.usury.limit, r.taeg) * 1.1 || 1);
+  const scale = $derived(Math.max(r.usury.applies ? r.usury.limit : 0, r.taeg) * 1.1 || 1);
 </script>
 
 <section class="card">
   <h2 class="card-title">{t('taegTitle')} <Info text={t('tip_usury')} learn="usury" /></h2>
   <div class="track-wrap">
-    <div class="limit" style="left:{(r.usury.limit / scale) * 100}%"><span>{t('taegMax', { u: fmt.pct(r.usury.limit) })}</span></div>
+    {#if r.usury.applies}<div class="limit" style="left:{(r.usury.limit / scale) * 100}%"><span>{t('taegMax', { u: fmt.pct(r.usury.limit) })}</span></div>{/if}
     <div class="track">
       {#each parts as p (p.key)}
         <div style="width:{(p.v / scale) * 100}%;background:{p.c}"></div>
@@ -29,7 +29,7 @@
     <li class="eq">TAEG<b class="num">{fmt.pct(r.taeg)}</b></li>
   </ul>
   {#if r.ptz}<p class="muted small global">{t('taegGlobalLine', { v: fmt.pct(r.taegGlobal) })}</p>{/if}
-  <p class="muted small">{t('taegHint')}</p>
+  <p class="muted small">{t(r.usury.applies ? 'taegHint' : 'taegHintEU')}</p>
 </section>
 
 <style>

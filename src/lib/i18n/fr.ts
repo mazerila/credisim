@@ -58,6 +58,7 @@ export const fr: Dict = {
   taegInterest: 'Intérêts', taegInsurance: 'Assurance', taegFees: 'Frais et garantie', taegMax: 'usure {u}',
   taegHint: 'Le TAEG est le taux annuel réellement payé une fois l’assurance, les frais et la garantie comptés. La loi l’oblige à rester sous le taux d’usure de ce type de prêt.',
 
+  taegHintEU: 'Le TAEG est le taux annuel réellement payé une fois l’assurance, les frais et la garantie comptés. C’est le chiffre à comparer entre les offres.',
   donutTitle: 'Où va votre argent', donutCenter: 'en plus du capital',
   dInterest: 'Intérêts', dInsurance: 'Assurance', dNotary: 'Frais de notaire', dGuarantee: 'Garantie', dFees: 'Frais bancaires et courtage',
 
@@ -66,7 +67,7 @@ export const fr: Dict = {
   yearAxis: 'Année',
 
   capacityTitle: 'Combien pourriez-vous emprunter ?',
-  capacityText: 'À {rate} sur {dur}, en gardant vos crédits à 35 % de vos revenus :',
+  capacityText: 'À {rate} sur {dur}, en gardant vos crédits à {p} de vos revenus :',
   capacityLoan: 'Emprunt maximum', capacityPrice: 'Prix maximum avec votre apport',
   capacityNoIncome: 'Indiquez vos revenus nets mensuels pour voir votre capacité d’emprunt.',
 
@@ -230,4 +231,15 @@ export const fr: Dict = {
   shareTitle: 'Partager cette simulation', shareCreating: 'Création d’un lien court…', shareCopy: 'Copier', shareCopied: 'Copié', shareNative: 'Partager avec…',
   shareNote: 'Toute personne ayant ce lien voit ces chiffres. Pour créer des liens courts, la simulation est enregistrée sur notre serveur (Firebase, dans l’UE), sans aucune donnée personnelle.',
   shareLongNote: 'Les liens courts ne sont pas disponibles ici, mais ce lien complet fonctionne aussi.',
+
+  // Countries
+  country: 'Pays', region: 'Région', mainHome: 'Votre résidence principale', mainHomeIT: 'Résidence principale (prima casa)', starterNL: 'Primo-accédant de 18 à 35 ans',
+  purchaseCosts: 'Frais d’achat (taxes et notaire)', purchaseDetail: 'Taxes {tax} · notaire et enregistrement {notary}',
+  region_wallonia: 'Wallonie', region_flanders: 'Flandre', region_brussels: 'Bruxelles',
+  region_madrid: 'Madrid', region_andalucia: 'Andalousie', region_cataluna: 'Catalogne', region_valencia: 'Communauté valencienne', region_other: 'Autres régions (≈ 8 %)',
+  g_mortgage: 'Inscription hypothécaire', g_grundschuld: 'Dette foncière (Grundschuld)', g_valuation: 'Expertise seule (la banque paie le reste)', g_ipoteca: 'Taxe sur le prêt et notaire', g_nhg: 'Garantie NHG (0,4 %)', g_none: 'Aucune',
+  nhgOver: 'La NHG ne couvre que les prêts jusqu’à 470 000 €.',
+  usuryNone: 'Pas de taux maximum légal vérifié ici', debtGuideOk: 'Sous le repère habituel de {p}', debtGuideBad: 'Au-dessus du repère de {p}', debtLawSub: 'limite légale (HCSF) : {p}', debtGuideSub: 'les banques restent en général sous {p}',
+  countryNote: 'Estimations pour {c} (septembre 2026) : frais d’achat, taux habituel et garantie. Vérifiez auprès d’une banque ou d’un notaire local.',
+  learnFranceNote: 'Ces guides décrivent les règles françaises.',
 };

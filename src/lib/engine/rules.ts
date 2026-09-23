@@ -72,6 +72,6 @@ export function notaryFees(price: number, kind: PropertyKind, zone: TransferTaxZ
   return notaryBreakdown(price, kind, zone, firstTimeBuyer).total;
 }
 
-export function guaranteeParams(kind: GuaranteeKind) {
+export function guaranteeParams(kind: 'caution' | 'hypo' | 'ppd') {
   return rules.guarantee[kind];
 }

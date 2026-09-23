@@ -1,6 +1,8 @@
 export type CreditType = 'mortgage' | 'personal' | 'car' | 'works';
 export type InsuranceBase = 'initial' | 'remaining';
-export type GuaranteeKind = 'caution' | 'hypo' | 'ppd';
+/** France: caution / hypothèque / PPD. Other countries: their usual mortgage deed or guarantee. */
+export type GuaranteeKind = 'caution' | 'hypo' | 'ppd' | 'mortgage' | 'grundschuld' | 'valuation' | 'ipoteca' | 'nhg' | 'none';
+export type Country = 'FR' | 'BE' | 'DE' | 'ES' | 'IT' | 'NL';
 export type PropertyKind = 'old' | 'new';
 export type TransferTaxZone = 'raised' | 'standard' | 'indre';
 export type Amortization = 'annuity' | 'linear' | 'inFine';
@@ -14,6 +16,12 @@ export type PtzKind = 'newFlat' | 'newHouse' | 'oldWithWorks';
 /** Everything the user can enter. Money in euros, rates in percent (3.2 = 3.2 %). */
 export interface Inputs {
   type: CreditType;
+  /** Country preset: purchase costs, guarantee, rules. France has the most detailed rules. */
+  country: Country;
+  /** Country-specific region code (Belgian region, German Land, Spanish community…) */
+  region: string;
+  /** Buying your own main home (lower taxes in BE, IT, NL) */
+  mainHome: boolean;
 
   // Project (mortgage, car)
   price: number;
@@ -165,8 +173,10 @@ export interface Result {
   /** TAEG components, in rate points */
   taegParts: { interest: number; insurance: number; fees: number };
   taea: number;
-  usury: Check & { category: UsuryCategory; quarter: string; stale: boolean };
-  debtRatio: Check | null;
+  /** Legal maximum rate. `applies` is false where Credisim has no legal maximum to check (outside France). */
+  usury: Check & { category: UsuryCategory; quarter: string; stale: boolean; applies: boolean };
+  /** `law` (France, HCSF) or a usual bank `guideline` elsewhere */
+  debtRatio: (Check & { kind: 'law' | 'guideline' }) | null;
   /** HCSF duration rule; mortgages only */
   duration: Check | null;
   /** variable / capped rate: what the scenario does to the loan */

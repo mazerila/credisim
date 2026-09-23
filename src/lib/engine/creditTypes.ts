@@ -60,6 +60,9 @@ export const CREDIT_TYPES: Record<CreditType, CreditTypeSpec> = {
 
 const base: Inputs = {
   type: 'mortgage',
+  country: 'FR',
+  region: '',
+  mainHome: true,
   price: 320000,
   downPayment: 50000,
   propertyKind: 'old',

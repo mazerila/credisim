@@ -115,7 +115,7 @@
         <TaegBreakdown {r} />
       </div>
       <div class="two">
-        <CostDonut {r} />
+        <CostDonut {r} country={inp.country} />
         <BalanceChart
           series={all.length > 1
             ? all.map((x, i) => ({ label: t('scenario', { n: SCENARIO_NAMES[i] }), color: SERIES_COLORS[i], principal: x.r.totalBorrowed, rows: x.r.rows }))

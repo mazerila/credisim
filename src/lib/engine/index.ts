@@ -8,3 +8,4 @@ export * from './ptz';
 export * from './tools';
 export * from './credits';
 export * from './property';
+export * from './countries';

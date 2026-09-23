@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { borrowingCapacity, CREDIT_TYPES, notaryFees, usesProject, type Inputs } from '../lib/engine';
+  import { borrowingCapacity, COUNTRIES, CREDIT_TYPES, notaryOf, usesProject, type Inputs } from '../lib/engine';
   import { fmt, t } from '../lib/i18n/index.svelte';
 
   let { inp }: { inp: Inputs } = $props();
@@ -13,7 +13,7 @@
     let lo = 0, hi = budget;
     for (let it = 0; it < 50; it++) {
       const mid = (lo + hi) / 2;
-      const notary = inp.type === 'mortgage' && inp.useNotary ? notaryFees(mid, inp.propertyKind, inp.transferTaxZone, inp.firstTimeBuyer) : 0;
+      const notary = notaryOf({ ...inp, price: mid });
       if (mid + notary <= budget) lo = mid; else hi = mid;
     }
     return Math.floor(lo / 1000) * 1000;
@@ -23,7 +23,7 @@
 <section class="card">
   <h2 class="card-title">{t('capacityTitle')}</h2>
   {#if inp.income > 0}
-    <p class="muted small">{t('capacityText', { rate: fmt.pct(inp.rate / 100), dur: fmt.duration(inp.months, spec.durationUnit) })}</p>
+    <p class="muted small">{t('capacityText', { rate: fmt.pct(inp.rate / 100), dur: fmt.duration(inp.months, spec.durationUnit), p: fmt.pct(COUNTRIES[inp.country].debt.limit, 0) })}</p>
     <div class="figs">
       <div><span class="muted small">{t('capacityLoan')}</span><b class="num">{fmt.eur(cap)}</b></div>
       {#if usesProject(inp)}

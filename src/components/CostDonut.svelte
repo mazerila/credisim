@@ -2,13 +2,13 @@
   import type { Result } from '../lib/engine';
   import { fmt, t } from '../lib/i18n/index.svelte';
 
-  let { r }: { r: Result } = $props();
+  let { r, country = 'FR' }: { r: Result; country?: string } = $props();
 
   const segs = $derived(
     [
       { key: 'dInterest' as const, v: r.totalInterest, c: 'var(--c-interest)' },
       { key: 'dInsurance' as const, v: r.totalInsurance, c: 'var(--c-insurance)' },
-      { key: 'dNotary' as const, v: r.notary, c: 'var(--c-notary)' },
+      { key: (country === 'FR' ? 'dNotary' : 'purchaseCosts') as 'dNotary', v: r.notary, c: 'var(--c-notary)' },
       { key: 'dGuarantee' as const, v: r.guarantee, c: 'var(--c-guarantee)' },
       { key: 'dFees' as const, v: r.fees, c: 'var(--c-fees)' },
     ].filter((s) => s.v > 0),

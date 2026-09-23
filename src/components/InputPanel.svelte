@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { CREDIT_TYPES, notaryBreakdown, principalOf, usesProject, type Amortization, type DeferralType, type RateScenario, type RateType } from '../lib/engine';
+  import { COUNTRIES, COUNTRY_CODES, CREDIT_TYPES, notaryBreakdown, principalOf, purchaseCosts, regionsOf, usesProject, type Amortization, type Country, type DeferralType, type RateScenario, type RateType } from '../lib/engine';
+  import { i18n, type Key } from '../lib/i18n/index.svelte';
   import { fmt, t } from '../lib/i18n/index.svelte';
-  import { addScenario, app, current, removeScenario } from '../lib/state.svelte';
+  import { addScenario, app, current, removeScenario, setCountry } from '../lib/state.svelte';
   import { MAX_SCENARIOS, SCENARIO_NAMES } from '../lib/share';
   import { track } from '../lib/analytics';
   import NumberField from './ui/NumberField.svelte';
@@ -16,8 +17,14 @@
   const expert = $derived(app.mode === 'expert');
   const project = $derived(usesProject(inp));
   const id = (name: string) => `${app.active}-${name}`;
+  const fr = $derived(inp.country === 'FR');
   const notary = $derived(notaryBreakdown(inp.price, inp.propertyKind, inp.transferTaxZone, inp.firstTimeBuyer));
-  const notaryPctAuto = $derived(inp.price > 0 ? notary.total / inp.price : 0);
+  const costs = $derived(purchaseCosts(inp));
+  const notaryPctAuto = $derived(inp.price > 0 ? (fr ? notary.total : costs.total) / inp.price : 0);
+  const regions = $derived(regionsOf(inp.country).filter((r) => r !== 'all'));
+  const countryName = (c: string) => { try { return new Intl.DisplayNames([i18n.lang], { type: 'region' }).of(c) ?? c; } catch { return c; } };
+  const regionLabel = (c: Country, r: string) => (c === 'DE' ? GERMAN_LANDS[r] ?? r : t(`region_${r}` as Key));
+  const GERMAN_LANDS: Record<string, string> = { BW: 'Baden-Württemberg', BY: 'Bayern', BE: 'Berlin', BB: 'Brandenburg', HB: 'Bremen', HH: 'Hamburg', HE: 'Hessen', MV: 'Mecklenburg-Vorpommern', NI: 'Niedersachsen', NW: 'Nordrhein-Westfalen', RP: 'Rheinland-Pfalz', SL: 'Saarland', SN: 'Sachsen', ST: 'Sachsen-Anhalt', SH: 'Schleswig-Holstein', TH: 'Thüringen' };
   const guaranteeAuto = $derived(principalOf({ ...inp, useGuarantee: true, guaranteeAuto: true }));
   const funding = $derived(principalOf(inp));
   const ptzEst = $derived(funding.ptzEstimate);
@@ -62,6 +69,8 @@
 
   <fieldset>
     <legend>{t('secProject')}</legend>
+    <SelectField id={id('country')} label={t('country')} value={inp.country} onchange={(v) => setCountry(v as Country)}
+      options={COUNTRY_CODES.map((c) => ({ value: c, label: `${COUNTRIES[c].flag}  ${countryName(c)}` }))} />
     {#if inp.type === 'mortgage'}
       <Segmented
         label={t('secProject')}
@@ -81,9 +90,20 @@
       <div class="two">
         <SelectField id={id('kind')} label={t('propertyKind')} bind:value={inp.propertyKind}
           options={[{ value: 'old', label: t('old') }, { value: 'new', label: t('new') }]} />
-        <SelectField id={id('zone')} label={t('transferTaxZone')} bind:value={inp.transferTaxZone}
-          options={[{ value: 'raised', label: t('zone_raised') }, { value: 'standard', label: t('zone_standard') }, { value: 'indre', label: t('zone_indre') }]} />
+        {#if fr}
+          <SelectField id={id('zone')} label={t('transferTaxZone')} bind:value={inp.transferTaxZone}
+            options={[{ value: 'raised', label: t('zone_raised') }, { value: 'standard', label: t('zone_standard') }, { value: 'indre', label: t('zone_indre') }]} />
+        {:else if regions.length}
+          <SelectField id={id('region')} label={t('region')} bind:value={inp.region}
+            options={regions.map((r) => ({ value: r, label: regionLabel(inp.country, r) }))} />
+        {/if}
       </div>
+      {#if inp.country === 'BE' || inp.country === 'IT' || inp.country === 'NL'}
+        <label class="check"><input type="checkbox" bind:checked={inp.mainHome} /> {t(inp.country === 'IT' ? 'mainHomeIT' : 'mainHome')}</label>
+      {/if}
+      {#if inp.country === 'NL' && inp.mainHome}
+        <label class="check"><input type="checkbox" bind:checked={inp.firstTimeBuyer} /> {t('starterNL')}</label>
+      {/if}
     {/if}
   </fieldset>
 
@@ -163,7 +183,8 @@
         {#if has('guarantee')}
           <Switch id={id('use-guar')} label={t('opt_guarantee')} tip={t('tip_guarantee')} learn="guarantee" bind:checked={inp.useGuarantee}>
             <SelectField id={id('guar')} label={t('guarantee')} bind:value={inp.guarantee}
-              options={[{ value: 'caution', label: t('g_caution') }, { value: 'hypo', label: t('g_hypo') }, { value: 'ppd', label: t('g_ppd') }]} />
+              options={COUNTRIES[inp.country].guarantees.map((g) => ({ value: g, label: t(`g_${g}` as Key) }))} />
+            {#if inp.guarantee === 'nhg' && inp.guaranteeAuto && guaranteeAuto.guarantee === 0}<p class="muted small">{t('nhgOver')}</p>{/if}
             <label class="check"><input type="checkbox" bind:checked={inp.guaranteeAuto} onchange={toggleGuaranteeAuto} />
               <span>{t('notaryAuto')}{#if inp.guaranteeAuto}&nbsp;· <span class="num">{fmt.eur(guaranteeAuto.guarantee)}</span>
                 <span class="muted num">({t('ofLoan', { p: fmt.pct(guaranteeAuto.principal ? guaranteeAuto.guarantee / guaranteeAuto.principal : 0) })})</span>{/if}</span></label>
@@ -172,7 +193,7 @@
             {/if}
           </Switch>
         {/if}
-        {#if has('ptz') && project}
+        {#if has('ptz') && project && fr}
           <Switch id={id('use-ptz')} label={t('opt_ptz')} tip={t('tip_ptz')} learn="ptz" bind:checked={inp.usePtz}>
             <div class="two">
               <SelectField id={id('ptz-zone')} label={t('ptzZone')} tip={t('tip_zone')} bind:value={inp.ptzZone}
@@ -211,16 +232,18 @@
           </Switch>
         {/if}
         {#if has('notary') && project}
-          <Switch id={id('use-notary')} label={t('opt_notary')} tip={t('tip_notary')} learn="notary" bind:checked={inp.useNotary}>
-            <label class="check"><input type="checkbox" bind:checked={inp.firstTimeBuyer} /> {t('firstTimeBuyer')}</label>
+          <Switch id={id('use-notary')} label={t(fr ? 'opt_notary' : 'purchaseCosts')} tip={fr ? t('tip_notary') : undefined} learn={fr ? 'notary' : undefined} bind:checked={inp.useNotary}>
+            {#if fr}<label class="check"><input type="checkbox" bind:checked={inp.firstTimeBuyer} /> {t('firstTimeBuyer')}</label>{/if}
             <label class="check"><input type="checkbox" bind:checked={inp.notaryAuto} onchange={toggleNotaryAuto} />
-              <span>{t('notaryAuto')}{#if inp.notaryAuto}&nbsp;· <span class="num">{fmt.eur(notary.total)}</span>
+              <span>{t('notaryAuto')}{#if inp.notaryAuto}&nbsp;· <span class="num">{fmt.eur(fr ? notary.total : costs.total)}</span>
                 <span class="muted num">({t('ofPrice', { p: fmt.pct(notaryPctAuto) })})</span>{/if}</span></label>
-            {#if inp.notaryAuto}
+            {#if inp.notaryAuto && fr}
               <p class="muted small detail num">{t('notaryDetail', { tax: fmt.eur(notary.taxes), emol: fmt.eur(notary.emoluments), other: fmt.eur(notary.other) })}</p>
+            {:else if inp.notaryAuto}
+              <p class="muted small detail num">{t('purchaseDetail', { tax: fmt.eur(costs.taxes), notary: fmt.eur(costs.notary) })}</p>
             {/if}
             {#if !inp.notaryAuto}
-              <NumberField id={id('notary-pct')} label={t('notaryPct')} unit="%" step={0.1} max={15} bind:value={inp.notaryPct} />
+              <NumberField id={id('notary-pct')} label={t(fr ? 'notaryPct' : 'purchaseCosts')} unit="%" step={0.1} max={15} bind:value={inp.notaryPct} />
             {/if}
           </Switch>
         {/if}

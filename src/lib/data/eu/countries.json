@@ -1,0 +1,85 @@
+{
+  "note": "Estimates for simulations, September 2026. Purchase costs = transfer tax (by region / use) + notary and registration costs. Mortgage deed or guarantee costs are separate. France uses the detailed engine (notary scale, HCSF, PTZ, usury) in data/fr.",
+  "countries": {
+    "FR": {
+      "flag": "🇫🇷", "lang": "fr", "rate": 3.2, "insurance": { "on": true, "rate": 0.3 },
+      "debt": { "limit": 0.35, "kind": "law" }, "maxYears": 25, "usury": true,
+      "guarantees": ["caution", "hypo", "ppd"], "defaultGuarantee": "caution",
+      "sources": ["https://www.banque-france.fr/fr/statistiques/taux-et-cours"]
+    },
+    "BE": {
+      "flag": "🇧🇪", "lang": "fr", "rate": 3.35, "insurance": { "on": true, "rate": 0.2 },
+      "debt": { "limit": 0.4, "kind": "guideline" }, "maxYears": null, "usury": false,
+      "regions": {
+        "wallonia": { "own": { "tax": 0.03, "allowance": 20000 }, "other": { "tax": 0.125 } },
+        "flanders": { "own": { "tax": 0.02 }, "other": { "tax": 0.12 } },
+        "brussels": { "own": { "tax": 0.125, "allowance": 200000 }, "other": { "tax": 0.125 } }
+      },
+      "defaultRegion": "wallonia",
+      "notary": { "pct": 0.01, "fixed": 1100 },
+      "guarantees": ["mortgage"], "defaultGuarantee": "mortgage",
+      "guaranteeCost": { "mortgage": { "rate": 0.016, "fixed": 600 } },
+      "sources": ["https://immoanalyse.be/articles/droits-enregistrement-wallonie-bruxelles-flandre", "https://flora.insure/fr/blog/frais-notaire-achat-immobilier-belgique/", "https://hellosafe.be/pret-hypothecaire/taux"]
+    },
+    "DE": {
+      "flag": "🇩🇪", "lang": "de", "rate": 3.9, "insurance": { "on": false, "rate": 0.15 },
+      "debt": { "limit": 0.4, "kind": "guideline" }, "maxYears": null, "usury": false,
+      "regions": {
+        "BW": { "all": { "tax": 0.05 } }, "BY": { "all": { "tax": 0.035 } }, "BE": { "all": { "tax": 0.06 } },
+        "BB": { "all": { "tax": 0.065 } }, "HB": { "all": { "tax": 0.055 } }, "HH": { "all": { "tax": 0.055 } },
+        "HE": { "all": { "tax": 0.06 } }, "MV": { "all": { "tax": 0.06 } }, "NI": { "all": { "tax": 0.05 } },
+        "NW": { "all": { "tax": 0.065 } }, "RP": { "all": { "tax": 0.05 } }, "SL": { "all": { "tax": 0.065 } },
+        "SN": { "all": { "tax": 0.055 } }, "ST": { "all": { "tax": 0.05 } }, "SH": { "all": { "tax": 0.065 } },
+        "TH": { "all": { "tax": 0.05 } }
+      },
+      "defaultRegion": "NW",
+      "notary": { "pct": 0.02, "fixed": 0 },
+      "guarantees": ["grundschuld"], "defaultGuarantee": "grundschuld",
+      "guaranteeCost": { "grundschuld": { "rate": 0.004, "fixed": 0 } },
+      "sources": ["https://www.finanz-tools.de/grunderwerbsteuer/bundeslaender-tabelle", "https://baufivergleich.de/aktuelle-zinsen/"]
+    },
+    "ES": {
+      "flag": "🇪🇸", "lang": "es", "rate": 2.97, "insurance": { "on": false, "rate": 0.15 },
+      "debt": { "limit": 0.35, "kind": "guideline" }, "maxYears": null, "usury": false,
+      "regions": {
+        "madrid": { "old": { "tax": 0.06 }, "new": { "tax": 0.107 } },
+        "andalucia": { "old": { "tax": 0.07 }, "new": { "tax": 0.112 } },
+        "cataluna": { "old": { "tax": 0.10 }, "new": { "tax": 0.115 } },
+        "valencia": { "old": { "tax": 0.10 }, "new": { "tax": 0.115 } },
+        "other": { "old": { "tax": 0.08 }, "new": { "tax": 0.115 } }
+      },
+      "defaultRegion": "madrid",
+      "notary": { "pct": 0, "fixed": 1800 },
+      "guarantees": ["valuation"], "defaultGuarantee": "valuation",
+      "guaranteeCost": { "valuation": { "rate": 0, "fixed": 400 } },
+      "sources": ["https://www.idealista.com/news/finanzas/hipotecas/2017/09/20/748073-los-gastos-e-impuestos-que-debes-afrontar-al-comprar-una-vivienda-tras-los-cambios-mas", "https://www.helpmycash.com/mejores-hipotecas/"]
+    },
+    "IT": {
+      "flag": "🇮🇹", "lang": "it", "rate": 2.95, "insurance": { "on": false, "rate": 0.15 },
+      "debt": { "limit": 0.33, "kind": "guideline" }, "maxYears": null, "usury": false,
+      "regions": {
+        "all": {
+          "own_old": { "tax": 0.01, "fixed": 100 }, "other_old": { "tax": 0.045, "fixed": 100 },
+          "own_new": { "tax": 0.04, "fixed": 600 }, "other_new": { "tax": 0.10, "fixed": 600 }
+        }
+      },
+      "defaultRegion": "all",
+      "notary": { "pct": 0, "fixed": 3050 },
+      "guarantees": ["ipoteca"], "defaultGuarantee": "ipoteca",
+      "guaranteeCost": { "ipoteca": { "rate": 0.0025, "rateOther": 0.02, "fixed": 2200 } },
+      "sources": ["https://www.wikicasa.it/news/comprare-casa-nel-2026-tasse-e-costi/", "https://www.mutui.it/news/tassi-mutui-media-settembre-2026.html"]
+    },
+    "NL": {
+      "flag": "🇳🇱", "lang": "en", "rate": 4.1, "insurance": { "on": false, "rate": 0.15 },
+      "debt": { "limit": 0.35, "kind": "guideline" }, "maxYears": 30, "usury": false,
+      "regions": {
+        "all": { "own": { "tax": 0.02, "starterExempt": 555000 }, "other": { "tax": 0.08 } }
+      },
+      "defaultRegion": "all",
+      "notary": { "pct": 0, "fixed": 2600 },
+      "guarantees": ["nhg", "none"], "defaultGuarantee": "nhg",
+      "guaranteeCost": { "nhg": { "rate": 0.004, "fixed": 0, "maxLoan": 470000 }, "none": { "rate": 0, "fixed": 0 } },
+      "sources": ["https://www.rijksoverheid.nl/onderwerpen/huis-kopen/vraag-en-antwoord/vrijstelling-overdrachtsbelasting", "https://www.nhg.nl/het-product-nhg/een-hypotheek-met-nhg/", "https://www.hypotheekrente.nl/rente/10-jaar-rentevast/"]
+    }
+  }
+}

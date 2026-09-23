@@ -3,6 +3,8 @@
   import { article, GROUPS } from '../../lib/learn';
   import { route } from '../../lib/router.svelte';
   import ArticleView from './ArticleView.svelte';
+  import { current } from '../../lib/state.svelte';
+  const notFrance = $derived(current().country !== 'FR');
 </script>
 
 {#if route.topic}
@@ -23,6 +25,7 @@
   <section class="hero">
     <h1>{t('learnTitle')}</h1>
     <p>{t('learnLead')}</p>
+    {#if notFrance}<p class="fr-note">🇫🇷 {t('learnFranceNote')}</p>{/if}
   </section>
   {#each GROUPS as g (g.key)}
     <section class="group-block">
@@ -45,6 +48,7 @@
   .hero { text-align: center; padding-block: 56px 28px; }
   .hero h1 { font-family: var(--font-display); font-size: clamp(34px, 5.5vw, 56px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.07; margin: 0 0 12px; }
   .hero p { margin: 0 auto; max-width: 36ch; font-size: clamp(19px, 2.2vw, 22px); color: var(--text-2); letter-spacing: -0.02em; text-wrap: balance; }
+  .fr-note { margin-top: 12px !important; font-size: 15px !important; }
   .group-block { margin-top: 36px; }
   .group-block h2 { font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 14px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }

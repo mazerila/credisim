@@ -56,6 +56,7 @@ export const en = {
   taegInterest: 'Interest', taegInsurance: 'Insurance', taegFees: 'Fees & guarantee', taegMax: 'legal max {u}',
   taegHint: 'The TAEG is the yearly rate you really pay once insurance, fees and the guarantee are counted. By law it must stay below the usury rate for this kind of loan.',
 
+  taegHintEU: 'The TAEG (APRC in the EU) is the yearly rate you really pay once insurance, fees and the guarantee are counted. It is the figure to compare between offers.',
   donutTitle: 'Where the money goes', donutCenter: 'on top of the capital',
   dInterest: 'Interest', dInsurance: 'Insurance', dNotary: 'Notary fees', dGuarantee: 'Guarantee', dFees: 'Bank & broker fees',
 
@@ -64,7 +65,7 @@ export const en = {
   yearAxis: 'Year',
 
   capacityTitle: 'How much could you borrow?',
-  capacityText: 'At {rate} over {dur}, keeping all loans at 35 % of your income:',
+  capacityText: 'At {rate} over {dur}, keeping all loans at {p} of your income:',
   capacityLoan: 'Maximum loan', capacityPrice: 'Maximum price with your down payment',
   capacityNoIncome: 'Enter your net monthly income to see your borrowing capacity.',
 
@@ -229,5 +230,16 @@ export const en = {
   shareTitle: 'Share this simulation', shareCreating: 'Creating a short link…', shareCopy: 'Copy', shareCopied: 'Copied', shareNative: 'Share with…',
   shareNote: 'Anyone with this link sees these figures. To make short links, the simulation is stored on our server (Firebase, in the EU), without any personal data.',
   shareLongNote: 'Short links are not available here, but this full link works just as well.',
+
+  // Countries
+  country: 'Country', region: 'Region', mainHome: 'Your own main home', mainHomeIT: 'First home (prima casa)', starterNL: 'Starter aged 18 to 35',
+  purchaseCosts: 'Purchase costs (taxes & notary)', purchaseDetail: 'Taxes {tax} · notary and registration {notary}',
+  region_wallonia: 'Wallonia', region_flanders: 'Flanders', region_brussels: 'Brussels',
+  region_madrid: 'Madrid', region_andalucia: 'Andalusia', region_cataluna: 'Catalonia', region_valencia: 'Valencian Community', region_other: 'Other regions (≈ 8 %)',
+  g_mortgage: 'Mortgage registration', g_grundschuld: 'Land charge (Grundschuld)', g_valuation: 'Valuation only (the bank pays the rest)', g_ipoteca: 'Mortgage tax and notary', g_nhg: 'NHG guarantee (0.4 %)', g_none: 'None',
+  nhgOver: 'NHG only covers loans up to €470,000.',
+  usuryNone: 'No legal maximum rate checked here', debtGuideOk: 'Within the usual {p} guideline', debtGuideBad: 'Above the usual {p}', debtLawSub: 'legal limit (HCSF): {p}', debtGuideSub: 'banks usually stay under {p}',
+  countryNote: 'Estimates for {c} (September 2026): purchase costs, typical rate and guarantee. Check with a local bank or notary.',
+  learnFranceNote: 'These guides describe French rules.',
 };
 export type Dict = typeof en;

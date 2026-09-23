@@ -9,13 +9,14 @@
     options,
     tip,
     learn,
-  }: { id: string; label: string; value: T; options: { value: T; label: string }[]; tip?: string; learn?: TopicId } = $props();
+    onchange,
+  }: { id: string; label: string; value: T; options: { value: T; label: string }[]; tip?: string; learn?: TopicId; onchange?: (v: T) => void } = $props();
 </script>
 
 <div class="field">
   <div class="lab"><label for={id}>{label}</label>{#if tip}<Info text={tip} {learn} />{/if}</div>
   <div class="box">
-    <select {id} bind:value>
+    <select {id} bind:value onchange={() => onchange?.(value)}>
       {#each options as o (o.value)}<option value={o.value}>{o.label}</option>{/each}
     </select>
   </div>

@@ -1,4 +1,4 @@
-import { DEFAULTS, type CreditType, type Inputs } from './engine';
+import { COUNTRIES, countryDefaults, DEFAULTS, isCountry, type Country, type CreditType, type Inputs } from './engine';
 import { i18n, LANGS, type Lang } from './i18n/index.svelte';
 import { decodeShare, encodeFullPayload, encodeShare, MAX_SCENARIOS, type Mode, type ShareState } from './share';
 import { track } from './analytics';
@@ -28,13 +28,41 @@ export function current(): Inputs {
   return app.scenarios[app.active] ?? app.scenarios[0];
 }
 
-/** Switch credit type: start from that type's example values, keep the household. */
+/** Switch credit type: start from that type's example values, keep the household and country. */
 export function setType(type: CreditType) {
   const c = current();
   const keep = { income: c.income, otherLoans: c.otherLoans, useOtherLoans: c.useOtherLoans, persons: c.persons };
-  app.scenarios = [{ ...clone(DEFAULTS[type]), ...keep }];
+  const fresh = { ...clone(DEFAULTS[type]), ...keep };
+  app.scenarios = [c.country === 'FR' ? fresh : { ...fresh, ...countryPreset(c.country, type) }];
   track('credit_type_selected', { credit_type: type });
   app.active = 0;
+}
+
+function countryPreset(country: Country, type: CreditType): Partial<Inputs> {
+  const d = countryDefaults(country);
+  // Consumer loans keep their own rates; only home loans take the country's mortgage rate.
+  return type === 'mortgage' ? d : { country, region: d.region, useInsurance: false };
+}
+
+/** Switch country for every scenario: its costs, typical rate and guarantee; amounts stay. */
+export function setCountry(country: Country) {
+  app.scenarios = app.scenarios.map((s) => ({ ...s, ...countryPreset(country, s.type) }));
+  track('country_changed', { to: country });
+}
+
+/** First visit: pick the country from ?country=, the time zone, then the language. */
+export function detectCountry(lang: string) {
+  const q = new URLSearchParams(location.search).get('country')?.toUpperCase();
+  let c: Country = 'FR';
+  if (isCountry(q)) c = q;
+  else {
+    let tz = '';
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { /* old browser */ }
+    const byZone: Record<string, Country> = { 'Europe/Brussels': 'BE', 'Europe/Berlin': 'DE', 'Europe/Madrid': 'ES', 'Europe/Rome': 'IT', 'Europe/Amsterdam': 'NL' };
+    const byLang: Record<string, Country> = { de: 'DE', es: 'ES', it: 'IT', nl: 'NL' };
+    c = byZone[tz] ?? byLang[lang] ?? 'FR';
+  }
+  if (c !== 'FR' && COUNTRIES[c]) app.scenarios = app.scenarios.map((s) => ({ ...s, ...countryPreset(c, s.type) }));
 }
 
 /** New scenario: a copy of the one being edited, 5 years (or 12 months) shorter as a starting point. */
