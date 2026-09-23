@@ -18,16 +18,15 @@
     clearTimeout(timer);
     timer = setTimeout(() => (toast = ''), 2600);
   }
-  function save() {
-    saved = saveSimulation(name, toHash());
+  async function save() {
+    saved = saveSimulation(name, await toHash());
     track('save_simulation');
     naming = false;
     name = '';
     say(t('savedToast'));
   }
-  function open(s: Saved) {
-    loadHash('#' + s.hash);
-    history.replaceState(null, '', '#' + s.hash);
+  async function open(s: Saved) {
+    await loadHash('#' + s.hash);
     showList = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

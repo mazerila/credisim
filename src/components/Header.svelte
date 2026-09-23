@@ -1,35 +1,11 @@
 <script lang="ts">
   import { i18n, setLang, t, type Lang } from '../lib/i18n/index.svelte';
   import { route } from '../lib/router.svelte';
-  import { track } from '../lib/firebase/analytics.svelte';
-  import { app, setTheme, toHash, type Theme } from '../lib/state.svelte';
+  import { app, setTheme, type Theme } from '../lib/state.svelte';
+  import SharePanel from './SharePanel.svelte';
   import Segmented from './ui/Segmented.svelte';
 
-  let toast = $state('');
-  let timer: ReturnType<typeof setTimeout>;
-
-  async function share() {
-    history.replaceState(null, '', toHash());
-    track('share');
-    const url = location.href;
-    // Phones and tablets: native share sheet. Desktop: copy to the clipboard.
-    if (navigator.share && matchMedia('(pointer: coarse)').matches) {
-      try {
-        await navigator.share({ title: 'Credisim', text: t('shareText'), url });
-        return;
-      } catch (e) {
-        if ((e as DOMException).name === 'AbortError') return;
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(url);
-      toast = t('copied');
-    } catch {
-      toast = t('linkReady');
-    }
-    clearTimeout(timer);
-    timer = setTimeout(() => (toast = ''), 2400);
-  }
+  let sharing = $state(false);
 
   const themes = $derived<{ value: Theme; label: string }[]>([
     { value: 'system', label: t('themeSystem') },
@@ -58,14 +34,16 @@
         value={i18n.lang}
         onchange={(v: Lang) => setLang(v)}
       />
-      <button type="button" class="share" onclick={share} hidden={route.view !== 'sim'}>
+      <div class="share-wrap">
+      <button type="button" class="share" onclick={() => (sharing = !sharing)} aria-expanded={sharing} hidden={route.view !== 'sim'}>
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
         <span>{t('share')}</span>
       </button>
+      {#if sharing && route.view === 'sim'}<SharePanel onclose={() => (sharing = false)} />{/if}
+      </div>
     </div>
   </div>
 </header>
-{#if toast}<div class="toast" role="status">{toast}</div>{/if}
 
 <style>
   .nav {
@@ -83,6 +61,7 @@
   .links a[aria-current='page'] { color: var(--text); font-weight: 600; }
   @media (max-width: 560px) { .links { margin-left: 0; } .links a { padding: 6px; font-size: 13px; } .brand span { display: none; } }
   .tools { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .share-wrap { position: relative; }
   .share {
     display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px;
     background: var(--accent); color: var(--on-accent); padding: 6px 14px; font-size: 14px; font-weight: 500;
@@ -90,8 +69,4 @@
   .share:hover { background: var(--accent-hover); }
   @media (max-width: 720px) { .theme { display: none; } }
   @media (max-width: 420px) { .share span { display: none; } .share { padding: 7px 9px; } }
-  .toast {
-    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 40;
-    background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 15px; font-weight: 500;
-  }
 </style>

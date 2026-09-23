@@ -25,15 +25,15 @@ let analytics: Analytics | null = null;
 let loading: Promise<Analytics | null> | null = null;
 const queue: [string, Record<string, unknown>][] = [];
 
-const enabled = () => import.meta.env.PROD && consent.value === 'granted';
+const enabled = () => import.meta.env.PROD && !!firebaseConfig && consent.value === 'granted';
 
 async function load(): Promise<Analytics | null> {
   if (analytics) return analytics;
   if (!loading) {
     loading = (async () => {
-      const [{ initializeApp }, a] = await Promise.all([import('firebase/app'), import('firebase/analytics')]);
-      if (!(await a.isSupported())) return null;
-      analytics = a.getAnalytics(initializeApp(firebaseConfig));
+      const [{ getApp, getApps, initializeApp }, a] = await Promise.all([import('firebase/app'), import('firebase/analytics')]);
+      if (!firebaseConfig || !(await a.isSupported())) return null;
+      analytics = a.getAnalytics(getApps().length ? getApp() : initializeApp(firebaseConfig));
       for (const [name, params] of queue.splice(0)) a.logEvent(analytics, name, params);
       return analytics;
     })().catch(() => null);

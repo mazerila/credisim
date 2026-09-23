@@ -81,7 +81,7 @@ export const fr: Dict = {
   developedBy: 'Développé par', developedByAria: 'Développé par Antoine Mokhtari, Bald Studio',
   footSources: 'Taux d’usure : Banque de France, {q}. Règles d’octroi : HCSF, confirmées en mars 2026. Frais de notaire selon le barème réglementé 2026 ; coût de la garantie estimé.',
   footDisclaimer: 'Simulation indicative. Elle ne constitue pas une offre de prêt et ne remplace pas l’offre de votre banque.',
-  footPrivacy: 'Tous les calculs sont faits dans votre navigateur. Les chiffres saisis ne sont jamais envoyés ; statistiques de visite uniquement avec votre accord.',
+  footPrivacy: 'Tous les calculs sont faits dans votre navigateur. Vos chiffres ne sont enregistrés que si vous créez un lien de partage ; statistiques de visite uniquement avec votre accord.',
 
   tip_taeg: 'TAEG (taux annuel effectif global) : le taux annuel qui inclut intérêts, assurance, frais et garantie. C’est lui qu’il faut comparer entre les offres.',
   tip_rate: 'Taux nominal (taux débiteur) : sert uniquement à calculer les intérêts.',
@@ -228,4 +228,9 @@ export const fr: Dict = {
   rvbHorizon: 'Comparer sur', rvbPriceGrowth: 'Hausse des prix / an', rvbSelling: 'Frais de revente', rvbRent: 'Loyer actuel', rvbRentGrowth: 'Hausse des loyers / an', rvbReturn: 'Rendement de l’épargne / an', rvbOwnerCosts: 'Frais de propriétaire / an',
   rvbBuyer: 'Si vous achetez', rvbRenter: 'Si vous louez', rvbWinner: 'Après {n} : acheter {w} de {v}', rvbWin: 'l’emporte', rvbLose: 'est perdant', rvbBreakEven: 'Acheter devient plus intéressant après {n}.', rvbNever: 'Louer reste plus intéressant sur cette période.',
   rvbHint: 'Patrimoine = valeur du bien moins le prêt et les frais de revente (acheteur), ou épargne placée (locataire). Les deux partent du même apport.',
+
+  // Share panel
+  shareTitle: 'Partager cette simulation', shareCreating: 'Création d’un lien court…', shareCopy: 'Copier', shareCopied: 'Copié', shareNative: 'Partager avec…',
+  shareNote: 'Toute personne ayant ce lien voit ces chiffres. Pour créer des liens courts, la simulation est enregistrée sur notre serveur (Firebase, dans l’UE), sans aucune donnée personnelle.',
+  shareLongNote: 'Les liens courts ne sont pas disponibles ici, mais ce lien complet fonctionne aussi.',
 };

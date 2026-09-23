@@ -34,7 +34,7 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
   - *Property projects:* bridge loan, rental investment (yields and cash flow), rent or buy
 - **Save, print, export:** save simulations in the browser, print a clean report or save it as PDF, export the schedule as CSV (Excel-ready in FR and EN).
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
-- **Share links:** the whole simulation (both scenarios, every field, mode, language) is stored in the URL fragment.
+- **Share links:** a short link (`/s/k7Pq2xZa`) made by the reusable [`packages/shortlink`](packages/shortlink) module (Firestore, EU); the address bar also keeps a compact, compressed copy of the simulation (`#c=…`).
 - **How it works:** 23 short explainers in English and French (loans, monthly payment, schedule, repayment types and deferral, variable rates, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, checking an offer, early repayment, renegotiation, revolving credit and BNPL, car leasing, debt consolidation, bridge loans, rental investment, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
 - **English and French**, detected automatically. Light, dark or system theme. Responsive from phone to desktop.
 
@@ -42,7 +42,7 @@ The full list, with priorities, is in [docs/FEATURES.md](docs/FEATURES.md). What
 
 ## Getting started
 
-Requires Node.js 20 or later (see `.nvmrc`).
+Requires Node.js 20 or later (see `.nvmrc`). Copy `.env.example` to `.env.local` and add the Firebase web API key to enable analytics and short links (optional).
 
 ```bash
 npm install
@@ -68,7 +68,8 @@ src/
                      tools (credits.ts, property.ts, tools.ts), capacity + tests
   lib/data/fr/       Versioned French regulatory data, each value with its source
   lib/i18n/          en.ts / fr.ts dictionaries, t(), number formatting, language detection
-  lib/share.ts       Share-link encoding and validation, up to 4 scenarios (+ tests)
+  lib/share.ts       Share payloads: compressed, validated, up to 4 scenarios (+ tests)
+  lib/shortlinks.ts  App glue for short links (/s/<id>)
   lib/export.ts      CSV export and saved simulations (+ tests)
   lib/firebase/      Firebase config and consent-gated Analytics
   lib/learn/         "How it works" articles (en.ts, fr.ts) + content tests
@@ -77,6 +78,7 @@ src/
   components/        Svelte 5 UI; ui/ = controls, tools/ = Tools pages, learn/ = explainers and live examples
   app.css            Design tokens (light and dark)
 docs/                Research, features, formulas, roadmap, naming, deployment
+packages/shortlink/  Reusable short-link module (codec + Firestore store), its own README and tests
   planning/          Planning report and the Phase 0 prototype
 ```
 

@@ -6,6 +6,7 @@
 | Firebase project | `credisimulator` ([console](https://console.firebase.google.com/project/credisimulator/overview)) |
 | Hosting site | `creditsimulator` (set in `firebase.json`; default project in `.firebaserc`) |
 | Build output | `dist/` (static, `npm run build`) |
+| Firestore | database `(default)` in **europe-west9 (Paris)**, used only for short share links (collection `links`) |
 
 ## Automatic deploys (GitHub Actions)
 
@@ -38,12 +39,38 @@ This creates a service account in the Firebase project, a key for it, and stores
 
 To check: GitHub → repository → Settings → Secrets and variables → Actions. Then re-run the last "Deploy to Firebase Hosting" run (Actions tab → Run workflow).
 
+## Build secrets
+
+| GitHub secret | Used for |
+|---|---|
+| `FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR` | deploying (created by `firebase init hosting:github`) |
+| `FIREBASE_WEB_API_KEY` | the Firebase **web** API key, passed to the build as `VITE_FIREBASE_API_KEY` |
+
+Locally, put the web API key in `.env.local` (git-ignored; see `.env.example`). Without it the app still builds and runs, with analytics and short links turned off.
+
+### About the web API key
+
+A Firebase web API key is not a password: it identifies the project and is always visible in the site's JavaScript. It is kept out of the repository (GitHub flagged the first commit) and protected by:
+
+- **HTTP-referrer restriction** (Google Cloud → APIs & Services → Credentials → "Browser key (auto created by Firebase)"): only `creditsimulator.web.app`, `creditsimulator.firebaseapp.com`, `credisimulator.web.app`, `credisimulator.firebaseapp.com` and `localhost:5173 / 4173` may use it. Add a custom domain there when you add one. PR preview channels are not in the list, so previews fall back to long share links.
+- **API restriction**: Firebase's default list of services (unchanged).
+- **Firestore security rules** (`firestore.rules`): everything is closed except reading/creating short links.
+
+## Short share links
+
+The Share button stores the simulation in Firestore under a random id and gives `https://creditsimulator.web.app/s/<id>`. The code is the reusable package `packages/shortlink`. Deploy the rules after changing them:
+
+```bash
+firebase deploy --only firestore
+```
+
 ## Manual deploy
 
 ```bash
-firebase deploy --only hosting
+firebase deploy --only hosting          # site
+firebase deploy --only firestore        # security rules and indexes
 ```
-`firebase.json` runs the tests and the build first (`predeploy`).
+`firebase.json` runs the tests and the build first (`predeploy`) for hosting.
 
 ## Caching
 

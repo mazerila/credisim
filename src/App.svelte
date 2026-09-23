@@ -28,7 +28,7 @@
   import YearBars from './components/YearBars.svelte';
   import VariableRateCard from './components/VariableRateCard.svelte';
 
-  if (!parseRoute()) loadHash();
+  parseRoute();
   setTheme(app.theme);
   startAnalytics();
 
@@ -39,7 +39,7 @@
     if (parseRoute()) {
       if (wasView !== route.view || wasTopic !== route.topic || wasTool !== route.tool) window.scrollTo({ top: 0 });
     } else {
-      if (location.hash !== lastHash && /[#&]s=/.test(location.hash)) loadHash();
+      if (location.hash !== lastHash && /[#&][cs]=/.test(location.hash)) void loadHash();
       if (wasView !== 'sim') window.scrollTo({ top: 0 });
     }
   }
@@ -53,9 +53,11 @@
   let timer: ReturnType<typeof setTimeout>;
   $effect(() => {
     if (route.view !== 'sim') return;
-    const hash = toHash();
+    const pending = toHash();
     clearTimeout(timer);
-    timer = setTimeout(() => {
+    timer = setTimeout(async () => {
+      const hash = await pending;
+      if (route.view !== 'sim') return;
       lastHash = hash;
       history.replaceState(null, '', hash);
     }, 300);

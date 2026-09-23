@@ -79,7 +79,7 @@ export const en = {
   developedBy: 'Developed by', developedByAria: 'Developed by Antoine Mokhtari, Bald Studio',
   footSources: 'Legal maximum rates: Banque de France, {q}. Lending rules: HCSF, confirmed March 2026. Notary fees use the 2026 regulated scale; the guarantee cost is an estimate.',
   footDisclaimer: 'Simulation for information only. It is not a loan offer and does not replace the offer from your bank.',
-  footPrivacy: 'Everything is calculated in your browser. The figures you type are never sent anywhere; visit statistics only with your consent.',
+  footPrivacy: 'Everything is calculated in your browser. Your figures are only stored if you create a share link; visit statistics only with your consent.',
 
   // ⓘ explanations
   tip_taeg: 'TAEG (taux annuel effectif global): the yearly rate that includes interest, insurance, fees and the guarantee. It is the number to compare between offers.',
@@ -227,5 +227,10 @@ export const en = {
   rvbHorizon: 'Compare over', rvbPriceGrowth: 'Home price growth / year', rvbSelling: 'Selling costs', rvbRent: 'Current rent', rvbRentGrowth: 'Rent growth / year', rvbReturn: 'Return on savings / year', rvbOwnerCosts: 'Owner costs / year',
   rvbBuyer: 'If you buy', rvbRenter: 'If you rent', rvbWinner: 'After {n}: buying {w} by {v}', rvbWin: 'wins', rvbLose: 'loses', rvbBreakEven: 'Buying becomes better after {n}.', rvbNever: 'Renting stays better over this period.',
   rvbHint: 'Net worth = home value minus loan and selling costs (buyer), or savings invested (renter). Both start with the same down payment.',
+
+  // Share panel
+  shareTitle: 'Share this simulation', shareCreating: 'Creating a short link…', shareCopy: 'Copy', shareCopied: 'Copied', shareNative: 'Share with…',
+  shareNote: 'Anyone with this link sees these figures. To make short links, the simulation is stored on our server (Firebase, in the EU), without any personal data.',
+  shareLongNote: 'Short links are not available here, but this full link works just as well.',
 };
 export type Dict = typeof en;

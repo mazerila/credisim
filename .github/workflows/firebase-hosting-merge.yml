@@ -31,6 +31,9 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
+        env:
+          # Firebase web API key (public in the built site, restricted to our domains; kept out of the repo)
+          VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
       - name: Deploy to the live channel
         if: env.HAS_FIREBASE_SA == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0

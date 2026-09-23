@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Short share links (packages/shortlink): anyone can read one link by its id or
+    // create a new one; links can't be listed, changed or deleted from the client.
+    match /links/{id} {
+      allow get: if id.matches('^[A-Za-z0-9]{6,16}$');
+      allow create: if id.matches('^[A-Za-z0-9]{6,16}$')
+        && request.resource.data.keys().hasOnly(['d', 'ns', 'v', 'at'])
+        && request.resource.data.d is string && request.resource.data.d.size() <= 8000
+        && request.resource.data.ns is string && request.resource.data.ns.size() <= 40
+        && request.resource.data.v is int
+        && request.resource.data.at == request.time;
+      allow list, update, delete: if false;
+    }
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

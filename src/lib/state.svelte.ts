@@ -1,6 +1,6 @@
 import { DEFAULTS, type CreditType, type Inputs } from './engine';
 import { i18n, LANGS, type Lang } from './i18n/index.svelte';
-import { decodeShare, encodeShare, MAX_SCENARIOS, type Mode } from './share';
+import { decodeShare, encodeFullPayload, encodeShare, MAX_SCENARIOS, type Mode, type ShareState } from './share';
 import { track } from './firebase/analytics.svelte';
 
 export type { Mode };
@@ -72,18 +72,31 @@ export function setTheme(theme: Theme) {
   } catch { /* storage blocked */ }
 }
 
-// ---------- share link: the whole simulation lives in the URL fragment ----------
-export function toHash(): string {
-  return '#' + encodeShare({ scenarios: app.scenarios, mode: app.mode, active: app.active, lang: i18n.lang });
+// ---------- share link: the simulation lives in the URL fragment (compressed) ----------
+function shareState() {
+  return { scenarios: app.scenarios, mode: app.mode, active: app.active, lang: i18n.lang };
 }
 
-/** Apply a shared link. The language from the link is shown but not saved as the visitor's preference. */
-export function loadHash(hash = location.hash): boolean {
-  const s = decodeShare(hash);
-  if (!s) return false;
+export async function toHash(): Promise<string> {
+  return '#' + (await encodeShare(shareState()));
+}
+
+/** Full payload for a stored short link. */
+export function toFullPayload(): Promise<string> {
+  return encodeFullPayload(shareState());
+}
+
+/** Apply a decoded state. The language from a link is shown but not saved as the visitor's preference. */
+export function applyShared(s: ShareState) {
   app.scenarios = s.scenarios;
   app.mode = s.mode;
   app.active = s.active;
   if (s.lang && (LANGS as string[]).includes(s.lang)) i18n.lang = s.lang as Lang;
+}
+
+export async function loadHash(hash = location.hash): Promise<boolean> {
+  const s = await decodeShare(hash);
+  if (!s) return false;
+  applyShared(s);
   return true;
 }

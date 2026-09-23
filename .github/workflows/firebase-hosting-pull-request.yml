@@ -25,6 +25,9 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
+        env:
+          # Firebase web API key (public in the built site, restricted to our domains; kept out of the repo)
+          VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
       # Secrets are not available to PRs from forks: they only get the checks above.
       - name: Deploy a preview channel
         if: env.HAS_FIREBASE_SA == 'true' && github.event.pull_request.head.repo.full_name == github.repository
