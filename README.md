@@ -2,7 +2,7 @@
 
 **The true cost of your loan, in plain sight.** / *Le vrai coût de votre crédit, en clair.*
 
-Credisim is a neutral, bilingual (English / French) loan simulator for France, and later the rest of Europe. It shows the monthly payment, the **TAEG** (all-in rate) and the full cost of a loan, including borrower insurance, fees, the guarantee and notary costs. It also checks the result against the French legal limits: the usury rate and the HCSF 35 % / 25-year rules.
+Credisim is a neutral, multilingual (English, French, German, Spanish, Italian) loan simulator for France, with presets for Belgium, Germany, Spain, Italy and the Netherlands. It shows the monthly payment, the **TAEG** (all-in rate) and the full cost of a loan, including borrower insurance, fees, the guarantee and notary costs. It also checks the result against the French legal limits: the usury rate and the HCSF 35 % / 25-year rules.
 
 No sign-up, no sales call, and nothing leaves the browser: every calculation runs client-side.
 
@@ -67,8 +67,10 @@ src/
   lib/engine/        Pure TypeScript calculation engine (no dependencies)
                      annuity & schedule, TAEG (EU actuarial method), usury bands,
                      notary scale, guarantee, PTZ, smoothing, deferral, variable rates,
-                     tools (credits.ts, property.ts, tools.ts), capacity + tests
+                     tools (credits.ts, property.ts, rental.ts, tools.ts), countries, capacity + tests
   lib/data/fr/       Versioned French regulatory data, each value with its source
+  lib/data/eu/       Country presets (BE, DE, ES, IT, NL) with sources
+  lib/embed.ts       Embeddable widget helpers (/embed)
   lib/i18n/          en, fr, de, es, it dictionaries, t(), number formatting, language detection
   lib/share.ts       Share payloads: compressed, validated, up to 4 scenarios (+ tests)
   lib/shortlinks.ts  App glue for short links (/s/<id>)
@@ -79,8 +81,10 @@ src/
   lib/router.svelte.ts  Hash routes: simulator, #tools/<tool>, #learn/<topic>
   lib/state.svelte.ts  App state: credit type, mode, scenarios, theme
   components/        Svelte 5 UI; ui/ = controls, tools/ = Tools pages, learn/ = explainers and live examples
+  Embed.svelte       The embeddable widget (public/embed.js is its loader)
   app.css            Design tokens (light and dark)
-docs/                Research, features, formulas, roadmap, naming, deployment
+docs/                Research, features, formulas, roadmap, naming, deployment, analytics, embed
+CLAUDE.md            Working notes for Claude (commands, conventions, data refresh)
 packages/shortlink/  Reusable short-link module (codec + Firestore store), its own README and tests
   planning/          Planning report and the Phase 0 prototype
 ```
@@ -102,6 +106,8 @@ French rates and rules live in `src/lib/data/fr/`:
 | `ptz.json` | PTZ bands, family coefficients, cost ceilings, shares, repayment terms (valid until 31 Dec 2027) | When the PTZ rules change |
 | `usury.json` | Legal maximum rates (taux d'usure), one entry per quarter | Every quarter: 1 Jan, 1 Apr, 1 Jul, 1 Oct ([Banque de France](https://www.banque-france.fr/fr/statistiques/taux-et-cours)) |
 | `rules.json` | HCSF limits, notary scale and transfer taxes, guarantee estimates | When the rules change |
+| `rental-tax.json` | Landlord tax: micro-foncier, deficit cap, micro-BIC, LMNP depreciation, social charges, capital-gains rules | Each finance law (January) |
+| `../eu/countries.json` | Country presets: typical rates, purchase taxes, notary, guarantee, debt guideline | Every few months (rates) |
 
 When the latest quarter has expired, the app shows a "rates may be outdated" badge until a new entry is added. **Current data: Q3 2026, valid until 30 Sep 2026.**
 
@@ -116,7 +122,7 @@ Live at **https://creditsimulator.web.app** (Firebase project `credisimulator`, 
 - **Every push to `main`** runs the type check, tests and build, then deploys to the live site (`.github/workflows/firebase-hosting-merge.yml`).
 - **Every pull request** gets the same checks and a temporary preview URL posted on the PR (`.github/workflows/firebase-hosting-pull-request.yml`).
 - Deploys need the `FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR` repository secret, created once with `firebase init hosting:github`.
-- Manual deploy: `firebase deploy --only hosting`.
+- Manual deploy: `firebase deploy --only hosting:creditsimulator --project credisimulator`.
 
 Analytics: PostHog (EU cloud), cookieless like Suncast and Mont Valier, so there is no consent banner; it never receives simulation figures. See [docs/ANALYTICS.md](docs/ANALYTICS.md).
 

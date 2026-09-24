@@ -1,7 +1,7 @@
 # Roadmap & architecture
 
 ## Positioning
-**A neutral, free, bilingual credit simulator that shows the true cost of a loan, all in one view, with no sign-up and no sales call.**
+**A neutral, free, multilingual credit simulator that shows the true cost of a loan, all in one view, with no sign-up and no sales call.**
 Audience: first-time buyers in France, expats/cross-border workers (English), people comparing or checking a bank offer.
 
 ## Phases
@@ -37,7 +37,7 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - 4 scenarios, sensitivity grid (F5, F6), PDF / CSV export, saved scenarios (I2–I4)
 - Delivered as: simulator options (repayment type, deferral, 2 borrowers, PTZ with band check and smoothing, money left), a **Tools** section (early repayment, renegotiation, insurance switch, check my offer), print/PDF report, CSV export, saved simulations, and 4 new explainers
 
-### Phase 4 — More credit types ✅ built, awaiting review
+### Phase 4 — More credit types ✅ confirmed 2026-09-24
 - Revolving credit, LOA/LLD vs loan, BNPL real cost, debt consolidation (D2–D5)
 - Bridge loan, rental investment (B11, B16), rent vs buy (C4)
 - Variable / capped rates + Euribor stress (A7, A8)
@@ -50,15 +50,26 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - Analytics: PostHog, cookieless (J5)
 - Moved to the next step: SEO landing pages and AI-search optimisation; optional account (I6) stays open
 
+### Rental investment, advanced mode ✅ built 2026-09-24 (requested after Phase 5)
+- Four French tax regimes side by side: unfurnished micro-foncier / real, furnished (LMNP) micro-BIC / real, with deficits, depreciation and 2026 social charges
+- Resale with capital-gains tax (holding-period allowances; LMNP depreciation added back since 2025)
+- Money tied up compared with a placement: return on your money (IRR) and gain vs. placement
+- User-added one-off and recurring costs
+
+### Next
+1. **SEO and AI-search optimisation:** prerendered landing pages per language and calculator, meta / Open Graph / JSON-LD, hreflang, sitemap, robots.txt, llms.txt, Core Web Vitals and code splitting
+2. Small corrections from the owner's review
+3. Later: optional account (I6), Dutch interface, explainers in DE/ES/IT
+
 ## Suggested stack
 
 | Layer | Choice | Why |
 |---|---|---|
 | Engine | TypeScript, pure functions, no deps | Testable, reusable in UI, workers and a future API |
 | Tests | Vitest + golden files (reference schedules) | Numbers must be right to the cent |
-| UI | Svelte 5 + Vite (static SPA); SEO pages added in Phase 5 | Fast, small bundle, simple Firebase deploy |
+| UI | Svelte 5 + Vite (static SPA); prerendered SEO pages planned next | Fast, small bundle, simple Firebase deploy |
 | Charts | Custom SVG Svelte components | No dependency, theme-aware, full control; table fallback for accessibility |
-| i18n | JSON dictionaries `en.json` / `fr.json`, `t(key, vars)` like Suncast | Proven in Suncast |
+| i18n | TypeScript dictionaries `en.ts` `fr.ts` `de.ts` `es.ts` `it.ts` (typed against English), `t(key, vars)` like Suncast | Missing keys fail the type check |
 | Hosting | Firebase Hosting, site `creditsimulator` (https://creditsimulator.web.app) | Deployed by GitHub Actions on every push to `main`; PR previews |
 | Data | `data/<country>/*.json` with `validFrom`, `validTo`, `source` | Quarterly usury refresh without code change |
 | PDF | Client-side (jsPDF / print stylesheet) | Keeps data in the browser |
@@ -70,11 +81,15 @@ A single Vite app for now; the engine is kept dependency-free in `src/lib/engine
 credisim/
   src/
     lib/engine/           # loan math, TAEG, schedules, rules (+ tests)
-    lib/data/fr/          # versioned regulatory data (usury, HCSF, notary, guarantee)
-    lib/i18n/             # en.ts, fr.ts, t(), formatting, language detection
+    lib/data/fr/          # versioned regulatory data (usury, HCSF, notary, guarantee, PTZ, rental tax)
+    lib/data/eu/          # country presets (BE, DE, ES, IT, NL)
+    lib/i18n/             # en, fr, de, es, it, t(), formatting, language detection
+    lib/learn/            # "How it works" articles (en, fr)
     lib/share.ts          # share-link encoding (+ tests)
-    components/           # Svelte UI; ui/ = controls
-  public/                 # static files copied as-is
+    components/           # Svelte UI; ui/ = controls, tools/, learn/
+    Embed.svelte          # embeddable widget (/embed)
+  packages/shortlink/     # reusable short-link module (Firestore)
+  public/                 # static files copied as-is, incl. embed.js (widget loader)
   docs/                   # research, features, calculations, roadmap, naming
     planning/             # planning report + Phase 0 prototype
 ```

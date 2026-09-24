@@ -67,7 +67,7 @@ firebase deploy --only firestore
 ## Manual deploy
 
 ```bash
-firebase deploy --only hosting          # site
+firebase deploy --only hosting:creditsimulator --project credisimulator   # site
 firebase deploy --only firestore        # security rules and indexes
 ```
 `firebase.json` runs the tests and the build first (`predeploy`) for hosting.

@@ -127,6 +127,13 @@ Estimates for a simulation, not legal advice. Every figure is stored with its so
 
 Only France has a legal usury rate check and a binding debt-ratio rule (HCSF); elsewhere the debt limit is shown as a guideline.
 
+### French landlord tax (September 2026, `src/lib/data/fr/rental-tax.json`)
+- Micro-foncier: 30 % allowance, rent up to €15,000 a year; real regime deficit on other income capped at €10,700, the rest carried forward 10 years.
+- Micro-BIC (long-term furnished): 50 % allowance up to €77,700.
+- LMNP real regime: building (without land) and furniture depreciated; depreciation cannot create a loss. Since the 2025 finance law, depreciation deducted is added back to the capital gain on sale.
+- Social charges: 17.2 % on unfurnished rent and property capital gains; 18.6 % on furnished (BIC) income from 2025 income, after the 2026 social-security financing law raised CSG on capital income ([CPIM](https://www.cpim.fr/prelevements-sociaux-immobilier-2026/), [Nopillo](https://www.nopillo.com/blog/lmnp-prelevements-sociaux)).
+- Capital gains: 19 % + 17.2 %, allowances by years held (income tax exempt after 22 years, social charges after 30); flat 7.5 % purchase costs and 15 % works after 5 years.
+
 ## 4. Data that must be refreshed
 
 | Data | Frequency | Source |
@@ -138,5 +145,7 @@ Only France has a legal usury rate check and a binding debt-ratio rule (HCSF); e
 | DMTO by département | Yearly | DGFiP / notaires.fr |
 | Crédit Logement FMG refund rate | Quarterly | Crédit Logement |
 | HCSF rules | On HCSF decision | HCSF |
+| Landlord tax (micro thresholds, social charges, LMNP rules) | Each finance law | impots.gouv.fr, Légifrance |
+| Country presets (rates, transfer taxes) | Every few months | Sources in `countries.json` |
 
 Store these as versioned JSON in the repo (`data/fr/usury-2026-Q3.json` …) with the source URL and "valid from/to" dates, displayed in the UI.
