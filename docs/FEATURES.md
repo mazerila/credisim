@@ -63,7 +63,7 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 
 | # | Feature | Pri | Gap |
 |---|---|---|---|
-| E1 | Country presets (default fees, guarantee, purchase taxes, lending rules) | P2 | ✓ |
+| E1 | Country presets (default fees, guarantee, purchase taxes, lending rules) | P2 ✅ | ✓ |
 | E2 | 🇧🇪 registration duties, variable caps (1/1/1…) | P2 | |
 | E3 | 🇩🇪 Tilgung %, Sollzinsbindung, Sondertilgung, Anschlussfinanzierung | P2 | |
 | E4 | 🇪🇸 🇮🇹 🇵🇹 Euribor-indexed loans | P2 | |
@@ -100,7 +100,7 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | H1 | English + French at launch | P0 ✅ |
 | H2 | Detection: `?lang=` → saved choice → IP country (CDN header) → browser → `en` | P0 ✅ |
 | H3 | Currency/number format follows the country, not the UI language | P0 ✅ |
-| H4 | ES / DE / IT / NL | P2 |
+| H4 | DE / ES / IT interface ✅ (NL later; explainers EN/FR only) | P2 |
 
 ## I. Save, share, export
 
@@ -110,7 +110,7 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | I2 | Scenarios saved in the browser | P1 ✅ |
 | I3 | PDF report (summary + charts + schedule) | P1 ✅ |
 | I4 | CSV / Excel schedule export | P1 ✅ |
-| I5 | Embeddable widget (`?embed=1`) for agents/blogs | P2 |
+| I5 | Embeddable widget (`/embed` + `embed.js` loader) for agents/blogs | P2 ✅ |
 | I6 | Optional account & sync | P2 |
 
 ## K. Credit type & optional components

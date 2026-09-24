@@ -2,6 +2,7 @@
   import { COUNTRIES, COUNTRY_CODES, CREDIT_TYPES, notaryBreakdown, principalOf, purchaseCosts, regionsOf, usesProject, type Amortization, type Country, type DeferralType, type RateScenario, type RateType } from '../lib/engine';
   import { i18n, type Key } from '../lib/i18n/index.svelte';
   import { fmt, t } from '../lib/i18n/index.svelte';
+  import { isEmbed } from '../lib/embed';
   import { addScenario, app, current, removeScenario, setCountry } from '../lib/state.svelte';
   import { MAX_SCENARIOS, SCENARIO_NAMES } from '../lib/share';
   import { track } from '../lib/analytics';
@@ -59,7 +60,7 @@
         onchange={(v) => (app.active = Number(v))}
       />
       <div class="scen-actions">
-        {#if app.scenarios.length < MAX_SCENARIOS}
+        {#if app.scenarios.length < MAX_SCENARIOS && !isEmbed}
           <button type="button" class="link-btn small" onclick={addScenario}>+ {t('addScenarioShort')}</button>
         {/if}
         <button type="button" class="link-btn small" onclick={() => removeScenario()}>{t('removeScenarioN', { n: SCENARIO_NAMES[app.active] })}</button>
@@ -275,7 +276,7 @@
     <p class="muted small hint">{t('quickHint')}</p>
   {/if}
 
-  {#if app.scenarios.length === 1}
+  {#if app.scenarios.length === 1 && !isEmbed}
     <button type="button" class="add" onclick={addScenario}>
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
       {t('addScenario')}

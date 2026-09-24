@@ -114,6 +114,19 @@ Since 2016 France uses the EU **actuarial** method (same as the APRC in the EU C
 - 12-month Euribor ≈ **2.75–3.05 %** in September 2026 ([euribor-rates.eu](https://www.euribor-rates.eu/fr/taux-euribor-actuels/4/euribor-taux-12-mois/), [ABC Bourse](https://www.abcbourse.com/cotation/EUR12Mp)).
 - Average French fixed mortgage rates ≈ 2.5–3.5 % depending on profile ([simulation-pret-bancaire.info](https://www.simulation-pret-bancaire.info/les-meilleurs-simulateurs-de-pret-immobilier-pour-comparer-et-decider/)).
 
+### Country presets (September 2026, `src/lib/data/eu/countries.json`)
+Estimates for a simulation, not legal advice. Every figure is stored with its sources in the JSON file.
+
+| Country | Typical fixed rate | Purchase taxes | Notary / registration | Guarantee | Debt guideline |
+|---|---|---|---|---|---|
+| 🇧🇪 Belgium | 3.35 % | Registration duty by region: Wallonia 3 % (own home, €20k allowance) / 12.5 %, Flanders 2 % / 12 %, Brussels 12.5 % (€200k allowance) | ≈ 1 % + €1,100 | Mortgage deed ≈ 1.6 % + €600 | 40 % (bank practice) |
+| 🇩🇪 Germany | 3.9 % | Grunderwerbsteuer 3.5–6.5 % by Land | Notary + land registry ≈ 2 % | Grundschuld ≈ 0.4 % | 40 % (bank practice) |
+| 🇪🇸 Spain | 2.97 % | ITP 6–10 % (resale) or VAT + AJD ≈ 10.7–11.5 % (new), by region | Notary, registry, gestoría ≈ €1,800 | Valuation ≈ €400 (bank pays the deed since 2019) | 35 % |
+| 🇮🇹 Italy | 2.95 % | Resale: registro 2 % (prima casa) or 9 % of the cadastral value, approximated as 1 % / 4.5 % of the price + €100; new builds: IVA 4 % / 10 % + ≈ €600 | Notary ≈ €3,050 | Ipoteca: substitute tax 0.25 % (prima casa) / 2 % + notary ≈ €2,200 | 33 % |
+| 🇳🇱 Netherlands | 4.1 % | Overdrachtsbelasting 2 % (own home), 0 % for starters up to €555k, 8 % otherwise | ≈ €2,600 | NHG 0.4 % up to €470k | 35 % (NIBUD tables in reality) |
+
+Only France has a legal usury rate check and a binding debt-ratio rule (HCSF); elsewhere the debt limit is shown as a guideline.
+
 ## 4. Data that must be refreshed
 
 | Data | Frequency | Source |

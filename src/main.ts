@@ -1,14 +1,27 @@
 import { mount } from 'svelte';
 import './app.css';
 import App from './App.svelte';
+import Embed from './Embed.svelte';
+import { isEmbed } from './lib/embed';
+import { isCreditType } from './lib/engine';
 import { parseRoute } from './lib/router.svelte';
 import { isShortPath, stateFromShortPath } from './lib/shortlinks';
-import { applyShared, detectCountry, loadHash } from './lib/state.svelte';
+import { applyShared, detectCountry, loadHash, setType } from './lib/state.svelte';
 import { i18n } from './lib/i18n/index.svelte';
 import { track } from './lib/analytics';
 
 // Load a shared simulation before the first render: a short link (/s/<id>) or a fragment (#c=… / #s=…).
 async function start() {
+  if (isEmbed) {
+    // Widget: an optional simulation in the fragment, otherwise ?country and ?type pick the starting point.
+    if (!(await loadHash())) {
+      const type = new URLSearchParams(location.search).get('type');
+      if (isCreditType(type)) setType(type);
+      detectCountry(i18n.lang);
+    }
+    mount(Embed, { target: document.getElementById('app')! });
+    return;
+  }
   if (isShortPath()) {
     const s = await stateFromShortPath();
     if (s) applyShared(s);

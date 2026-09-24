@@ -120,3 +120,5 @@ export const DEFAULTS: Record<CreditType, Inputs> = {
   car: { ...base, type: 'car', price: 28000, downPayment: 6000, rate: 5.5, months: 60, useInsurance: false, insuranceRate: 0.6, useFileFee: false, fileFee: 150, income: 3200 },
   works: { ...base, type: 'works', amount: 30000, rate: 5.9, months: 96, useInsurance: true, insuranceRate: 0.4, useFileFee: false, fileFee: 300, income: 4200 },
 };
+
+export const isCreditType = (v: unknown): v is CreditType => typeof v === 'string' && v in CREDIT_TYPES;

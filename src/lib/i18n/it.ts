@@ -17,6 +17,7 @@ export const it: Dict = {
   typeHint_car: 'Prestito auto: prezzo meno anticipo',
   typeHint_works: 'Prestito per lavori: oltre 75.000 € segue le regole dei mutui',
 
+  embedOpen: 'Apri la simulazione completa in Credisim', embedOpenSub: 'Grafici, piano di ammortamento, opzioni e altro',
   moreCredits: 'Carta revolving, pagamento in 3×/4×, leasing, mutuo ponte, consolidamento debiti, investimento in affitto',
   scenario: 'Scenario {n}', addScenario: 'Confronta con un altro scenario', removeScenario: 'Rimuovi lo scenario B',
 

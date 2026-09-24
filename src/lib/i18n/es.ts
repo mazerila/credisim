@@ -17,6 +17,7 @@ export const es: Dict = {
   typeHint_car: 'Préstamo de coche: precio menos entrada',
   typeHint_works: 'Préstamo para reformas: más de 75.000 € sigue las reglas hipotecarias',
 
+  embedOpen: 'Abrir la simulación completa en Credisim', embedOpenSub: 'Gráficos, cuadro de amortización, opciones y más',
   moreCredits: 'Tarjeta revolving, pago en 3×/4×, renting, préstamo puente, reunificación de deudas, inversión en alquiler',
   scenario: 'Escenario {n}', addScenario: 'Comparar con otro escenario', removeScenario: 'Quitar el escenario B',
 

@@ -36,7 +36,9 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
 - **Share links:** a short link (`/s/k7Pq2xZa`) made by the reusable [`packages/shortlink`](packages/shortlink) module (Firestore, EU); the address bar also keeps a compact, compressed copy of the simulation (`#c=…`).
 - **How it works:** 23 short explainers in English and French (loans, monthly payment, schedule, repayment types and deferral, variable rates, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, checking an offer, early repayment, renegotiation, revolving credit and BNPL, car leasing, debt consolidation, bridge loans, rental investment, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
-- **English and French**, detected automatically. Light, dark or system theme. Responsive from phone to desktop.
+- **Six countries:** France in full detail, plus presets for Belgium, Germany, Spain, Italy and the Netherlands (purchase taxes by region, notary, local guarantee, debt guideline).
+- **Embeddable widget** for blogs and agents: one `<div>` and one `<script>`, see [docs/EMBED.md](docs/EMBED.md).
+- **English, French, German, Spanish and Italian**, detected automatically (explainers in English and French). Light, dark or system theme. Responsive from phone to desktop.
 
 The full list, with priorities, is in [docs/FEATURES.md](docs/FEATURES.md). What comes next is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
@@ -67,7 +69,7 @@ src/
                      notary scale, guarantee, PTZ, smoothing, deferral, variable rates,
                      tools (credits.ts, property.ts, tools.ts), capacity + tests
   lib/data/fr/       Versioned French regulatory data, each value with its source
-  lib/i18n/          en.ts / fr.ts dictionaries, t(), number formatting, language detection
+  lib/i18n/          en, fr, de, es, it dictionaries, t(), number formatting, language detection
   lib/share.ts       Share payloads: compressed, validated, up to 4 scenarios (+ tests)
   lib/shortlinks.ts  App glue for short links (/s/<id>)
   lib/export.ts      CSV export and saved simulations (+ tests)
@@ -105,7 +107,7 @@ When the latest quarter has expired, the app shows a "rates may be outdated" bad
 
 ## Language detection
 
-The language is chosen in this order: `?lang=en|fr` → the visitor's saved choice → the country from the host (`window.__COUNTRY__`, to be filled from an edge/IP header) → browser language → French time zone → English.
+The language is chosen in this order: `?lang=en|fr|de|es|it` → the visitor's saved choice → the country from the host (`window.__COUNTRY__`, to be filled from an edge/IP header) → browser language → French time zone → English.
 
 ## Deployment
 

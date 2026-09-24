@@ -17,6 +17,7 @@ export const de: Dict = {
   typeHint_car: 'Autokredit: Kaufpreis minus Anzahlung',
   typeHint_works: 'Modernisierungskredit: über 75.000 € gelten Immobilienkredit-Regeln',
 
+  embedOpen: 'Vollständige Simulation in Credisim öffnen', embedOpenSub: 'Diagramme, Tilgungsplan, Optionen und mehr',
   moreCredits: 'Rahmenkredit, Zahlung in 3×/4×, Leasing, Zwischenfinanzierung, Umschuldung, Kapitalanlage',
   scenario: 'Szenario {n}', addScenario: 'Mit einem anderen Szenario vergleichen', removeScenario: 'Szenario B entfernen',
 

@@ -17,6 +17,7 @@ export const fr: Dict = {
   typeHint_car: 'Crédit auto : prix moins apport',
   typeHint_works: 'Prêt travaux : au-delà de 75 000 €, il suit les règles immobilières',
 
+  embedOpen: 'Ouvrir la simulation complète dans Credisim', embedOpenSub: 'Graphiques, tableau d’amortissement, options et plus',
   moreCredits: 'Crédit renouvelable, paiement en 3×/4×, LOA/LLD, prêt relais, rachat de crédits, investissement locatif',
   scenario: 'Scénario {n}', addScenario: 'Comparer avec un autre scénario', removeScenario: 'Supprimer le scénario B',
 

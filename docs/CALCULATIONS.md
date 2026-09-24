@@ -124,3 +124,9 @@ Gross yield = rent × 12 / price. Net rent = rent × (12 − empty months) − c
 
 ## Rent or buy
 Both start with the same cash (the down payment). Each month the renter's savings grow at the savings return and receive (buyer's outgoings − rent), where the buyer pays the loan, insurance and owner costs. Buyer's net worth = value × (1 + growth)^years × (1 − selling costs) − capital still owed. Rents and owner costs grow at the rent-growth rate.
+
+## Other countries (BE, DE, ES, IT, NL)
+The loan maths (payment, schedule, TAEG) is the same everywhere. What changes per country, from `src/lib/data/eu/countries.json`:
+- **Purchase costs** = transfer tax (rate by region and by use: own home or not, resale or new) − any allowance × rate + notary % × price + fixed notary/registry costs. The Dutch starter exemption sets the transfer tax to 0 when the price is under the threshold.
+- **Guarantee** = rate × loan + fixed cost. The loan includes the guarantee when it is financed, so it is solved in closed form: loan = (need + fixed) / (1 − rate). NHG only applies up to its maximum loan.
+- **Debt ratio** is compared with the country guideline (not a legal limit), and no usury check is made outside France. The PTZ exists only in France.

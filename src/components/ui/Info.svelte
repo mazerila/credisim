@@ -1,6 +1,7 @@
 <script lang="ts">
   import { t } from '../../lib/i18n/index.svelte';
   import type { TopicId } from '../../lib/learn';
+  import { isEmbed, siteHref } from '../../lib/embed';
 
   let { text, learn, label = 'More information' }: { text: string; learn?: TopicId; label?: string } = $props();
   let open = $state(false);
@@ -16,7 +17,7 @@
 <span class="info" bind:this={root}>
   <button type="button" class="dot" aria-label={label} aria-expanded={open} onclick={() => (open = !open)}>i</button>
   {#if open}
-    <span class="bubble" role="tooltip">{text}{#if learn}<a href="#learn/{learn}" onclick={() => (open = false)}>{t('learnMore')} ›</a>{/if}</span>
+    <span class="bubble" role="tooltip">{text}{#if learn}<a href={siteHref(`#learn/${learn}`)} target={isEmbed ? '_blank' : undefined} rel={isEmbed ? 'noopener' : undefined} onclick={() => (open = false)}>{t('learnMore')} ›</a>{/if}</span>
   {/if}
 </span>
 

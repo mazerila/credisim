@@ -15,6 +15,7 @@ export const en = {
   typeHint_car: 'Car loan: price minus down payment',
   typeHint_works: 'Renovation loan: over €75,000 it follows mortgage rules',
 
+  embedOpen: 'Open the full simulation in Credisim', embedOpenSub: 'Charts, schedule, options and more',
   moreCredits: 'Revolving credit, pay in 3×/4×, car leasing, bridge loan, debt consolidation, rental investment',
   scenario: 'Scenario {n}', addScenario: 'Compare with another scenario', removeScenario: 'Remove scenario B',
 
