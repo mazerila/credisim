@@ -58,6 +58,7 @@ Sent by the app on real navigations only (`capture_pageview: false`), because th
 | `simulation_saved` | — | Saved in the browser |
 | `report_printed` | — | Print / PDF |
 | `schedule_exported` | `format` (`csv`) | CSV export |
+| `rental_mode_changed` | `mode` (`simple` · `advanced`) | Rental investment tool: level of detail switched |
 | `language_changed` | `from`; `to` | Language switched by hand (automatic detection does not fire it) |
 | `theme_changed` | `from`; `to` (`system` · `light` · `dark`) | Theme button clicked |
 

@@ -415,7 +415,7 @@ export const fr: Content = {
   'rental-investment': {
     title: 'Investissement locatif, et louer ou acheter',
     lead: 'Un achat pour louer se juge sur son rendement et son cash-flow. L’achat de sa résidence, sur le temps qu’on y reste.',
-    read: 3,
+    read: 4,
     blocks: [
       { h: 'Les rendements' },
       {
@@ -425,7 +425,18 @@ export const fr: Content = {
           '**Cash-flow** = loyer net par mois − mensualité − assurance. Négatif : vous ajoutez de l’argent chaque mois.',
         ],
       },
-      { p: 'L’impôt dépend de votre régime : micro-foncier (abattement de 30 % jusqu’à 15 000 € de loyers par an), régime réel, ou location meublée (LMNP). Demandez conseil pour votre situation.' },
+      { h: 'Fiscalité : location nue ou meublée (LMNP)' },
+      {
+        list: [
+          '**Nu, micro-foncier :** 70 % des loyers sont imposés (jusqu’à 15 000 € de loyers par an), à votre TMI + 17,2 % de prélèvements sociaux.',
+          '**Nu, réel :** les charges réelles et les intérêts sont déduits. Un déficit venant des charges autres que les intérêts réduit vos autres revenus, jusqu’à 10 700 € par an ; le reste est reportable 10 ans.',
+          '**Meublé (LMNP), micro-BIC :** 50 % des loyers sont imposés, avec 18,6 % de prélèvements sociaux depuis les revenus 2025.',
+          '**Meublé (LMNP), réel :** le bâti (pas le terrain) et le mobilier sont en plus amortis. L’impôt est souvent nul pendant 10 ans ou plus, mais depuis 2025 les amortissements sont réintégrés dans la plus-value à la revente.',
+        ],
+      },
+      { p: 'Le régime change souvent plus le résultat que le taux du crédit. Le mode avancé de l’outil calcule les quatre côte à côte.' },
+      { h: 'L’argent immobilisé' },
+      { p: 'Votre apport, le mobilier et chaque effort d’épargne mensuel pourraient rapporter ailleurs. Le mode avancé compare l’investissement au même argent placé au taux de votre choix, revente comprise, et donne la **rentabilité de votre argent** (le taux annuel auquel l’investissement et sa revente remboursent ce que vous y avez mis).' },
       { h: 'Louer ou acheter sa résidence ?' },
       { p: 'Acheter coûte cher au départ (frais de notaire, intérêts). C’est rentable si vous restez assez longtemps pour que la valeur du bien et le capital remboursé dépassent ces coûts. Louer et placer la différence peut l’emporter sur de courtes périodes ou quand les prix stagnent.' },
       { note: 'Essayez les deux : [Outils → Investissement locatif](#tools/rental) et [Outils → Louer ou acheter ?](#tools/rent-vs-buy).' },

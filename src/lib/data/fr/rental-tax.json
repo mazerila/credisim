@@ -1,0 +1,23 @@
+{
+  "note": "French tax rules for a private landlord, September 2026. Simplified: no surtax on large capital gains, no CFE, no energy-works deficit bonus.",
+  "microFoncier": { "ceiling": 15000, "allowance": 0.30 },
+  "deficitFoncierCap": 10700,
+  "deficitYears": 10,
+  "microBic": { "ceiling": 77700, "allowance": 0.50 },
+  "lmnp": { "buildingYears": 30, "furnitureYears": 7 },
+  "social": { "unfurnished": 0.172, "furnished": 0.186, "capitalGain": 0.172 },
+  "capitalGain": {
+    "incomeTax": 0.19,
+    "acquisitionCostsFlat": 0.075,
+    "worksFlat": 0.15,
+    "worksFlatAfterYears": 5,
+    "lmnpDepreciationAddedBack": true
+  },
+  "sources": [
+    "https://www.impots.gouv.fr/particulier/questions/je-mets-en-location-un-logement-vide-comment-declarer-les-loyers-percus",
+    "https://www.impots.gouv.fr/particulier/questions/comment-declarer-mes-revenus-de-location-meublee",
+    "https://www.impots.gouv.fr/particulier/questions/comment-est-calculee-limposition-de-la-plus-value-immobiliere",
+    "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000051168007",
+    "https://www.cpim.fr/prelevements-sociaux-immobilier-2026/"
+  ]
+}

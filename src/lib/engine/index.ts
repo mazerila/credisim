@@ -9,3 +9,4 @@ export * from './tools';
 export * from './credits';
 export * from './property';
 export * from './countries';
+export * from './rental';

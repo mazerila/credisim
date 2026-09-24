@@ -415,7 +415,7 @@ export const en: Content = {
   'rental-investment': {
     title: 'Rental investment, and rent or buy',
     lead: 'Buying to let is judged on yield and monthly cash flow. Buying your own home, on how long you stay.',
-    read: 3,
+    read: 4,
     blocks: [
       { h: 'Yields' },
       {
@@ -425,7 +425,18 @@ export const en: Content = {
           '**Cash flow** = net rent per month − loan payment − insurance. Negative means you add money every month.',
         ],
       },
-      { p: 'Income tax depends on your regime: micro-foncier (30 % allowance up to €15,000 of rent a year), the real regime, or furnished rental (LMNP). Ask an adviser for your case.' },
+      { h: 'Tax: unfurnished or furnished (LMNP)' },
+      {
+        list: [
+          '**Unfurnished, micro-foncier:** 70 % of the rent is taxed (up to €15,000 of rent a year), at your marginal rate + 17.2 % social charges.',
+          '**Unfurnished, real regime:** actual costs and interest are deducted. A loss from costs other than interest lowers your other income, up to €10,700 a year; the rest is carried forward for 10 years.',
+          '**Furnished (LMNP), micro-BIC:** 50 % of the rent is taxed, with 18.6 % social charges since 2025 income.',
+          '**Furnished (LMNP), real regime:** the building (not the land) and the furniture are also depreciated. This often cancels the tax for 10 years or more, but since 2025 the depreciation is added back to the capital gain when you sell.',
+        ],
+      },
+      { p: 'The regime often changes the result more than the rate of the loan. The advanced mode of the tool computes all four side by side.' },
+      { h: 'The money you tie up' },
+      { p: 'Your down payment, the furniture and every monthly top-up could earn interest elsewhere. The advanced mode compares the investment with the same money in a placement at the rate you choose, resale included, and gives the **return on your money** (the yearly rate at which the investment and its resale pay back what you put in).' },
       { h: 'Rent or buy your home?' },
       { p: 'Buying costs a lot at the start (notary fees, interest). It pays off when you stay long enough for the home’s value and the capital repaid to outweigh those costs. Renting and investing the difference can win over short periods or when prices stall.' },
       { note: 'Try both: [Tools → Rental investment](#tools/rental) and [Tools → Rent or buy?](#tools/rent-vs-buy).' },

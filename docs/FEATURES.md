@@ -58,6 +58,7 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | D3 | Revolving credit real cost | P2 ✅ | |
 | D4 | **BNPL / split-payment real cost** (TAEG applies from 20 Nov 2026 under CCD2) | P2 ✅ | ✓ |
 | D5 | Debt consolidation (rachat de crédits) | P2 ✅ | |
+| D6 | Rental investment advanced mode: 4 French tax regimes (micro-foncier, réel, micro-BIC, LMNP réel), resale and capital-gains tax, money tied up vs. a placement (IRR), user-added one-off and recurring costs | P1 ✅ | ✓ |
 
 ## E. Europe
 

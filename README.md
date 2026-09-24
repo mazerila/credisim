@@ -31,7 +31,7 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
 - **Tools (11):**
   - *Your home loan:* check my offer, early repayment, renegotiation / buy-out, borrower-insurance switch (loi Lemoine)
   - *Other credits:* revolving credit, pay in 3×/4× (real TAEG), car lease (LOA/LLD) vs loan, debt consolidation
-  - *Property projects:* bridge loan, rental investment (yields and cash flow), rent or buy
+  - *Property projects:* bridge loan, rental investment (yields and cash flow; advanced mode with LMNP vs unfurnished tax, resale, and return vs. a placement), rent or buy
 - **Save, print, export:** save simulations in the browser, print a clean report or save it as PDF, export the schedule as CSV (Excel-ready in FR and EN).
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
 - **Share links:** a short link (`/s/k7Pq2xZa`) made by the reusable [`packages/shortlink`](packages/shortlink) module (Firestore, EU); the address bar also keeps a compact, compressed copy of the simulation (`#c=…`).
