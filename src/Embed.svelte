@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Logo from './components/ui/Logo.svelte';
   import { simulate, type CreditType } from './lib/engine';
   import { i18n, t } from './lib/i18n/index.svelte';
   import { app, current, setType, toHash } from './lib/state.svelte';
@@ -56,7 +57,7 @@
       <CostDonut {r} country={inp.country} />
       <a class="open" href={openHref} target="_blank" rel="noopener" onclick={() => track('embed_opened', { host })}>
         <span class="brand">
-          <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)" /><path d="M14 46 L26 32 L36 38 L50 20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <Logo size={28} />
           <span><b>{t('embedOpen')} ›</b><small>{t('embedOpenSub')}</small></span>
         </span>
       </a>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Logo from './ui/Logo.svelte';
   import { t } from '../lib/i18n/index.svelte';
   import { route } from '../lib/router.svelte';
   import SharePanel from './SharePanel.svelte';
@@ -12,7 +13,7 @@
 <header class="nav">
   <div class="container bar">
     <a class="brand" href="./" aria-label="Credisim">
-      <svg viewBox="0 0 64 64" width="22" height="22" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--accent)" /><path d="M14 46 L26 32 L36 38 L50 20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      <Logo />
       <span>Credisim</span>
     </a>
     <nav class="links">
