@@ -43,7 +43,7 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - Variable / capped rates + Euribor stress (A7, A8)
 - Delivered as: rate type Fixed / Variable / Capped in the home-loan simulator (index + margin, cap, index scenario, yearly revision, worst case); 7 new tools grouped as Other credits (revolving, pay in 3×/4×, car lease vs loan, debt consolidation) and Property projects (bridge loan, rental investment, rent or buy); 6 new explainers
 
-### Phase 5 — Europe & reach ✅ built, awaiting review
+### Phase 5 — Europe & reach ✅ confirmed 2026-09-24
 - Country presets BE, DE, ES, IT, NL (E1): typical rate, purchase taxes by region, notary, local guarantee, debt guideline; country detected from `?country`, time zone or language
 - Interface in German, Spanish and Italian (H4), with a language menu; explainers stay in English/French for now
 - Embeddable widget at `/embed` with a one-line loader (`embed.js`) — see [EMBED.md](EMBED.md) (I5)
