@@ -7,11 +7,11 @@ Neutral loan simulator (France in detail, presets for BE, DE, ES, IT, NL), live 
 - `npm run check`: svelte-check (must show 0 errors)
 - `npm test`: Vitest (engine, share, export, analytics, learn, packages/shortlink)
 - `npm run build`: production build into `dist/`
-- Deploy by hand (until the GitHub deploy secret exists): `firebase deploy --only hosting:creditsimulator --project credisimulator`
+- Deploy: automatic on every push to `main` (GitHub Actions); pull requests get a preview URL. Manual fallback: `firebase deploy --only hosting:creditsimulator --project credisimulator`
 
 ## How to work
 - The owner reviews each roadmap phase before the next one starts (`docs/ROADMAP.md`). Stop after a phase with a summary and a live link.
-- After each piece of work: check, test, build, commit, push to `main`, deploy, then update the docs it touches (README, `docs/FEATURES.md`, `docs/ROADMAP.md`, `docs/CALCULATIONS.md`, `docs/RESEARCH.md`, `docs/ANALYTICS.md` for new events).
+- After each piece of work: check, test, build, commit, push to `main` (which deploys), then update the docs it touches (README, `docs/FEATURES.md`, `docs/ROADMAP.md`, `docs/CALCULATIONS.md`, `docs/RESEARCH.md`, `docs/ANALYTICS.md` for new events).
 - UI: minimal Apple-style, light and dark, responsive. Reuse the tokens in `src/app.css` and the controls in `src/components/ui/`. Check new screens in both themes and at phone width.
 - Every user-visible string goes through `t()`. Add each key to all five dictionaries in `src/lib/i18n/` (en, fr, de, es, it); `Dict` is typed from `en.ts`, so a missing key fails the type check. "How it works" articles exist in en and fr only.
 - The engine (`src/lib/engine/`) stays pure TypeScript with no dependencies, and every formula has tests. Regulatory figures live in JSON under `src/lib/data/` with their sources, never hard-coded in components.
