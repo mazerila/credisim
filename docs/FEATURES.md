@@ -143,3 +143,4 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | J4 | Disclaimer: estimate, not an offer | P0 ✅ |
 | J5 | Cookieless analytics: PostHog EU (shared with Suncast and Mont Valier), no banner, no simulation figures sent | P0 ✅ |
 | J6 | Quarterly data-refresh checklist / reminder | P1 |
+| J7 | Link previews: Open Graph + Twitter card with a 1200×630 image (`public/og.jpg`, under 300 KB for WhatsApp), logo favicon and Apple touch icon | P1 ✅ |

@@ -57,7 +57,7 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - User-added one-off and recurring costs
 
 ### Next
-1. **SEO and AI-search optimisation:** prerendered landing pages per language and calculator, meta / Open Graph / JSON-LD, hreflang, sitemap, robots.txt, llms.txt, Core Web Vitals and code splitting
+1. **SEO and AI-search optimisation:** prerendered landing pages per language and calculator, per-page meta / JSON-LD (site-wide Open Graph image done), hreflang, sitemap, robots.txt, llms.txt, Core Web Vitals and code splitting
 2. Small corrections from the owner's review
 3. Later: optional account (I6), Dutch interface, explainers in DE/ES/IT
 
