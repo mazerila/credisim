@@ -2,7 +2,7 @@ import type { Dict } from './en';
 
 export const es: Dict = {
   heroTitle: 'Descubre lo que cuesta de verdad tu préstamo.',
-  tagline: 'El coste real de tu préstamo, a la vista.',
+  tagline: 'Cuota, TAE, seguro y comisiones, todo incluido. Gratis y neutral.',
   lang: 'Idioma',
   theme: 'Apariencia', themeSystem: 'Automático', themeLight: 'Claro', themeDark: 'Oscuro',
   share: 'Compartir', copied: 'Enlace copiado', linkReady: 'El enlace está en la barra de direcciones',

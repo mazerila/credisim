@@ -1,6 +1,6 @@
 export const en = {
   heroTitle: 'See what your loan really costs.',
-  tagline: 'The true cost of your loan, in plain sight.',
+  tagline: 'Payment, TAEG, insurance and fees, all included. Free and neutral.',
   lang: 'Language',
   theme: 'Appearance', themeSystem: 'Auto', themeLight: 'Light', themeDark: 'Dark',
   share: 'Share', copied: 'Link copied', linkReady: 'Share link is in the address bar',

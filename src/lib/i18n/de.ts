@@ -2,7 +2,7 @@ import type { Dict } from './en';
 
 export const de: Dict = {
   heroTitle: 'Sehen Sie, was Ihr Kredit wirklich kostet.',
-  tagline: 'Die wahren Kosten Ihres Kredits, auf einen Blick.',
+  tagline: 'Rate, Effektivzins, Versicherung und Gebühren, alles inklusive. Kostenlos und neutral.',
   lang: 'Sprache',
   theme: 'Darstellung', themeSystem: 'Automatisch', themeLight: 'Hell', themeDark: 'Dunkel',
   share: 'Teilen', copied: 'Link kopiert', linkReady: 'Der Link steht in der Adresszeile',

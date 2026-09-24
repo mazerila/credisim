@@ -2,7 +2,7 @@ import type { Dict } from './en';
 
 export const fr: Dict = {
   heroTitle: 'Voyez ce que coûte vraiment votre crédit.',
-  tagline: 'Le vrai coût de votre crédit, en clair.',
+  tagline: 'Mensualité, TAEG, assurance et frais, tout compris. Gratuit et neutre.',
   lang: 'Langue',
   theme: 'Apparence', themeSystem: 'Auto', themeLight: 'Clair', themeDark: 'Sombre',
   share: 'Partager', copied: 'Lien copié', linkReady: "Le lien de partage est dans la barre d'adresse",
