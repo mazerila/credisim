@@ -59,7 +59,12 @@ export const fmt = {
     new Intl.NumberFormat(locale(), { style: 'currency', currency: 'EUR', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v),
   pct: (v: number, digits = 2) =>
     new Intl.NumberFormat(locale(), { style: 'percent', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v),
-  compact: (v: number) => new Intl.NumberFormat(locale(), { notation: 'compact', maximumFractionDigits: 1 }).format(v),
+  compact: (v: number) => {
+    // German has no short form for thousands in Intl ("197.581,7"), so write "197,6 Tsd." like German banks do.
+    if (i18n.lang === 'de' && Math.abs(v) >= 1000 && Math.abs(v) < 1e6)
+      return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 }).format(v / 1000) + ' Tsd.';
+    return new Intl.NumberFormat(locale(), { notation: 'compact', maximumFractionDigits: 1 }).format(v);
+  },
   num: (v: number, digits = 0) => new Intl.NumberFormat(locale(), { maximumFractionDigits: digits }).format(v),
   duration: (months: number, unit: 'years' | 'months') =>
     unit === 'years'
