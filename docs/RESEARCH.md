@@ -53,19 +53,19 @@ _Research date: 22 September 2026. Figures change — every number below carries
 
 ## 2. French regulatory facts (as of Sept 2026)
 
-### Usury rates (taux d'usure) — Q3 2026, valid 1 Jul – 30 Sep 2026
-Source: [Banque de France](https://www.banque-france.fr/fr/statistiques/taux-et-cours/taux-dusure-2026-q3). **Q4 rates are published around 30 Sept — update on 1 Oct 2026.**
+### Usury rates (taux d'usure) — Q4 2026, valid 1 Oct – 31 Dec 2026
+Source: [Banque de France](https://www.banque-france.fr/fr/statistiques/taux-et-cours/taux-dusure-2026-q4). Q3 2026 in brackets. **Q1 2027 rates are published around 28 Dec — update on 1 Jan 2027.**
 
 | Category | Usury rate |
 |---|---|
-| Mortgage, fixed, < 10 years | 4.07 % |
-| Mortgage, fixed, 10–20 years | 4.57 % |
-| Mortgage, fixed, ≥ 20 years | 5.29 % |
-| Mortgage, variable | 5.28 % |
-| Bridge loan (prêt relais) | 6.39 % |
-| Consumer ≤ €3,000 | 23.53 % |
-| Consumer €3,000–6,000 | 15.67 % |
-| Consumer > €6,000 | 8.56 % |
+| Mortgage, fixed, < 10 years | 4.09 % (4.07) |
+| Mortgage, fixed, 10–20 years | 4.68 % (4.57) |
+| Mortgage, fixed, ≥ 20 years | 5.40 % (5.29) |
+| Mortgage, variable | 5.52 % (5.28) |
+| Bridge loan (prêt relais) | 6.49 % (6.39) |
+| Consumer ≤ €3,000 | 23.60 % (23.53) |
+| Consumer €3,000–6,000 | 15.76 % (15.67) |
+| Consumer > €6,000 | 8.56 % (8.56) |
 
 The usury test applies to the **TAEG** (all-in rate), not the nominal rate.
 

@@ -73,9 +73,10 @@ describe('TAEG', () => {
 });
 
 describe('rules', () => {
-  it('picks the Q3 2026 usury table and flags it stale after 30 Sept', () => {
+  it('picks the usury table of the quarter and flags it stale after the last one ends', () => {
     expect(usuryTable(TODAY)).toMatchObject({ stale: false, table: { quarter: '2026-Q3' } });
-    expect(usuryTable(new Date('2026-10-02')).stale).toBe(true);
+    expect(usuryTable(new Date('2026-10-02'))).toMatchObject({ stale: false, table: { quarter: '2026-Q4' } });
+    expect(usuryTable(new Date('2027-01-02')).stale).toBe(true);
   });
   it('uses duration bands for mortgages and amount bands for consumer loans', () => {
     expect(usuryCategory('mortgage', 200000, 119)).toBe('fixedUnder10y');

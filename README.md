@@ -109,7 +109,7 @@ French rates and rules live in `src/lib/data/fr/`:
 | `rental-tax.json` | Landlord tax: micro-foncier, deficit cap, micro-BIC, LMNP depreciation, social charges, capital-gains rules | Each finance law (January) |
 | `../eu/countries.json` | Country presets: typical rates, purchase taxes, notary, guarantee, debt guideline | Every few months (rates) |
 
-When the latest quarter has expired, the app shows a "rates may be outdated" badge until a new entry is added. **Current data: Q3 2026, valid until 30 Sep 2026.**
+When the latest quarter has expired, the app shows a "rates may be outdated" badge until a new entry is added. **Current data: Q4 2026, valid until 31 Dec 2026.**
 
 ## Language detection
 
