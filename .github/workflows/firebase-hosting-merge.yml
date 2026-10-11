@@ -19,6 +19,9 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     env:
+      # Firebase web API key (public in the built site, restricted to our domains; kept out of the repo).
+      # Job-wide: firebase.json's predeploy rebuilds the site inside the deploy step too.
+      VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
       # Lets the deploy step skip cleanly until the service-account secret exists.
       HAS_FIREBASE_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR != '' }}
     steps:
@@ -31,9 +34,6 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
-        env:
-          # Firebase web API key (public in the built site, restricted to our domains; kept out of the repo)
-          VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
       - name: Deploy to the live channel
         if: env.HAS_FIREBASE_SA == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0
