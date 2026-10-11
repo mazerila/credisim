@@ -13,6 +13,15 @@ service cloud.firestore {
         && request.resource.data.at == request.time;
       allow list, update, delete: if false;
     }
+    // Optional account: each user reads and writes only their own saved simulations.
+    match /users/{uid}/sims/{id} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name', 'hash', 'at'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 80
+        && request.resource.data.hash is string && request.resource.data.hash.size() <= 8000
+        && request.resource.data.at is timestamp && request.resource.data.at <= request.time;
+    }
     // Everything else is closed.
     match /{document=**} {
       allow read, write: if false;

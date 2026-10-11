@@ -112,7 +112,7 @@ Priority: **P0** = MVP · **P1** = v1 · **P2** = v2 / later. ✅ = delivered (a
 | I3 | PDF report (summary + charts + schedule) | P1 ✅ |
 | I4 | CSV / Excel schedule export | P1 ✅ |
 | I5 | Embeddable widget (`/embed` + `embed.js` loader) for agents/blogs | P2 ✅ |
-| I6 | Optional account & sync | P2 |
+| I6 | Optional account & sync: Google or email + password (Firebase Auth), saved simulations in Firestore on every device, copy from this browser, delete account; free (Spark plan) | P2 ✅ |
 
 ## K. Credit type & optional components
 

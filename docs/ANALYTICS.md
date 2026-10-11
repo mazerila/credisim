@@ -46,7 +46,7 @@ Sent by the app on real navigations only (`capture_pageview: false`), because th
 | Event | Properties | Fired when |
 |---|---|---|
 | `app_started` | `credit_type`; `scenarios` (count); `mode` (`quick` · `expert`); `view` (`sim` · `tools` · `learn`); `start` (`shared_link` · `fresh`); `theme` | Once per load |
-| `simulation_opened` | `source` (`short_link` · `saved`); `found` (short link only) | A shared short link or a saved simulation was opened |
+| `simulation_opened` | `source` (`short_link` · `saved` · `account`); `found` (short link only) | A shared short link or a saved simulation was opened |
 | `credit_type_selected` | `credit_type` (`mortgage` · `personal` · `car` · `works`); `embed` (true in the widget) | A credit type was picked |
 | `embed_loaded` | `host` (the embedding site's hostname); `credit_type` | The widget was shown on another site (page view `/embed`) |
 | `embed_opened` | `host` | "Open the full simulation in Credisim" clicked in the widget |
@@ -55,14 +55,19 @@ Sent by the app on real navigations only (`capture_pageview: false`), because th
 | `share_link_created` | `short` (true: `/s/<id>`, false: long link) | Share panel opened |
 | `share_link_copied` | `short` | "Copy" in the share panel |
 | `share_sheet_opened` | `short` | "Share with…" (native share) |
-| `simulation_saved` | — | Saved in the browser |
+| `simulation_saved` | `where` (`browser` · `account`) | A simulation was saved |
+| `account_signed_in` | `method` (`google` · `password`); `new` (account just created) | Signed in to the optional account |
+| `account_signed_out` | — | Signed out |
+| `account_password_reset` | — | Password-reset email requested |
+| `account_deleted` | — | Account and its simulations deleted |
+| `simulations_imported` | `count` | Simulations saved in the browser copied to the account |
 | `report_printed` | — | Print / PDF |
 | `schedule_exported` | `format` (`csv`) | CSV export |
 | `rental_mode_changed` | `mode` (`simple` · `advanced`) | Rental investment tool: level of detail switched |
 | `language_changed` | `from`; `to` | Language switched by hand (automatic detection does not fire it) |
 | `theme_changed` | `from`; `to` (`system` · `light` · `dark`) | Theme button clicked |
 
-Deliberately **never** in any event: amounts, rates, incomes, the simulation fragment, short-link ids, or anything typed into a field.
+Deliberately **never** in any event: amounts, rates, incomes, the simulation fragment, short-link ids, or anything typed into a field. Signed-in users are **not** identified in PostHog (no `identify`, no email or uid).
 
 ## Adding an event
 

@@ -34,6 +34,7 @@ No sign-up, no sales call, and nothing leaves the browser: every calculation run
   - *Property projects:* bridge loan, rental investment (yields and cash flow; advanced mode with LMNP vs unfurnished tax, resale, and return vs. a placement), rent or buy
 - **Save, print, export:** save simulations in the browser, print a clean report or save it as PDF, export the schedule as CSV (Excel-ready in FR and EN).
 - **Quick and Detailed modes**, and ⓘ explanations on every term.
+- **Optional account:** sign in with Google or email + password to keep saved simulations on every device (Firebase Auth + Firestore, owner-only rules). Never required; everything else works without it.
 - **Share links:** a short link (`/s/k7Pq2xZa`) made by the reusable [`packages/shortlink`](packages/shortlink) module (Firestore, EU); the address bar also keeps a compact, compressed copy of the simulation (`#c=…`).
 - **How it works:** 23 short explainers in English and French (loans, monthly payment, schedule, repayment types and deferral, variable rates, TAEG, insurance, guarantee, notary fees, usury rate, 35 % rule, consumer rights, PTZ, checking an offer, early repayment, renegotiation, revolving credit and BNPL, car leasing, debt consolidation, bridge loans, rental investment, how the calculator works, glossary), with live examples. Every ⓘ links to the matching explainer.
 - **Six countries:** France in full detail, plus presets for Belgium, Germany, Spain, Italy and the Netherlands (purchase taxes by region, notary, local guarantee, debt guideline).
@@ -75,7 +76,8 @@ src/
   lib/share.ts       Share payloads: compressed, validated, up to 4 scenarios (+ tests)
   lib/shortlinks.ts  App glue for short links (/s/<id>)
   lib/export.ts      CSV export and saved simulations (+ tests)
-  lib/firebase/      Firebase config (Firestore, for short links)
+  lib/firebase/      Firebase config (Firestore for short links and accounts, Auth)
+  lib/account.svelte.ts  Optional account: sign-in, saved simulations in Firestore
   lib/analytics.ts   PostHog analytics (cookieless) + URL scrubbing (+ tests)
   lib/learn/         "How it works" articles (en.ts, fr.ts) + content tests
   lib/router.svelte.ts  Hash routes: simulator, #tools/<tool>, #learn/<topic>
@@ -123,6 +125,8 @@ Live at **https://creditsimulator.web.app** (Firebase project `credisimulator`, 
 - **Every pull request** gets the same checks and a temporary preview URL posted on the PR (`.github/workflows/firebase-hosting-pull-request.yml`).
 - Deploys need the `FIREBASE_SERVICE_ACCOUNT_CREDISIMULATOR` repository secret, created once with `firebase init hosting:github`.
 - Manual deploy: `firebase deploy --only hosting:creditsimulator --project credisimulator`.
+- Firestore security rules (`firestore.rules`) are not deployed by CI: after changing them run `firebase deploy --only firestore:rules --project credisimulator`.
+- Sign-in (Firebase Auth) is set up in the console: Google + Email/Password, authorized domains include `creditsimulator.web.app`. The project stays on the free Spark plan.
 
 Analytics: PostHog (EU cloud), cookieless like Suncast and Mont Valier, so there is no consent banner; it never receives simulation figures. See [docs/ANALYTICS.md](docs/ANALYTICS.md).
 

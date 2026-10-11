@@ -56,10 +56,16 @@ Single HTML file: project budget, loan, insurance (initial vs remaining capital)
 - Money tied up compared with a placement: return on your money (IRR) and gain vs. placement
 - User-added one-off and recurring costs
 
+### Optional account ✅ built 2026-10-11 (I6)
+- Sign in with Google or email + password; never required. Saved simulations follow the account (Firestore `users/<uid>/sims`, owner-only rules); simulations saved in the browser can be copied over
+- Delete account (with all its simulations) from the account panel; password reset by email
+- Free: Firebase Spark plan (no billing account). Auth SDK loaded only when used
+- Phone header: links moved to a second row so every button fits at 390 px
+
 ### Next
 1. **SEO and AI-search optimisation:** prerendered landing pages per language and calculator, per-page meta / JSON-LD (site-wide Open Graph image done), hreflang, sitemap, robots.txt, llms.txt, Core Web Vitals and code splitting
 2. Small corrections from the owner's review
-3. Later: optional account (I6), Dutch interface, explainers in DE/ES/IT
+3. Later: Dutch interface, explainers in DE/ES/IT
 
 ## Suggested stack
 

@@ -7,6 +7,7 @@
   import LearnPage from './components/learn/LearnPage.svelte';
   import ToolsPage from './components/tools/ToolsPage.svelte';
   import { initAnalytics, setAnalyticsLocale, track, trackPageview } from './lib/analytics';
+  import { initAccount } from './lib/account.svelte';
   import BalanceChart from './components/BalanceChart.svelte';
   import Capacity from './components/Capacity.svelte';
   import CompareTable from './components/CompareTable.svelte';
@@ -30,6 +31,7 @@
   parseRoute();
   setTheme(app.theme);
   initAnalytics(i18n.lang);
+  initAccount();
   track('app_started', {
     credit_type: app.scenarios[0].type,
     scenarios: app.scenarios.length,

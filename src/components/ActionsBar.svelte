@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Result } from '../lib/engine';
   import { deleteSaved, download, listSaved, saveSimulation, scheduleCsv, type Saved } from '../lib/export';
+  import { account, deleteCloud, importLocal, listCloud, saveCloud } from '../lib/account.svelte';
   import { i18n, t } from '../lib/i18n/index.svelte';
   import { loadHash, toHash } from '../lib/state.svelte';
   import { track } from '../lib/analytics';
@@ -9,24 +10,82 @@
   let naming = $state(false);
   let name = $state('');
   let showList = $state(false);
-  let saved = $state<Saved[]>(listSaved());
+  let local = $state<Saved[]>(listSaved());
+  let cloud = $state<Saved[] | null>(null);
+  let loadError = $state(false);
+  let busy = $state(false);
   let toast = $state('');
   let timer: ReturnType<typeof setTimeout>;
 
+  const signedIn = $derived(!!account.user);
+  /** Signed in: the account's list; otherwise this browser's. */
+  const saved = $derived(signedIn ? (cloud ?? []) : local);
+
+  // Load the account's simulations when someone signs in; forget them on sign-out.
+  $effect(() => {
+    if (account.user) void refresh();
+    else cloud = null;
+  });
+
+  async function refresh() {
+    loadError = false;
+    try {
+      cloud = await listCloud();
+    } catch {
+      loadError = true;
+    }
+  }
   function say(msg: string) {
     toast = msg;
     clearTimeout(timer);
     timer = setTimeout(() => (toast = ''), 2600);
   }
   async function save() {
-    saved = saveSimulation(name, await toHash());
-    track('simulation_saved');
-    naming = false;
-    name = '';
-    say(t('savedToast'));
+    const hash = await toHash();
+    busy = true;
+    try {
+      if (signedIn) {
+        await saveCloud(name, hash);
+        await refresh();
+        say(t('savedToastAccount'));
+      } else {
+        local = saveSimulation(name, hash);
+        say(t('savedToast'));
+      }
+      track('simulation_saved', { where: signedIn ? 'account' : 'browser' });
+      naming = false;
+      name = '';
+    } catch {
+      say(t('accErrGeneric'));
+    } finally {
+      busy = false;
+    }
+  }
+  async function remove(s: Saved) {
+    if (!signedIn) { local = deleteSaved(s.id); return; }
+    try {
+      await deleteCloud(s.id);
+      cloud = (cloud ?? []).filter((x) => x.id !== s.id);
+    } catch {
+      say(t('accErrGeneric'));
+    }
+  }
+  async function copyLocal() {
+    busy = true;
+    try {
+      await importLocal(local);
+      for (const s of local) deleteSaved(s.id);
+      local = listSaved();
+      await refresh();
+      say(t('savedImported'));
+    } catch {
+      say(t('accErrGeneric'));
+    } finally {
+      busy = false;
+    }
   }
   async function open(s: Saved) {
-    track('simulation_opened', { source: 'saved' });
+    track('simulation_opened', { source: signedIn ? 'account' : 'saved' });
     await loadHash('#' + s.hash);
     showList = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -45,7 +104,7 @@
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 3h11l3 3v15H5zM8 3v6h8V3M8 21v-7h8v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
     {t('actSave')}
   </button>
-  <button type="button" onclick={() => { showList = !showList; naming = false; saved = listSaved(); }} aria-expanded={showList}>
+  <button type="button" onclick={() => { showList = !showList; naming = false; local = listSaved(); if (showList && signedIn) void refresh(); }} aria-expanded={showList}>
     {t('actSaved')}{#if saved.length} <span class="count">{saved.length}</span>{/if}
   </button>
   <span class="spacer"></span>
@@ -64,7 +123,7 @@
     <label for="save-name">{t('saveName')}</label>
     <div class="row">
       <input id="save-name" type="text" bind:value={name} placeholder={t('saveNamePh')} maxlength="80" />
-      <button type="submit" class="primary">{t('saveConfirm')}</button>
+      <button type="submit" class="primary" disabled={busy}>{t('saveConfirm')}</button>
       <button type="button" onclick={() => (naming = false)}>{t('saveCancel')}</button>
     </div>
   </form>
@@ -72,18 +131,27 @@
 
 {#if showList}
   <div class="panel no-print">
-    {#if saved.length}
+    {#if signedIn && loadError}
+      <p class="muted small">{t('savedLoadError')}</p>
+    {:else if signedIn && cloud === null}
+      <p class="muted small">{t('accLoading')}</p>
+    {:else if saved.length}
       <ul>
         {#each saved as s (s.id)}
           <li>
             <div><b>{s.name}</b><span class="muted small">{date(s.at)}</span></div>
             <button type="button" class="link-btn" onclick={() => open(s)}>{t('savedOpen')}</button>
-            <button type="button" class="link-btn del" onclick={() => (saved = deleteSaved(s.id))}>{t('savedDelete')}</button>
+            <button type="button" class="link-btn del" onclick={() => remove(s)}>{t('savedDelete')}</button>
           </li>
         {/each}
       </ul>
     {:else}
-      <p class="muted small">{t('savedEmpty')}</p>
+      <p class="muted small">{signedIn ? t('savedEmptyAccount') : t('savedEmpty')}</p>
+    {/if}
+    {#if signedIn && local.length}
+      <p class="muted small sub">{t('savedLocalN', { n: local.length })} <button type="button" class="link-btn" disabled={busy} onclick={copyLocal}>{t('savedImport')}</button></p>
+    {:else if !signedIn && account.enabled}
+      <p class="muted small sub"><button type="button" class="link-btn account-btn" onclick={() => (account.panelOpen = true)}>{t('accSignIn')}</button> {t('savedHint')}</p>
     {/if}
   </div>
 {/if}
@@ -113,6 +181,7 @@
   li b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .del { color: var(--bad); }
   p { margin: 0; }
+  .sub { border-top: 1px solid var(--sep); padding-top: 10px; }
   .toast {
     position: fixed; left: 50%; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 40;
     background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 15px; font-weight: 500; max-width: 90vw; text-align: center;
